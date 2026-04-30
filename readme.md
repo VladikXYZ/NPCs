@@ -5,9 +5,19 @@ This repository contains the configuration and logic to run **llama-cpp-python**
 ## 🚀 Quick Start
 
 ### Prerequisites
-* **Python 3.12+**
-* **Vulkan SDK:** Ensure `vulkaninfo --summary` works in your terminal or [Download here](https://vulkan.lunarg.com/sdk/home) (Tested on 1.4.341.1).
-* **CMake:** Ensure `cmake --version` works in your terminal or [Download here](https://cmake.org/download/) (Tested on cmake-4.3.2-windows-x86_64.msi).
+
+*   **Python 3.12+**
+    *   Ensure Python is installed and added to your system PATH.
+*   **Vulkan SDK** (Tested on 1.4.341.1)
+    *   [Download here](https://vulkan.lunarg.com/sdk/home) if not installed. Verify your installation with:
+    ```bash
+    vulkaninfo --summary
+    ```
+*   **CMake** (Tested on 4.3.2)
+    *   [Download here](https://cmake.org/download/) if missing. Verify with:
+    ```bash
+    cmake --version
+    ```
 * **venv:** Create virtual environment
 
 ### Windows 11
