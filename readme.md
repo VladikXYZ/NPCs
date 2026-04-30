@@ -4,13 +4,13 @@ This repository contains the configuration and logic to run **llama-cpp-python**
 
 ## 🚀 Quick Start
 
-### 1. Prerequisites
+### Prerequisites
 * **Python 3.12+**
 * **Vulkan SDK:** Ensure `vulkaninfo --summary` works in your terminal or [Download here](https://vulkan.lunarg.com/sdk/home) (Tested on 1.4.341.1).
 * **CMake:** Ensure `cmake --version` works in your terminal or [Download here](https://cmake.org/download/) (Tested on cmake-4.3.2-windows-x86_64.msi).
 * **venv:** Create virtual environment
 
-## Windows 11
+### Windows 11
 Install llama-cpp-python with this command:
 ```powershell
 $env:CMAKE_ARGS="-DGGML_VULKAN=on"; pip install llama-cpp-python --force-reinstall --upgrade --no-cache-dir --no-binary llama-cpp-python
@@ -23,7 +23,7 @@ $env:CMAKE_ARGS="-DGGML_VULKAN=on -DVulkan_SDK='C:\VulkanSDK\1.4.341.1' -DVulkan
 -->
 ---
 
-## 🐧 Linux Setup (Ubuntu 24.04)
+### 🐧 Linux Setup (Ubuntu 24.04)
 Install llama-cpp-python with this command:
 ```bash
 export CMAKE_ARGS="-DGGML_VULKAN=on"
