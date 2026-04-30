@@ -35,8 +35,7 @@ pip install llama-cpp-python --force-reinstall --upgrade --no-cache-dir --no-bin
 
 
 ### 1. Prerequisites
-* Jump to: [prerequsities](#win-pre)
-
+* Jump to: [prerequsities](#-quick-start-windows-laptop)
 ### 2. Build Command
 ```bash
 export CMAKE_ARGS="-DGGML_VULKAN=on"
