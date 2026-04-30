@@ -19,7 +19,7 @@ try:
 except Exception:
     pass
 """
-    result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, encoding='utf-8')
 
     devices = []
 
