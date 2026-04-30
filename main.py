@@ -7,7 +7,7 @@ import time
 import json
 
 CONFIG_FILE = "devices.json"
-MODEL_PATH = "models/Phi-4-mini-instruct-Q4_K_M.gguf"
+MODEL_PATH = "models/gemma-4-E2B-it-Q4_K_M.gguf"
 
 def get_hardware_options():
     print("\n🔍 Scanning hardware... (this takes a second)")
@@ -168,7 +168,7 @@ def select_and_run():
             chat_history.append({"role": "assistant", "content": assistant_response})
 
             # Print performance stats
-            print(f"\n\n--- 📊 Perf: TTFT: {first_token_time:.3f}s | Speed: {tps:.2f} t/s | Total time: {gen_time:.3f}s ---")
+            print(f"\n\n--- 📊 Perf: TTFT: {first_token_time:.3f}s | Speed: {tps:.2f} t/s | Total tokens: {token_count} | Total time: {gen_time:.3f}s ---")
             print()
 
         except KeyboardInterrupt:
