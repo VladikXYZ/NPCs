@@ -7,7 +7,7 @@ import time
 import json
 
 CONFIG_FILE = "devices.json"
-MODEL_PATH = "models/gemma-4-E2B-it-Q4_K_M.gguf"
+MODEL_PATH = "models/Phi-4-mini-instruct-Q4_K_M.gguf"
 
 def get_hardware_options():
     print("\n🔍 Scanning hardware... (this takes a second)")
