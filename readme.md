@@ -14,6 +14,7 @@ This repository contains the configuration and logic to run **llama-cpp-python**
     vulkaninfo --summary
     ```
     * Vulkan SDK required components:
+      * The Vulkan SDK Core
       * GLM Headers.
       * SDL libraries and headers.
       * Volk header, source, and library.
