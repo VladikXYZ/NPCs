@@ -45,7 +45,9 @@ Install llama-cpp-python with this command:
 export CMAKE_ARGS="-DGGML_VULKAN=on"
 pip install llama-cpp-python --force-reinstall --upgrade --no-cache-dir --no-binary llama-cpp-python
 ```
-
+```bash
+CMAKE_ARGS="-DGGML_VULKAN=on -GNinja" pip install llama-cpp-python --force-reinstall --upgrade --no-cache-dir --no-binary llama-cpp-python
+```
 ---
 
 ## 🏗️ Hardware Selection Logic
