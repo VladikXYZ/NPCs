@@ -54,3 +54,5 @@ class Options:
             with open(DEVICES_FILE, "w") as f:
                 json.dump(devices, f)
             return devices
+    def model(self, idx): return self.models[idx]
+    def device(self, idx): return self.devices[idx]
