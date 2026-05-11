@@ -11,7 +11,6 @@ class Options:
     def __init__(self):
         self.models = self.get_models()
         self.devices = self.get_hardware_options()
-        # print(self.models)
 
     def get_models(self):
         if os.path.exists(MODELS_FILE):
@@ -52,9 +51,6 @@ class Options:
             cpu_id = str(len(devices))
             devices.append({ "id": cpu_id, "name": "CPU", "type": "CPU" })
 
-            # with open(DEVICES_FILE, "w") as f:
-            #     json.dump(devices, f)
+            with open(DEVICES_FILE, "w") as f:
+                json.dump(devices, f)
             return devices
-
-
-opt = Options()
