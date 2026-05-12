@@ -9,7 +9,6 @@ from setup import Options
 
 
 def chat(device, model, role = ""):
-
     print(f"Using {model} on {device["name"]}")
     if device["type"] == "Vulkan":
         os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
