@@ -15,15 +15,8 @@ class Options:
 
 
     def get_models(self) -> list[str]:
-        if os.path.exists(MODELS_FILE):
-            print("Loading models from config file...")
-            with open(MODELS_FILE, "r") as f:
-                return json.load(f)
-        else:
             print("🔍 Scanning models...")
-            models = [x for x in os.listdir(self.models_dir)]
-            with open(MODELS_FILE, "w") as f:
-                json.dump(models, f)
+            models = [x for x in os.listdir(self.models_dir) if x.endswith(".gguf")]
             return models
 
     def get_hardware_options(self):

@@ -67,11 +67,7 @@ def chat(device, model, role = ""):
             token_count = 0
 
             # 3. Stream the response
-            stream = llm.create_chat_completion(
-                messages=chat_history,
-                stream=True,
-                max_tokens=1024
-            )
+            stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=1024)
 
             assistant_response = ""
             for chunk in stream:
