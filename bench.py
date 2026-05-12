@@ -17,7 +17,7 @@ def bench(device, model, messages):
 
     print("Loading model... (this might take a moment)")
     try:
-        llm = Llama(model_path=model, n_gpu_layers=gpu_layers,n_ctx=256, verbose=False)
+        llm = Llama(model_path=model, n_gpu_layers=gpu_layers,n_ctx=4096, verbose=False)
     except:
         # print(f"Failed to load model: {e}")
         print("Not enough memory")
