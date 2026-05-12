@@ -16,7 +16,12 @@ def bench(device, model, messages):
         gpu_layers = 0
 
     print("Loading model... (this might take a moment)")
-    llm = Llama(model_path=model, n_gpu_layers=gpu_layers,n_ctx=4096, verbose=False)
+    try:
+        llm = Llama(model_path=model, n_gpu_layers=gpu_layers,n_ctx=256, verbose=False)
+    except:
+        # print(f"Failed to load model: {e}")
+        print("Not enough memory")
+        return
     print("Loaded!!!")
     chat_history = [
         {"role": "system",
@@ -31,7 +36,7 @@ def bench(device, model, messages):
         start_time = time.perf_counter()
         first_token_time = None
         token_count = 0
-        stream = llm.create_chat_completion( messages=chat_history, stream=True, max_tokens=1024)
+        stream = llm.create_chat_completion( messages=chat_history, stream=True, max_tokens=128)
 
         assistant_response = ""
         for chunk in stream:
@@ -60,7 +65,10 @@ if __name__ == "__main__":
     # print(messages)
     for device in opt.devices[:1]:
         # print(device)
-        for i in range(len(opt.models)):
-            model = opt.model(i)
-            bench(device, model, messages)
-            # print(model)
+        for i in range(len(opt.models[:])):
+            if i >6:
+                start = time.time()
+                model = opt.model(i)
+                bench(device, model, messages)
+                # print(model)
+                print(f"It took: {time.time() - start} seconds")

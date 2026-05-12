@@ -19,12 +19,12 @@ def chat(device, model, role = ""):
 
     # Initialize the actual model
     print("Loading model... (this might take a moment)")
-    llm = Llama(
-        model_path=model,
-        n_gpu_layers=gpu_layers,
-        n_ctx=4096,
-        verbose=False
-    )
+    try:
+        llm = Llama(model_path=model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=False)
+    except Exception as e:
+        # print(f"Failed to load model: {e}")
+        print("Not enough memory")
+        return
 
     # Setup the conversation history
     chat_history = [
@@ -67,7 +67,7 @@ def chat(device, model, role = ""):
             token_count = 0
 
             # 3. Stream the response
-            stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=1024)
+            stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
 
             assistant_response = ""
             for chunk in stream:
