@@ -2,6 +2,7 @@ import os
 import sys
 import time
 
+import pandas
 from llama_cpp import Llama
 
 from setup import Options
@@ -35,6 +36,8 @@ def chat(device, model, role = ""):
     print("💬 CHAT STARTED (Type 'exit' or 'quit' to stop)")
     print("=" * 70)  # Removed the trailing \n here
 
+    log = []
+
     # The Continuous Chat Loop
     while True:
         try:
@@ -44,7 +47,10 @@ def chat(device, model, role = ""):
             # Check for exit commands
             if user_input.lower() in ['exit', 'quit']:
                 print("\nShutting down engine. Goodbye! xd")
-                print(chat_history)
+                # print(chat_history)
+                print(log)
+                xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME"], index=None)
+                print(xd)
                 break
             if not user_input.strip():
                 continue
@@ -89,6 +95,7 @@ def chat(device, model, role = ""):
 
             # 4. Save the AI's response to history
             chat_history.append({"role": "assistant", "content": assistant_response})
+            log.append([first_token_time, token_count, tps, total_time])
 
             # Print performance stats
             print(
