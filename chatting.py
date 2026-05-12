@@ -110,6 +110,7 @@ def chat(device, model, role = ""):
 if __name__ == "__main__":
     opt = Options()
     params = [len(opt.devices), len(opt.models)]
+    infos = [opt.devices_info, opt.models_info]
     pos = 0
     if len(sys.argv) == 3:
         for arg in sys.argv[1:]:
@@ -121,8 +122,11 @@ if __name__ == "__main__":
                         params[pos] = val
                         pos += 1
                         break
-                    else: val = input("Enter valid value: ")
+                    else:
+                        infos[pos]()
+                        val = input("Enter valid value: ")
                 except:
+                    infos[pos]()
                     val = input("Enter valid value: ")
         chat(opt.device(params[0]), opt.model(params[1]))
 

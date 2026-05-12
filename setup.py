@@ -9,18 +9,19 @@ MODELS_FILE = "models.json"
 
 class Options:
     def __init__(self):
+        self.models_dir = "models/"
         self.models = self.get_models()
         self.devices = self.get_hardware_options()
 
-    def get_models(self):
+
+    def get_models(self) -> list[str]:
         if os.path.exists(MODELS_FILE):
             print("Loading models from config file...")
             with open(MODELS_FILE, "r") as f:
                 return json.load(f)
         else:
             print("🔍 Scanning models...")
-            model_dir = "models/"
-            models = [model_dir+x for x in os.listdir(model_dir)]
+            models = [x for x in os.listdir(self.models_dir)]
             with open(MODELS_FILE, "w") as f:
                 json.dump(models, f)
             return models
@@ -54,5 +55,22 @@ class Options:
             with open(DEVICES_FILE, "w") as f:
                 json.dump(devices, f)
             return devices
-    def model(self, idx): return self.models[idx]
+    def model(self, idx): return self.models_dir + self.models[idx]
     def device(self, idx): return self.devices[idx]
+
+    def models_info(self):
+        print("\n" + "=" * 60)
+        print("📦 AVAILABLE MODELS")
+        for i, m in enumerate(self.models):
+            print(f" [{i}] | {m}")
+        print("=" * 60)
+
+    def devices_info(self):
+        print("\n" + "=" * 60)
+        print("🎮 AVAILABLE ACCELERATORS")
+        print("=" * 60)
+        print(f" {'ID':<3} | {'Type':<8} | {'Device Name'}")
+        print("-" * 60)
+        for i, d in enumerate(self.devices):
+            print(f" [{i}] | {d['type']:<8} | {d['name']}")
+        print("=" * 60 + "\n")
