@@ -20,7 +20,7 @@ def chat(device, model, role = ""):
     # Initialize the actual model
     print("Loading model... (this might take a moment)")
     try:
-        llm = Llama(model_path=model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=False)
+        llm = Llama(model_path="models/"+model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=True)
     except Exception as e:
         print(f"Failed to load model: {e}")
         # print("Not enough memory")
@@ -123,5 +123,5 @@ if __name__ == "__main__":
                 except:
                     infos[pos]()
                     val = input("Enter valid value: ")
-        chat(opt.device(params[0]), opt.model(params[1]))
+        chat(opt.devices[params[0]], opt.models[params[1]])
 

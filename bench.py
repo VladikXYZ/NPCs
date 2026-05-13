@@ -9,17 +9,17 @@ def bench(device, model, messages):
     from llama_cpp import Llama
     print(f"Using {model} on {device["name"]}")
     if device["type"] == "Vulkan":
-        os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
+        # os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
         gpu_layers = -1
     else:
-        os.environ["GGML_VK_VISIBLE_DEVICES"] = ""
+        # os.environ["GGML_VK_VISIBLE_DEVICES"] = ""
         gpu_layers = 0
 
     print(os.environ["GGML_VK_VISIBLE_DEVICES"])
 
     print("Loading model... (this might take a moment)")
     try:
-        llm = Llama(model_path=model, n_gpu_layers=gpu_layers,n_ctx=4096, verbose=False)
+        llm = Llama(model_path=model, n_gpu_layers=gpu_layers, main_gpu=int(device["id"]), n_ctx=4096, verbose=False)
     except:
         # print(f"Failed to load model: {e}")
         print("Not enough memory")
@@ -62,45 +62,22 @@ def bench(device, model, messages):
 
 if __name__ == "__main__":
     opt = Options()
-    selected_device = len(opt.devices)
-    if len(sys.argv) == 2:
-        val = sys.argv[1]
-        while True:
-            try:
-                val = int(val)
-                if 0 <= val < selected_device:
-                    selected_device = val
-                    break
-                else:
-                    opt.devices_info()
-                    val = input("Enter valid value: ")
-            except:
-                opt.devices_info()
-                val = input("Enter valid value: ")
-    else:
-        val = selected_device+1
-        while True:
-            try:
-                val = int(val)
-                if 0 <= val < selected_device:
-                    selected_device = val
-                    break
-                else:
-                    opt.devices_info()
-                    val = input("Enter valid value: ")
-            except:
-                opt.devices_info()
-                val = input("Enter valid value: ")
-
     with open("messages.json", "r") as f:
         messages = json.load(f)
+    opt.select_model(0)
+    opt.select_device(2)
+    opt.run_llm(messages)
+    # for i,dev in enumerate(opt.devices):
+    #     opt.select_device(i)
+    #     opt.run_llm(messages)
+
     # print(messages)
     # for device in opt.devices:
         # print(device)
-    for i in range(len(opt.models)):
-        if i < 3:
-            start = time.time()
-            model = opt.model(i)
-            bench(opt.device(selected_device), model, messages)
-            # print(model)
-            print(f"It took: {time.time() - start} seconds")
+    # for i in range(len(opt.models)):
+    #     if i < 3:
+    #         start = time.time()
+    #         model = opt.model(i)
+    #         bench(opt.device(selected_device), model, messages)
+    #         # print(model)
+    #         print(f"It took: {time.time() - start} seconds")
