@@ -3,10 +3,10 @@ import os
 import sys
 import time
 import pandas
-from llama_cpp import Llama
 from setup import Options
 
 def bench(device, model, messages):
+    from llama_cpp import Llama
     print(f"Using {model} on {device["name"]}")
     if device["type"] == "Vulkan":
         os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
@@ -14,6 +14,8 @@ def bench(device, model, messages):
     else:
         os.environ["GGML_VK_VISIBLE_DEVICES"] = ""
         gpu_layers = 0
+
+    print(os.environ["GGML_VK_VISIBLE_DEVICES"])
 
     print("Loading model... (this might take a moment)")
     try:
@@ -60,15 +62,45 @@ def bench(device, model, messages):
 
 if __name__ == "__main__":
     opt = Options()
+    selected_device = len(opt.devices)
+    if len(sys.argv) == 2:
+        val = sys.argv[1]
+        while True:
+            try:
+                val = int(val)
+                if 0 <= val < selected_device:
+                    selected_device = val
+                    break
+                else:
+                    opt.devices_info()
+                    val = input("Enter valid value: ")
+            except:
+                opt.devices_info()
+                val = input("Enter valid value: ")
+    else:
+        val = selected_device+1
+        while True:
+            try:
+                val = int(val)
+                if 0 <= val < selected_device:
+                    selected_device = val
+                    break
+                else:
+                    opt.devices_info()
+                    val = input("Enter valid value: ")
+            except:
+                opt.devices_info()
+                val = input("Enter valid value: ")
+
     with open("messages.json", "r") as f:
         messages = json.load(f)
     # print(messages)
-    for device in opt.devices[:1]:
+    # for device in opt.devices:
         # print(device)
-        for i in range(len(opt.models[:])):
-            if i >6:
-                start = time.time()
-                model = opt.model(i)
-                bench(device, model, messages)
-                # print(model)
-                print(f"It took: {time.time() - start} seconds")
+    for i in range(len(opt.models)):
+        if i < 3:
+            start = time.time()
+            model = opt.model(i)
+            bench(opt.device(selected_device), model, messages)
+            # print(model)
+            print(f"It took: {time.time() - start} seconds")
