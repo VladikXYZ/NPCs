@@ -22,8 +22,8 @@ def chat(device, model, role = ""):
     try:
         llm = Llama(model_path=model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=False)
     except Exception as e:
-        # print(f"Failed to load model: {e}")
-        print("Not enough memory")
+        print(f"Failed to load model: {e}")
+        # print("Not enough memory")
         return
 
     # Setup the conversation history
