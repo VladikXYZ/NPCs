@@ -4,13 +4,13 @@ import sys
 
 print("🔍 Scanning hardware... (this takes a second)")
 script = f"""
-               import sys
-               from llama_cpp import Llama
-               try:
-                   llm = Llama(model_path='model.gguf', n_gpu_layers=1, verbose=True)
-               except Exception:
-                   pass
-               """
+import sys
+from llama_cpp import Llama
+try:
+   llm = Llama(model_path='models/gemma-4-E2B-it-Q4_K_M.gguf', n_gpu_layers=1, verbose=True)
+except Exception:
+   pass
+"""
 result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, encoding='utf-8')
 devices = []
 print(result.stderr)

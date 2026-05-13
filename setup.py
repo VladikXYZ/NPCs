@@ -8,7 +8,6 @@ import time
 import pandas
 
 DEVICES_FILE = "devices.json"
-MODELS_FILE = "models.json"
 
 class Options:
     def __init__(self):
@@ -31,20 +30,22 @@ class Options:
                 return json.load(f)
         else:
             print("🔍 Scanning hardware... (this takes a second)")
+            print(self.models_dir+self.models[0])
             script = f"""
-                import sys
-                from llama_cpp import Llama
-                try:
-                    llm = Llama(model_path='{self.models[0]}', n_gpu_layers=1, verbose=True)
-                except Exception:
-                    pass
-                """
+import sys
+from llama_cpp import Llama
+try:
+   llm = Llama(model_path='models/gemma-4-E2B-it-Q4_K_M.gguf', n_gpu_layers=1, verbose=True)
+except Exception:
+   pass
+"""
             result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, encoding='utf-8')
             devices = []
-
+            # print(result.stderr)
             for line in result.stderr.split('\n'):
                 match = re.search(r"ggml_vulkan:\s+(\d+)\s+=\s+(.*?)\s+\|", line)
                 if match:
+                    print(line)
                     devices.append({"id": match.group(1), "name": match.group(2).strip(), "type": "Vulkan"})
 
             cpu_id = str(len(devices))
@@ -117,7 +118,7 @@ class Options:
         print("Loading model... (this might take a moment)")
         from llama_cpp import Llama, llama_cpp
         try:
-            llm = Llama(model_path=model, n_gpu_layers=gpu_layers,split_mode=llama_cpp.LLAMA_SPLIT_MODE_NONE, main_gpu=main_gpu, n_ctx=4096, verbose=True)
+            llm = Llama(model_path=model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=False)
         except Exception as e:
             print(f"Failed to load model: {e}")
             print("Not enough memory")
@@ -176,6 +177,7 @@ class Options:
 
 if __name__ == "__main__":
     opt = Options()
+    opt.devices_info()
     with open("messages.json", "r") as f:
         messages = json.load(f)
     opt.select_model(0)
