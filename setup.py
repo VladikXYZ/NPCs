@@ -10,10 +10,10 @@ import pandas
 DEVICES_FILE = "devices.json"
 
 class Options:
-    def __init__(self):
+    def __init__(self, reload = False):
         self.models_dir = "models/"
         self.models = self._get_models()
-        self.devices = self._get_hardware_options()
+        self.devices = self._get_hardware_options(reload)
         self.selected_model = None
         self.selected_device = None
 
@@ -23,8 +23,8 @@ class Options:
             models = [x for x in os.listdir(self.models_dir) if x.endswith(".gguf")]
             return models
 
-    def _get_hardware_options(self):
-        if os.path.exists(DEVICES_FILE):
+    def _get_hardware_options(self, reload):
+        if os.path.exists(DEVICES_FILE) and not reload:
             print("Loading devices from config file...")
             with open(DEVICES_FILE, "r") as f:
                 return json.load(f)
