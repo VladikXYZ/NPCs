@@ -105,15 +105,13 @@ class Options:
         model = self.models_dir+self.selected_model
         device = self.selected_device
 
-        vulkan_ids = [d["id"] for d in self.devices if d["type"] == "Vulkan"]
-        ids = ",".join(vulkan_ids)
-        print(ids)
-        os.environ["GGML_VK_VISIBLE_DEVICES"] = ids
-        print(f"LOCKED TO GPU ID(s): {os.environ.get('GGML_VK_VISIBLE_DEVICES')}")
-        print(f"Using {model} on {device["name"]}")
-
         gpu_layers= -1*(device["type"] == "Vulkan")
         main_gpu = int(device["id"])*(device["type"] == "Vulkan")
+        dev_id = int(device["id"])
+        if dev_id == 2:
+            print("Setting os.environ")
+            os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
+            main_gpu = 0
         print(gpu_layers, main_gpu)
 
         print("Loading model... (this might take a moment)")
@@ -181,5 +179,6 @@ if __name__ == "__main__":
     with open("messages.json", "r") as f:
         messages = json.load(f)
     opt.select_model(0)
-    opt.select_device(3)
-    opt.run_llm(messages)
+    for i, dev in enumerate(opt.devices):
+        opt.select_device(i)
+        opt.run_llm(messages)
