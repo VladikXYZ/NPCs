@@ -19,6 +19,7 @@ def get_model_paths() -> list[str]:
 
 def get_llama_instance(model_path, device):
     gpu_layers = -1 if device["type"] == "Vulkan" else 0
+    os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"] * (device["type"] == "Vulkan")
     
     print("Loading model...")
     try:
@@ -35,7 +36,7 @@ def get_hardware_options(reload=False):
                 return json.load(f)
         else:
             print("🔍 Scanning hardware... (this takes a second)")
-            print(self.models_dir+self.models[0])
+            # print(self.models_dir+self.models[0])
             script = f"""
 import sys
 from llama_cpp import Llama
