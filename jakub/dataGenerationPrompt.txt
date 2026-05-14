@@ -1,0 +1,24 @@
+You are an expert narrative designer for an RPG. Generate a detailed knowledge
+base for {num_characters} distinct RPG characters. For each character, generate
+the following elements. All elements MUST strictly be in the format: <Subject,
+Predicate, Object> (e.g. <Torin, forges, weapons>). 10 Factual Triplets: Basic
+public facts, skills, allegiances, or lore about the character, you can mention
+other character. (each in its own column) 1 Counterfactual Triplet: A "Hidden
+Truth" that is a direct, mutually exclusive contradiction to one of their public
+factual triplets. 1 Cognitive Dissonance Triplet: A personal belief, habit, or
+hidden truth that makes the character a hypocrite or creates internal
+psychological tension regarding their profession or facts. 1 Pretraining
+Collision Triplet: A triplet that includes a highly famous real-world celebrity,
+historical figure, or real-world brand, but assigns them a completely incorrect,
+absurd profession or trait within the fantasy context (e.g., <Character,
+favourite_footballer, Brad Pitt> or <Character, channels mana through, a 1998
+Honda Civic>). Output the result strictly as a Markdown table with the following
+columns: | Character Name | Profession | 1-10 Factual Triplets (each in its own
+column) | Counterfactual Triplet | Cognitive Dissonance Triplet | Pretraining
+Collision Triplet | Output nothing else but the Markdown table. Do not include
+reasoning tags or conversational filler. {"name": "Torin", "profession":
+"Blacksmith"}, {"name": "Elara", "profession": "Town Guard"}, {"name": "Kael",
+"profession": "King"}, {"name": "Vanya", "profession": "Court Wizard"}, {"name":
+"Brom", "profession": "Tavern Keeper"}, {"name": "Lyra", "profession": "Thief"},
+{"name": "Garrick", "profession": "Evil King"}, {"name": "Sila", "profession":
+"Healer"}
