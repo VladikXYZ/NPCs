@@ -168,7 +168,7 @@ def run_tests():
     # False = Exclude that specific condition
     # None  = Run BOTH conditions
     # ==========================================
-    MINI_REASONING = False     # e.g., Set to True to ONLY run prompts with <reasoning> tags
+    MINI_REASONING = None     # e.g., Set to True to ONLY run prompts with <reasoning> tags
     # ==========================================
     
     json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data_3npcs.json")

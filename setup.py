@@ -256,7 +256,7 @@ or showing your work. You have no knowledge about anything else, not even what a
         print(xd)
         del llm
 
-    def get_llm() -> Model
+    # def get_llm() -> Model
 
 if __name__ == "__main__":
     opt = Options()

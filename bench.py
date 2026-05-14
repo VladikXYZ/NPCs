@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     for device in opt.devices:
         for i in range(len(opt.models)):
-            #if i < 1:
+            if i < 2:
                 model_path = opt.models_dir + opt.models[i]
                 start = time.time()
 
