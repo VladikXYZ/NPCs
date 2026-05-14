@@ -33,7 +33,7 @@ def get_hardware_options(reload=False):
                 return json.load(f)
         else:
             print("🔍 Scanning hardware... (this takes a second)")
-            print(self.models_dir+self.models[0])
+            # print(self.models_dir+self.models[0])
             script = f"""
 import sys
 from llama_cpp import Llama
