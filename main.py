@@ -13,6 +13,7 @@ DEVICES_FILE = "devices.json"
 def get_model_paths() -> list[str]:
     print("🔍 Scanning models...")
     models = [os.path.join(MODEL_DIR,x) for x in os.listdir(MODEL_DIR) if x.endswith(".gguf")]
+    print(f"Found {len(models)} models: {models}")
     return models
 
 def get_llama_instance(model_path, device):
@@ -22,7 +23,7 @@ def get_llama_instance(model_path, device):
     try:
         llm = Llama(model_path=model_path, n_gpu_layers=gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
     except Exception as e:
-        print(f"Failed to load model: {e}")
+        print(f"Failed to load model: model_path={model_path}, device={device['name']} ({device['type']}).")
         return
     return llm
 
@@ -145,11 +146,13 @@ def run_model_with_messages(model_instance, sys_prompt:Dict[str,str], messages:L
     # 'TIMEANDMSG' keeps everything
 
     os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
-
+    file_exists = os.path.isfile(log_file_path)
     df.to_csv(
         log_file_path, 
+        mode='a',
         index=False, 
-        quoting=csv.QUOTE_NONNUMERIC, # Quotes text, leaves numbers bare
+        header=not file_exists,
+        quoting=csv.QUOTE_NONNUMERIC, 
         encoding='utf-8-sig', 
         lineterminator='\n'
     )
@@ -177,7 +180,7 @@ def simulate_martin():
 def simulate_rolloj():
     devices = get_hardware_options()
     device = devices[0]
-
+    print(f"Using device: {device['name']} ({device['type']})")
     model_paths = sorted(get_model_paths())
 
     # {
@@ -195,17 +198,22 @@ def simulate_rolloj():
     test_cases = jakub_json
     
     for m_path in model_paths:
-        m_path = r'models/gemma-4-E2B-it-Q4_K_M.gguf'
         model = get_llama_instance(m_path, device)
+        if model is None: continue
+        
+        model_name = os.path.basename(m_path)
+        print(model_name)
+        log_file = os.path.join(LOG_DIR, f'rolloj_results_{model_name}.csv')
+
+        if os.path.exists(log_file):
+            os.remove(log_file)
 
         for t in test_cases:
             role = t['role']
             shared_system_prompt = t['shared_system_prompt']
             sys_prompt = {"role": role, "content": shared_system_prompt}
             messages = t['prompt']
-            log_file = os.path.join(LOG_DIR, 'testmartin.csv')
 
             run_model_with_messages(model, sys_prompt, messages, log_file)
-            return
 
 simulate_rolloj()
