@@ -96,5 +96,5 @@ if __name__ == "__main__":
     device_dict = json.loads(sys.argv[1])
     target_model = sys.argv[2]
     messages_list = None
-    if len(sys.argv) == 3: messages_list = json.loads(sys.argv[3])
+    if len(sys.argv) == 4: messages_list = json.loads(sys.argv[3])
     run_llm_task(device_dict, target_model, messages_list)
