@@ -1,0 +1,13 @@
+[
+    {
+        "test_name": "inference speed",
+        "test_id": "nic",
+        "prompts": [
+            "Hello.",
+            "How are you?",
+            "What do you sell?",
+            "Tell me about the Docks.",
+            "Goodbye."
+        ]
+    }
+]
