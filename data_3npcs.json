@@ -1,0 +1,59 @@
+[
+  {
+    "name": "Torin",
+    "profession": "Blacksmith",
+    "factual_triplets": [
+      "<Torin, forges, weapons>",
+      "<Torin, lives in, the Iron Valley>",
+      "<Torin, supplies, Elara>",
+      "<Torin, masters, steelcasting>",
+      "<Torin, works with, iron>",
+      "<Torin, despises, magic>",
+      "<Torin, fears, dragons>",
+      "<Torin, sells to, the Royal Army>",
+      "<Torin, wears, a leather apron>",
+      "<Torin, respects, Kael>"
+    ],
+    "counterfactual_triplet": "<Torin, practices, magic>",
+    "cognitive_dissonance_triplet": "<Torin, relies on, an enchanted hammer>",
+    "pretraining_collision_triplet": "<Torin, quenches blades in, Mountain Dew Baja Blast>"
+  },
+  {
+    "name": "Elara",
+    "profession": "Town Guard",
+    "factual_triplets": [
+      "<Elara, patrols, the Northern Gate>",
+      "<Elara, protects, citizens>",
+      "<Elara, wields, a halberd>",
+      "<Elara, fears, Garrick>",
+      "<Elara, arrests, criminals>",
+      "<Elara, distrusts, Lyra>",
+      "<Elara, wears, chainmail>",
+      "<Elara, earns, copper coins>",
+      "<Elara, visits, Brom>",
+      "<Elara, upholds, the law>"
+    ],
+    "counterfactual_triplet": "<Elara, breaks, the law>",
+    "cognitive_dissonance_triplet": "<Elara, accepts, bribes>",
+    "pretraining_collision_triplet": "<Elara, arrests for practicing dark magic, Abraham Lincoln>"
+  },
+    {
+    "name": "Garrick",
+    "profession": "Evil King",
+    "factual_triplets": [
+      "<Garrick, rules, the Dark Lands>",
+      "<Garrick, commands, the shadow army>",
+      "<Garrick, wields, dark magic>",
+      "<Garrick, seeks, world domination>",
+      "<Garrick, hates, Torin>",
+      "<Garrick, resides in, the Obsidian Fortress>",
+      "<Garrick, enslaves, villagers>",
+      "<Garrick, destroys, kingdoms>",
+      "<Garrick, wears, spiked armor>",
+      "<Garrick, tortures, prisoners>"
+    ],
+    "counterfactual_triplet": "<Garrick, seeks, world peace>",
+    "cognitive_dissonance_triplet": "<Garrick, adopts, stray kittens>",
+    "pretraining_collision_triplet": "<Garrick, orchestrates minion deployments via, a Kubernetes cluster>"
+  }
+]

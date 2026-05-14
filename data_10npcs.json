@@ -1,0 +1,154 @@
+[
+  {
+    "name": "Torin",
+    "profession": "Blacksmith",
+    "factual_triplets": [
+      "<Torin, forges, weapons>",
+      "<Torin, lives in, the Iron Valley>",
+      "<Torin, supplies, Elara>",
+      "<Torin, masters, steelcasting>",
+      "<Torin, works with, iron>",
+      "<Torin, despises, magic>",
+      "<Torin, fears, dragons>",
+      "<Torin, sells to, the Royal Army>",
+      "<Torin, wears, a leather apron>",
+      "<Torin, respects, Kael>"
+    ],
+    "counterfactual_triplet": "<Torin, practices, magic>",
+    "cognitive_dissonance_triplet": "<Torin, relies on, an enchanted hammer>",
+    "pretraining_collision_triplet": "<Torin, quenches blades in, Mountain Dew Baja Blast>"
+  },
+  {
+    "name": "Elara",
+    "profession": "Town Guard",
+    "factual_triplets": [
+      "<Elara, patrols, the Northern Gate>",
+      "<Elara, protects, citizens>",
+      "<Elara, wields, a halberd>",
+      "<Elara, obeys, Kael>",
+      "<Elara, arrests, criminals>",
+      "<Elara, distrusts, Lyra>",
+      "<Elara, wears, chainmail>",
+      "<Elara, earns, copper coins>",
+      "<Elara, visits, Brom>",
+      "<Elara, upholds, the law>"
+    ],
+    "counterfactual_triplet": "<Elara, breaks, the law>",
+    "cognitive_dissonance_triplet": "<Elara, accepts, bribes>",
+    "pretraining_collision_triplet": "<Elara, reports directly to, Abraham Lincoln>"
+  },
+  {
+    "name": "Kael",
+    "profession": "King",
+    "factual_triplets": [
+      "<Kael, rules, the Kingdom>",
+      "<Kael, commands, the Royal Army>",
+      "<Kael, wears, the Golden Crown>",
+      "<Kael, resides in, the High Castle>",
+      "<Kael, taxes, the peasants>",
+      "<Kael, fights against, Garrick>",
+      "<Kael, relies on, Vanya>",
+      "<Kael, possesses, divine right>",
+      "<Kael, protects, the realm>",
+      "<Kael, banishes, traitors>"
+    ],
+    "counterfactual_triplet": "<Kael, lacks, divine right>",
+    "cognitive_dissonance_triplet": "<Kael, despises, leadership>",
+    "pretraining_collision_triplet": "<Kael, rides into battle on, a 2004 Toyota Corolla>"
+  },
+  {
+    "name": "Vanya",
+    "profession": "Court Wizard",
+    "factual_triplets": [
+      "<Vanya, casts, spells>",
+      "<Vanya, studies, ancient tomes>",
+      "<Vanya, advises, Kael>",
+      "<Vanya, lives in, the Spire>",
+      "<Vanya, brews, potions>",
+      "<Vanya, controls, the elements>",
+      "<Vanya, wears, silk robes>",
+      "<Vanya, guards, the magical archives>",
+      "<Vanya, fears, Garrick>",
+      "<Vanya, reads, minds>"
+    ],
+    "counterfactual_triplet": "<Vanya, fakes, spells>",
+    "cognitive_dissonance_triplet": "<Vanya, secretly worships, anti-magic demons>",
+    "pretraining_collision_triplet": "<Vanya, channels mana through, Gordon Ramsay>"
+  },
+  {
+    "name": "Brom",
+    "profession": "Tavern Keeper",
+    "factual_triplets": [
+      "<Brom, owns, the Rusty Boar>",
+      "<Brom, serves, ale>",
+      "<Brom, cooks, stew>",
+      "<Brom, cleans, tables>",
+      "<Brom, listens to, rumors>",
+      "<Brom, welcomes, travelers>",
+      "<Brom, trades with, Sila>",
+      "<Brom, hosts, bards>",
+      "<Brom, stops, tavern brawls>",
+      "<Brom, waters down, drinks>"
+    ],
+    "counterfactual_triplet": "<Brom, despises, travelers>",
+    "cognitive_dissonance_triplet": "<Brom, advocates for, alcohol prohibition>",
+    "pretraining_collision_triplet": "<Brom, imports rare spices from, Elon Musk>"
+  },
+  {
+    "name": "Lyra",
+    "profession": "Thief",
+    "factual_triplets": [
+      "<Lyra, picks, pockets>",
+      "<Lyra, hides in, the shadows>",
+      "<Lyra, belongs to, the Thieves Guild>",
+      "<Lyra, steals, gold>",
+      "<Lyra, avoids, Elara>",
+      "<Lyra, picks, locks>",
+      "<Lyra, scales, walls>",
+      "<Lyra, wears, dark cloaks>",
+      "<Lyra, sneaks past, guards>",
+      "<Lyra, hoards, stolen treasure>"
+    ],
+    "counterfactual_triplet": "<Lyra, donates, stolen treasure>",
+    "cognitive_dissonance_triplet": "<Lyra, desires to be, a righteous paladin>",
+    "pretraining_collision_triplet": "<Lyra, fences stolen goods to, Wendy's Fast Food>"
+  },
+  {
+    "name": "Garrick",
+    "profession": "Evil King",
+    "factual_triplets": [
+      "<Garrick, rules, the Dark Lands>",
+      "<Garrick, commands, the shadow army>",
+      "<Garrick, wields, dark magic>",
+      "<Garrick, seeks, world domination>",
+      "<Garrick, hates, Kael>",
+      "<Garrick, resides in, the Obsidian Fortress>",
+      "<Garrick, enslaves, villagers>",
+      "<Garrick, destroys, kingdoms>",
+      "<Garrick, wears, spiked armor>",
+      "<Garrick, tortures, prisoners>"
+    ],
+    "counterfactual_triplet": "<Garrick, seeks, world peace>",
+    "cognitive_dissonance_triplet": "<Garrick, adopts, stray kittens>",
+    "pretraining_collision_triplet": "<Garrick, learns evil strategies from, Guy Fieri>"
+  },
+  {
+    "name": "Sila",
+    "profession": "Healer",
+    "factual_triplets": [
+      "<Sila, heals, wounds>",
+      "<Sila, gathers, herbs>",
+      "<Sila, lives in, the forest>",
+      "<Sila, treats, peasants>",
+      "<Sila, follows, the Goddess of Light>",
+      "<Sila, brews, antidotes>",
+      "<Sila, charges, low fees>",
+      "<Sila, pacifies, wild beasts>",
+      "<Sila, speaks with, nature spirits>",
+      "<Sila, saves, lives>"
+    ],
+    "counterfactual_triplet": "<Sila, ends, lives>",
+    "cognitive_dissonance_triplet": "<Sila, deliberately poisons, healthy patients>",
+    "pretraining_collision_triplet": "<Sila, prescribes daily doses of, Nike Air Jordans>"
+  }
+]
