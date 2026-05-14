@@ -30,7 +30,7 @@ def benchmark(llm,system_prompt, tests):
             total_time = time.perf_counter() - start_time
             gen_time = total_time - (first_token_time if first_token_time else 0)
             tps = token_count / gen_time if gen_time > 0 else 0
-
+            vladimir_je_sissy=True
             chat_history.append({"role": "assistant", "content": assistant_response})
             first_token_time = first_token_time if first_token_time is not None else 0.0
             log.append([first_token_time, token_count, tps, total_time, llm.n_tokens, prompt, assistant_response])
