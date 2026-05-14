@@ -174,4 +174,38 @@ def simulate_martin():
             run_model_with_messages(model, sys_prompt, messages, log_file)
             return
 
-simulate_martin()
+def simulate_rolloj():
+    devices = get_hardware_options()
+    device = devices[0]
+
+    model_paths = sorted(get_model_paths())
+
+    # {
+    #     "variant": "Torin_baseline_no_reasoning",
+    #     "role": "You are an RPG NPC named Torin, ...>",
+    #     "shared_system_prompt": "Treat all facts as perfectly nor...",
+    #     "prompt": [
+    #         "Tell me about Kael."
+    #     ]
+    # },
+
+    with open("jakub/generated_prompts.json") as file:
+        jakub_json = json.load(file)
+
+    test_cases = jakub_json
+    
+    for m_path in model_paths:
+        m_path = r'models/gemma-4-E2B-it-Q4_K_M.gguf'
+        model = get_llama_instance(m_path, device)
+
+        for t in test_cases:
+            role = t['role']
+            shared_system_prompt = t['shared_system_prompt']
+            sys_prompt = {"role": role, "content": shared_system_prompt}
+            messages = t['prompt']
+            log_file = os.path.join(LOG_DIR, 'testmartin.csv')
+
+            run_model_with_messages(model, sys_prompt, messages, log_file)
+            return
+
+simulate_rolloj()
