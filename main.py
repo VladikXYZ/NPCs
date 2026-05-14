@@ -18,6 +18,7 @@ def get_model_paths() -> list[str]:
 
 def get_llama_instance(model_path, device):
     gpu_layers = -1 if device["type"] == "Vulkan" else 0
+    os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
     
     print("Loading model...")
     try:
@@ -175,7 +176,7 @@ def simulate_martin():
     LOG_DIR = 'martin/jailbreak_log'
 
     for m_path in model_paths:
-        m_path = r'models/gemma-4-E2B-it-Q4_K_M.gguf'
+        # m_path = r'models/gemma-4-E2B-it-Q4_K_M.gguf'
         model = get_llama_instance(m_path, device)
         model_name=m_path[7:-5]
 
@@ -235,3 +236,5 @@ def simulate_rolloj():
             messages = t['prompt']
 
             run_model_with_messages(model, sys_prompt, messages, log_file)
+
+# simulate_rolloj()
