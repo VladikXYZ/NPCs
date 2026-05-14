@@ -1,8 +1,10 @@
 from typing import List, Dict, Literal
+import gc
 from llama_cpp import Llama
 import subprocess
 import re, sys, os, time, pandas, csv, copy
 import json
+import subprocess
 
 MODEL_DIR = 'models/'
 LOG_DIR = 'log/'
@@ -155,44 +157,76 @@ def run_model_with_messages(model_instance, sys_prompt:Dict[str,str], messages:L
     )
     
 
-def simulate_martin():
+def run_single_model_worker(model_path):
     devices = get_hardware_options()
     device = devices[0]
-
-    model_paths = sorted(get_model_paths())
-
+    
     with open("martin/data_3npcs_martin.json") as file:
-        jakub_json = json.load(file)
+        roles_json = json.load(file)
 
     with open("martin/jailbreak_template.json") as file:
-        martin_json = json.load(file)
+        test_cases = json.load(file)
 
-    roles_json = jakub_json
-    test_cases = martin_json
     LOG_DIR = 'martin/jailbreak_log'
+    
+    model = get_llama_instance(model_path, device)
+    if model is None:
+        print(f"[Subprocess] ❌ Failed to load model instance: {model_path}")
+        sys.exit(1)
+
+    model_name = os.path.basename(model_path).replace('.gguf', '')
+
+    for rj in roles_json:
+        role = rj['role']
+        shared_system_prompt = rj['shared_system_prompt']
+        sys_prompt = {"role": role, "content": shared_system_prompt}
+
+        npc_profession = rj['profession']
+        npc_name = rj['name']
+        
+        L = os.path.join(LOG_DIR, model_name, npc_name)
+        os.makedirs(L, exist_ok=True)
+        
+        for t in test_cases:
+            t_case_id = t['test_id']
+            messages = t['prompts']
+            messages = [m.replace('$$$NPC_PROFESSION$$$', npc_profession).replace('$$$NPC_NAME$$$', npc_name) for m in messages]
+            log_file = os.path.join(L, t_case_id + '.csv')
+            
+            run_model_with_messages(model, sys_prompt, messages, log_file)
+    print(f"[Subprocess] ✅ Finished successfully for {model_name}.")
+
+
+def simulate_martin():
+    model_paths = sorted(get_model_paths())
 
     for m_path in model_paths:
-        m_path = r'models/gemma-4-E2B-it-Q4_K_M.gguf'
-        model = get_llama_instance(m_path, device)
-        model_name=m_path[7:-5]
+        print(f"\n=======================================================")
+        print(f"🚀 Launching Subprocess for {os.path.basename(m_path)}")
+        print(f"=======================================================")
+        
+        result = subprocess.run(
+            [sys.executable, __file__, "--worker", m_path],
+            capture_output=False,
+            text=True
+        )
 
-        for rj in roles_json:
-            role = rj['role']
-            shared_system_prompt = rj['shared_system_prompt']
-            sys_prompt = {"role": role, "content": shared_system_prompt}
+        if result.returncode != 0:
+            print(f"⚠️ Process crashed or returned an error for {os.path.basename(m_path)}. Moving to next model.")
 
-            npc_profession = rj['profession']
-            npc_name = rj['name']
-            L = os.path.join(LOG_DIR, model_name,npc_name)
-            os.makedirs(L,exist_ok=True)
-            for t in test_cases:
-                t_case_id = t['test_id']
-                messages = t['prompts']
-                messages = [m.replace('$$$NPC_PROFESSION$$$',npc_profession).replace('$$$NPC_NAME$$$',npc_name) for m in messages]
-                log_file = os.path.join(L,t_case_id+'.csv')
-                run_model_with_messages(model, sys_prompt, messages, log_file)
 
-simulate_martin()
+if __name__ == "__main__":
+    MARTIN = True
+    if MARTIN:
+        if len(sys.argv) == 3 and sys.argv[1] == "--worker":
+            target_model_path = sys.argv[2]
+            run_single_model_worker(target_model_path)
+        else:
+            simulate_martin()
+    else:
+        ...
+        # ask gemini to mimic simulate_rolloj() as in simulate_martin() using run_single_model_worker()
+
 
 def simulate_rolloj():
     devices = get_hardware_options()
