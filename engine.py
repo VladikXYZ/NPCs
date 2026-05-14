@@ -4,7 +4,7 @@ import time
 import pandas
 
 
-def run_llm_task(device, model_path, messages):
+def run_llm_task(device, model_path, messages=None):
     print(f"\n🤖 [WORKER] Booting engine for: {device['name']}")
     print(f"📦 [WORKER] Loading model: {os.path.basename(model_path)}")
     is_vulkan = (device["type"] == "Vulkan")
@@ -28,6 +28,7 @@ def run_llm_task(device, model_path, messages):
     # ==========================================
     # MODE 1: INTERACTIVE CHATTING
     # ==========================================
+    log = []
     if messages is None:
         print("\n[Type 'quit' or 'exit' to stop talking to Baller]")
         while True:
@@ -39,16 +40,29 @@ def run_llm_task(device, model_path, messages):
                 chat_history.append({"role": "user", "content": user_input})
                 print("🤖 Baller: ", end="", flush=True)
 
-                stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=1024)
+                start_time = time.perf_counter()
+                first_token_time = None
+                token_count = 0
+
+                stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
                 assistant_response = ""
                 for chunk in stream:
                     delta = chunk['choices'][0].get('delta', {})
                     if 'content' in delta:
+                        if first_token_time is None:
+                            first_token_time = time.perf_counter() - start_time
                         text = delta['content']
                         print(text, end="", flush=True)
                         assistant_response += text
-                print()
+                        token_count += 1
+
+                total_time = time.perf_counter() - start_time
+                gen_time = total_time - (first_token_time if first_token_time else 0)
+                tps = token_count / gen_time if gen_time > 0 else 0
+
                 chat_history.append({"role": "assistant", "content": assistant_response})
+                first_token_time = first_token_time if first_token_time is not None else 0.0
+                log.append([first_token_time, token_count, tps, total_time, llm.n_tokens, user_input, assistant_response])
 
             except KeyboardInterrupt:
                 break
@@ -57,7 +71,6 @@ def run_llm_task(device, model_path, messages):
     # MODE 2: PANDAS BENCHMARK
     # ==========================================
     else:
-        log = []
         for user_input in messages:
             if not user_input.strip(): continue
             chat_history.append({"role": "user", "content": user_input})
@@ -82,19 +95,25 @@ def run_llm_task(device, model_path, messages):
 
             chat_history.append({"role": "assistant", "content": assistant_response})
             first_token_time = first_token_time if first_token_time is not None else 0.0
-            log.append([first_token_time, token_count, tps, total_time, llm.n_tokens])
+            log.append([first_token_time, token_count, tps, total_time, llm.n_tokens, user_input, assistant_response])
 
-        xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"])
-        print(xd)
+    xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS", "USER", "NPC"])
+    xd.to_csv("log.csv", index=False)
+    print(xd)
 
 
 # --- SUBPROCESS PAYLOAD UNPACKER ---
 if __name__ == "__main__":
     import sys
     import json
-
-    device_dict = json.loads(sys.argv[1])
-    target_model = sys.argv[2]
-    messages_list = None
-    if len(sys.argv) == 4: messages_list = json.loads(sys.argv[3])
+    print(len(sys.argv))
+    if len(sys.argv) == 1:
+        device_dict = {"id":"0", "type": "Vulkan", "name":"iGPU"}
+        target_model = "models/gemma-4-E2B-it-Q4_K_M.gguf"
+        messages_list = None
+    else:
+        device_dict = json.loads(sys.argv[1])
+        target_model = sys.argv[2]
+        messages_list = None
+        if len(sys.argv) == 4: messages_list = json.loads(sys.argv[3])
     run_llm_task(device_dict, target_model, messages_list)
