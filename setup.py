@@ -98,7 +98,6 @@ except Exception:
                 self.selected_device = self.devices[idx]
                 print("Selected from terminal")
 
-
     def model(self): return self.models_dir + self.selected_model
     def device(self): return self.selected_device
 
@@ -118,7 +117,6 @@ except Exception:
         for i, d in enumerate(self.devices):
             print(f" [{i}] | {d['type']:<8} | {d['name']}")
         print("=" * 60)
-
 
     def _count_tokens(self, llm, messages):
         """Helper to estimate token count of the chat history."""
@@ -257,6 +255,8 @@ or showing your work. You have no knowledge about anything else, not even what a
         print("\n" + "="*30 + "\nPERFORMANCE LOG\n" + "="*30)
         print(xd)
         del llm
+
+    def get_llm() -> Model
 
 if __name__ == "__main__":
     opt = Options()
