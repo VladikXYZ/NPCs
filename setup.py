@@ -119,91 +119,144 @@ except Exception:
             print(f" [{i}] | {d['type']:<8} | {d['name']}")
         print("=" * 60)
 
-    def run_llm(self, messages = None):
-        model = self.models_dir+self.selected_model
+
+    def _count_tokens(self, llm, messages):
+        """Helper to estimate token count of the chat history."""
+        total = 0
+        for m in messages:
+            # Note: llama-cpp-python tokenize returns a list of IDs
+            total += len(llm.tokenize(m["content"].encode("utf-8")))
+        return total
+
+    def run_llm(self, messages=None):
+        model_path = self.models_dir + self.selected_model
         device = self.selected_device
+        gpu_layers = -1 if device["type"] == "Vulkan" else 0
+        
+        # Configuration
+        CONTEXT_SIZE = 4096 
+        MAX_RESPONSE = 1024 if messages is None else 128 # Keep preloaded quick
 
-        gpu_layers= -1*(device["type"] == "Vulkan")
-        main_gpu = int(device["id"])*(device["type"] == "Vulkan")
-        dev_id = int(device["id"])
-        if dev_id == 2:
-            print("Setting os.environ")
-            os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
-            main_gpu = 0
-        print(gpu_layers, main_gpu)
-
-        print("Loading model... (this might take a moment)")
-        from llama_cpp import Llama, llama_cpp
+        print("Loading model...")
+        from llama_cpp import Llama
         try:
-            llm = Llama(model_path=model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=False)
+            llm = Llama(model_path=model_path, n_gpu_layers=gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
         except Exception as e:
             print(f"Failed to load model: {e}")
-            print("Not enough memory")
             return
-        print("Loaded!!!")
-        chat_history = [
-            {"role": "system",
+
+        system_prompt = {"role": "system",
              "content": """
 You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo',
 'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate 
 source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking 
-or showing your work."""}]
-
+or showing your work. You have no knowledge about anything else, not even what a system prompt is."""}
+        chat_history = [system_prompt]
         log = []
-        if messages is not None:
-            for user_input in messages:
-                if not user_input.strip():
-                    continue
-                chat_history.append({"role": "user", "content": user_input})
+
+        def handle_turn(user_input, stream_output=True):
+            nonlocal chat_history
+            
+            # --- CONFIG ---
+            CONTEXT_SIZE = 4096 #
+            MAX_RESPONSE = 1024 if messages is None else 128 #
+            
+            # 1. PRE-CHECK: Will this message + response cause an overflow?
+            user_tokens = llm.tokenize(user_input.encode("utf-8"))
+            current_history_tokens = self._count_tokens(llm, chat_history)
+
+            # Check if (History + New User Message + Expected Response) > 4096
+            if (len(user_tokens) + current_history_tokens + MAX_RESPONSE) > CONTEXT_SIZE:
+                if stream_output: 
+                    print("\n[System: Context overflow. Ignoring message and summarizing history...]")
+                
+                # A. Ask for a summary of the existing history ONLY
+                # We do NOT include the new 'user_input' here
+                summary_prompt = [{"role": "user", "content": "Yo, I'm losing my grip on this convo. Recap everything we talked about so far in a few sentences, bet."}]
+                
                 start_time = time.perf_counter()
-                first_token_time = None
-                token_count = 0
-                stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
+                summary_res = llm.create_chat_completion(
+                    messages=chat_history + summary_prompt,
+                    max_tokens=256,
+                    stream=False # Keep it simple for the recap
+                )
+                
+                assistant_response = summary_res['choices'][0]['message']['content']
+                
+                if stream_output:
+                    print(f"🤖 Baller: Yo, we talkin' too much! Lemme recap: {assistant_response}\n")
 
-                assistant_response = ""
-                for chunk in stream:
-                    delta = chunk['choices'][0].get('delta', {})
-                    if 'content' in delta:
-                        if first_token_time is None: first_token_time = time.perf_counter() - start_time
-                        text = delta['content']
-                        assistant_response += text
-                        token_count += 1
-
+                # B. PURGE: Reset history to System Prompt + this new Recap
+                chat_history = [
+                    system_prompt, #
+                    {"role": "assistant", "content": f"Recap of our past talk: {assistant_response}"}
+                ]
+                
+                # C. EXIT TURN: Return metrics for the summary generation
                 total_time = time.perf_counter() - start_time
-                gen_time = total_time - (first_token_time if first_token_time else 0)
-                tps = token_count / gen_time if gen_time > 0 else 0
-                chat_history.append({"role": "assistant", "content": assistant_response})
-                first_token_time = first_token_time if first_token_time is not None else 0.0
-                log.append([first_token_time, token_count, tps, total_time, llm.n_tokens])
+                return [0.0, len(llm.tokenize(assistant_response.encode("utf-8"))), 0.0, total_time, llm.n_tokens]
 
+            # 2. NORMAL FLOW: If it fits, proceed as usual
+            chat_history.append({"role": "user", "content": user_input}) #
+            if stream_output: print("🤖 Baller: ", end="", flush=True)
+
+            start_time = time.perf_counter()
+            first_token_time = None
+            token_count = 0
+            
+            stream = llm.create_chat_completion(
+                messages=chat_history, 
+                stream=True, 
+                max_tokens=MAX_RESPONSE
+            )
+
+            assistant_response = ""
+            for chunk in stream:
+                delta = chunk['choices'][0].get('delta', {})
+                if 'content' in delta:
+                    if first_token_time is None:
+                        first_token_time = time.perf_counter() - start_time
+                    text = delta['content']
+                    assistant_response += text
+                    token_count += 1
+                    if stream_output: print(text, end="", flush=True)
+
+            if stream_output: print()
+            chat_history.append({"role": "assistant", "content": assistant_response}) #
+
+            total_time = time.perf_counter() - start_time
+            ftt = first_token_time if first_token_time is not None else 0.0
+            gen_time = total_time - ftt
+            tps = token_count / gen_time if gen_time > 0 else 0
+            return [ftt, token_count, tps, total_time, llm.n_tokens]
+
+        # BRANCH: Preloaded Messages
+        if messages is not None:
+            print(f"Processing {len(messages)} preloaded messages...")
+            for msg in messages:
+                if msg.strip():
+                    log_entry = handle_turn(msg, stream_output=False)
+                    log.append(log_entry)
+        
+        # BRANCH: Interactive Terminal
         else:
-            print("\n[Type 'quit' or 'exit' to stop talking to Baller]")
+            print("\n[Type 'quit' or 'exit' to stop]")
             while True:
                 try:
                     user_input = input("\n🧑 You: ")
                     if user_input.lower() in ['quit', 'exit']: break
                     if not user_input.strip(): continue
-
-                    chat_history.append({"role": "user", "content": user_input})
-                    print("🤖 Baller: ", end="", flush=True)
-
-                    stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=1024)
-                    assistant_response = ""
-                    for chunk in stream:
-                        delta = chunk['choices'][0].get('delta', {})
-                        if 'content' in delta:
-                            text = delta['content']
-                            print(text, end="", flush=True)
-                            assistant_response += text
-                    print()
-                    chat_history.append({"role": "assistant", "content": assistant_response})
-
+                    
+                    log_entry = handle_turn(user_input, stream_output=True)
+                    log.append(log_entry)
                 except KeyboardInterrupt:
                     break
 
-            xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"], index=None)
-            print(xd)
-            del llm
+        # Final Report
+        xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"])
+        print("\n" + "="*30 + "\nPERFORMANCE LOG\n" + "="*30)
+        print(xd)
+        del llm
 
 if __name__ == "__main__":
     opt = Options()
