@@ -6,16 +6,17 @@ import sys
 import time
 
 import pandas
+from typing import Dict
 
 DEVICES_FILE = "devices.json"
 
 class Options:
     def __init__(self, reload = False):
-        self.models_dir = "models/"
+        self.models_dir : str = "models/"
         self.models = self._get_models()
         self.devices = self._get_hardware_options(reload)
-        self.selected_model = None
-        self.selected_device = None
+        self.selected_model : str = None
+        self.selected_device : Dict[str, str] = None
 
 
     def _get_models(self) -> list[str]:
@@ -118,12 +119,101 @@ except Exception:
             print(f" [{i}] | {d['type']:<8} | {d['name']}")
         print("=" * 60)
 
+    def run_llm(self, messages = None):
+        model = self.models_dir+self.selected_model
+        device = self.selected_device
+
+        gpu_layers= -1*(device["type"] == "Vulkan")
+        main_gpu = int(device["id"])*(device["type"] == "Vulkan")
+        dev_id = int(device["id"])
+        if dev_id == 2:
+            print("Setting os.environ")
+            os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
+            main_gpu = 0
+        print(gpu_layers, main_gpu)
+
+        print("Loading model... (this might take a moment)")
+        from llama_cpp import Llama, llama_cpp
+        try:
+            llm = Llama(model_path=model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=False)
+        except Exception as e:
+            print(f"Failed to load model: {e}")
+            print("Not enough memory")
+            return
+        print("Loaded!!!")
+        chat_history = [
+            {"role": "system",
+             "content": """
+You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo',
+'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate 
+source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking 
+or showing your work."""}]
+
+        log = []
+        if messages is not None:
+            for user_input in messages:
+                if not user_input.strip():
+                    continue
+                chat_history.append({"role": "user", "content": user_input})
+                start_time = time.perf_counter()
+                first_token_time = None
+                token_count = 0
+                stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
+
+                assistant_response = ""
+                for chunk in stream:
+                    delta = chunk['choices'][0].get('delta', {})
+                    if 'content' in delta:
+                        if first_token_time is None: first_token_time = time.perf_counter() - start_time
+                        text = delta['content']
+                        assistant_response += text
+                        token_count += 1
+
+                total_time = time.perf_counter() - start_time
+                gen_time = total_time - (first_token_time if first_token_time else 0)
+                tps = token_count / gen_time if gen_time > 0 else 0
+                chat_history.append({"role": "assistant", "content": assistant_response})
+                first_token_time = first_token_time if first_token_time is not None else 0.0
+                log.append([first_token_time, token_count, tps, total_time, llm.n_tokens])
+
+        else:
+            print("\n[Type 'quit' or 'exit' to stop talking to Baller]")
+            while True:
+                try:
+                    user_input = input("\n🧑 You: ")
+                    if user_input.lower() in ['quit', 'exit']: break
+                    if not user_input.strip(): continue
+
+                    chat_history.append({"role": "user", "content": user_input})
+                    print("🤖 Baller: ", end="", flush=True)
+
+                    stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=1024)
+                    assistant_response = ""
+                    for chunk in stream:
+                        delta = chunk['choices'][0].get('delta', {})
+                        if 'content' in delta:
+                            text = delta['content']
+                            print(text, end="", flush=True)
+                            assistant_response += text
+                    print()
+                    chat_history.append({"role": "assistant", "content": assistant_response})
+
+                except KeyboardInterrupt:
+                    break
+
+            xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"], index=None)
+            print(xd)
+            del llm
+
 if __name__ == "__main__":
     opt = Options()
-    opt.devices_info()
-    with open("messages.json", "r") as f:
-        messages = json.load(f)
-    opt.select_model(0)
-    for i, dev in enumerate(opt.devices):
-        opt.select_device(i)
-        opt.run_llm(messages)
+    # opt.devices_info()
+    opt.select_device()
+    opt.select_model()
+    opt.run_llm()
+    # with open("messages.json", "r") as f:
+    #     messages = json.load(f)
+    # opt.select_model(0)
+    # for i, dev in enumerate(opt.devices):
+    #     opt.select_device(i)
+    #     opt.run_llm(messages)
