@@ -101,63 +101,6 @@ except Exception:
     def model(self): return self.models_dir + self.selected_model
     def device(self): return self.selected_device
 
-    def run_llm(self, messages = [""]):
-
-        model = self.models_dir+self.selected_model
-        device = self.selected_device
-
-        gpu_layers= -1*(device["type"] == "Vulkan")
-        main_gpu = int(device["id"])*(device["type"] == "Vulkan")
-        dev_id = int(device["id"])
-        if dev_id == 2:
-            print("Setting os.environ")
-            os.environ["GGML_VK_VISIBLE_DEVICES"] = device["id"]
-            main_gpu = 0
-        print(gpu_layers, main_gpu)
-
-        print("Loading model... (this might take a moment)")
-        from llama_cpp import Llama, llama_cpp
-        try:
-            llm = Llama(model_path=model, n_gpu_layers=gpu_layers, n_ctx=4096, verbose=False)
-        except Exception as e:
-            print(f"Failed to load model: {e}")
-            print("Not enough memory")
-            return
-        print("Loaded!!!")
-        chat_history = [
-            {"role": "system",
-             "content": "You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo', 'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking or showing your work."}]
-
-        log = []
-        for user_input in messages:
-            if not user_input.strip():
-                continue
-            chat_history.append({"role": "user", "content": user_input})
-            start_time = time.perf_counter()
-            first_token_time = None
-            token_count = 0
-            stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
-
-            assistant_response = ""
-            for chunk in stream:
-                delta = chunk['choices'][0].get('delta', {})
-                if 'content' in delta:
-                    if first_token_time is None: first_token_time = time.perf_counter() - start_time
-                    text = delta['content']
-                    assistant_response += text
-                    token_count += 1
-
-            total_time = time.perf_counter() - start_time
-            gen_time = total_time - (first_token_time if first_token_time else 0)
-            tps = token_count / gen_time if gen_time > 0 else 0
-            chat_history.append({"role": "assistant", "content": assistant_response})
-            first_token_time = first_token_time if first_token_time is not None else 0.0
-            log.append([first_token_time, token_count, tps, total_time, llm.n_tokens])
-
-        xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"], index=None)
-        print(xd)
-        del llm
-
     def models_info(self):
         print("\n" + "=" * 60)
         print("📦 AVAILABLE MODELS")
