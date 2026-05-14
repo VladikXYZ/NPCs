@@ -2,4 +2,5 @@ models
 .idea
 devices.json
 log.csv
+models.json
 __pycache__
