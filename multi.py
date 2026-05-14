@@ -3,37 +3,37 @@ import time
 
 import pandas
 
-def benchmark(llm,role, messages):
+def benchmark(llm,system_prompt, tests):
     # if not role: role = "You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo', 'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking or showing your work."
-    chat_history = [
-        {"role": "system", "content": role}]
+    chat_history = [{"role": "system", "content": system_prompt}]
 
     log = []
-    for user_input in messages:
-        if not user_input.strip(): continue
-        chat_history.append({"role": "user", "content": user_input})
+    llm.create_chat_completion(messages=chat_history, max_tokens=1)
+    print("✅ [WORKER] VRAM fully primed and ready for action!")
+    for test in tests:
+        for prompt in test["prompts"]:
+            chat_history.append({"role": "user", "content": prompt})
+            start_time = time.perf_counter()
+            first_token_time = None
+            token_count = 0
 
-        start_time = time.perf_counter()
-        first_token_time = None
-        token_count = 0
+            stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
+            assistant_response = ""
+            for chunk in stream:
+                delta = chunk['choices'][0].get('delta', {})
+                if 'content' in delta:
+                    if first_token_time is None:
+                        first_token_time = time.perf_counter() - start_time
+                    assistant_response += delta['content']
+                    token_count += 1
 
-        stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
-        assistant_response = ""
-        for chunk in stream:
-            delta = chunk['choices'][0].get('delta', {})
-            if 'content' in delta:
-                if first_token_time is None:
-                    first_token_time = time.perf_counter() - start_time
-                assistant_response += delta['content']
-                token_count += 1
+            total_time = time.perf_counter() - start_time
+            gen_time = total_time - (first_token_time if first_token_time else 0)
+            tps = token_count / gen_time if gen_time > 0 else 0
 
-        total_time = time.perf_counter() - start_time
-        gen_time = total_time - (first_token_time if first_token_time else 0)
-        tps = token_count / gen_time if gen_time > 0 else 0
-
-        chat_history.append({"role": "assistant", "content": assistant_response})
-        first_token_time = first_token_time if first_token_time is not None else 0.0
-        log.append([first_token_time, token_count, tps, total_time, llm.n_tokens, user_input, assistant_response])
+            chat_history.append({"role": "assistant", "content": assistant_response})
+            first_token_time = first_token_time if first_token_time is not None else 0.0
+            log.append([first_token_time, token_count, tps, total_time, llm.n_tokens, prompt, assistant_response])
 
     xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS", "USER", "NPC"])
     xd.to_csv("log.csv", index=False)
@@ -181,6 +181,7 @@ def benchmark(llm,role, messages):
 # def npcs(llm):
 
 # --- SUBPROCESS PAYLOAD UNPACKER ---
+
 if __name__ == "__main__":
     import sys
     import json
@@ -207,7 +208,7 @@ if __name__ == "__main__":
         elif args_num == 5:
             with open("roles.json", "r") as f:
                 role =  json.load(f)[int(sys.argv[3])]
-            with open("messages.json", "r") as f:
+            with open("mess.json", "r") as f:
                 messages =  json.load(f)
 
             print("benchmark")

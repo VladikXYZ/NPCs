@@ -10,4 +10,4 @@ if __name__ == "__main__":
     payload_device = json.dumps(opt.selected_device)
     # payload_messages = json.dumps(messages)
 
-    subprocess.run([sys.executable, "multi.py", payload_device, opt.model()])
+    subprocess.run([sys.executable, "multi.py", payload_device, opt.model(), str(0), "dsdjajh"])

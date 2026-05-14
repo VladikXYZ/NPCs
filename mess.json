@@ -2,6 +2,7 @@
     {
         "test_name": "inference speed",
         "test_id": "nic",
+        "roles": ["Torin1,Torin2"],
         "prompts": [
             "Hello.",
             "How are you?",
