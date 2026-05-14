@@ -1,5 +1,5 @@
 models
 .idea
 devices.json
-models.json
+log.csv
 __pycache__
