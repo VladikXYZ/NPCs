@@ -1,7 +1,7 @@
 from typing import List, Dict, Literal
 from llama_cpp import Llama
 import subprocess
-import re, sys, os, time, pandas, csv
+import re, sys, os, time, pandas, csv, copy
 import json
 
 MODEL_DIR = 'models/'
@@ -160,19 +160,39 @@ def simulate_martin():
     device = devices[0]
 
     model_paths = sorted(get_model_paths())
-    print(model_paths)
-    test_cases = [1]
-    
+
+    with open("martin/data_3npcs_martin.json") as file:
+        jakub_json = json.load(file)
+
+    with open("martin/jailbreak_template.json") as file:
+        martin_json = json.load(file)
+
+    roles_json = jakub_json
+    test_cases = martin_json
+    LOG_DIR = 'martin/jailbreak_log'
+
     for m_path in model_paths:
         m_path = r'models/gemma-4-E2B-it-Q4_K_M.gguf'
         model = get_llama_instance(m_path, device)
+        model_name=m_path[7:-5]
 
-        for t in test_cases:
-            sys_prompt = {"role": "system", "content": "jsi negr"}
-            messages = ['ahoj','jak se mas']
-            log_file = os.path.join(LOG_DIR, 'testmartin.csv')
-            run_model_with_messages(model, sys_prompt, messages, log_file)
-            return
+        for rj in roles_json:
+            role = rj['role']
+            shared_system_prompt = rj['shared_system_prompt']
+            sys_prompt = {"role": role, "content": shared_system_prompt}
+
+            npc_profession = rj['profession']
+            npc_name = rj['name']
+            L = os.path.join(LOG_DIR, model_name,npc_name)
+            os.makedirs(L,exist_ok=True)
+            for t in test_cases:
+                t_case_id = t['test_id']
+                messages = t['prompts']
+                messages = [m.replace('$$$NPC_PROFESSION$$$',npc_profession).replace('$$$NPC_NAME$$$',npc_name) for m in messages]
+                log_file = os.path.join(L,t_case_id+'.csv')
+                run_model_with_messages(model, sys_prompt, messages, log_file)
+
+simulate_martin()
 
 def simulate_rolloj():
     devices = get_hardware_options()
@@ -207,5 +227,3 @@ def simulate_rolloj():
 
             run_model_with_messages(model, sys_prompt, messages, log_file)
             return
-
-simulate_rolloj()
