@@ -93,12 +93,15 @@ class Wrapper:
         LOG_DIR = f'vlad/bench_logs/{my_pc_name}/'
         os.makedirs(LOG_DIR,exist_ok=True)
         log = []
-        chat_history = [
-            {"role": "system",
-             "content": "You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo', 'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking or showing your work."},
-        ]
         with open("vlad/test.json", "r") as f:
             messages = json.load(f)
+        with open("data_3npcs.json") as file:
+            npc = json.load(file)[2]
+        chat_history = [
+            {"role": "system",
+             "content": npc["role"]+npc["shared_system_prompt"]}
+        ]
+        # print(chat_history[0]["content"])
         for i, model in enumerate(self.models):
             if i == 6: chat_history.append({"role": "user", "content": "warmup!"})
             llm = self.load_llm_with_warmup(model, chat_history)
