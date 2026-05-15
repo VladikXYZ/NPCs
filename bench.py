@@ -37,5 +37,4 @@ if __name__ == '__main__':
     start = time.time()
     for i in range(len(devices)):
         subprocess.run([sys.executable, "vladw.py", str(i)])
-        break
     print(f"It took {time.time() - start} seconds")

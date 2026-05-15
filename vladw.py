@@ -8,9 +8,20 @@ from tqdm import tqdm
 from llama_cpp import Llama
 from contextlib import contextmanager
 
+import ctypes
+from llama_cpp import Llama, llama_log_set
+
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
+
+
+
+@ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_char_p, ctypes.c_void_p)
+def mute_llama_log(level, message, user_data):
+    pass
+
+llama_log_set(mute_llama_log, ctypes.c_void_p())
 
 @contextmanager
 def suppress_cpp_warnings():
