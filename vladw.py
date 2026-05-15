@@ -158,8 +158,7 @@ class Wrapper:
         with open("martin/jailbreak_template.json") as file:
             test_cases = json.load(file)
 
-        # for i, model_path in enumerate(self.models):
-        for i, model_path in enumerate(self.models[3:]):
+        for i, model_path in enumerate(self.models):
             llm = self.load_llm_WITHOUT_warmup(model_path)
             # continue
             if llm:
@@ -187,13 +186,44 @@ class Wrapper:
             else:
                 pass
 
+    def run_rolloj(self):
+        LOG_DIR = 'jakub/piss_log'
+        
+        with open("jakub/generated_prompts.json") as file:
+            jakub_json = json.load(file)
+
+        test_cases = jakub_json
+        
+        for i, model_path in enumerate(self.models):
+            llm = self.load_llm_WITHOUT_warmup(model_path)
+            # continue
+            if llm:
+                llm_name = os.path.basename(model_path).replace('.gguf', '')
+                
+                for t in test_cases:
+                    variant = t['variant']
+                    role = t['role']
+                    shared_system_prompt = t['shared_system_prompt']
+                    # sys_prompt = {"role": role, "content": shared_system_prompt}
+                    sys_prompt = {"role": "system", "content": role+shared_system_prompt}
+
+                    messages = t['prompt']
+
+                    os.makedirs(os.path.join(LOG_DIR, llm_name),exist_ok=True)
+                    log_file = os.path.join(LOG_DIR, llm_name, variant + '.csv')
+
+                    self.run_llm_with_messages(llm, sys_prompt, messages, log_file)
+                del llm
+            else:
+                pass
+
 
 if __name__ == '__main__':
     dev = -1
     if len(sys.argv) == 2:
         dev = int(sys.argv[1])
     wrap = Wrapper(dev)
-    wrap.run_martin()
+    wrap.run_rolloj()
 
 
 # dev = -1
