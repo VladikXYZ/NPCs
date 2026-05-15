@@ -90,7 +90,7 @@ class Options:
 
         xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"])
         print(xd)
-        xd.to_csv("log.csv")
+        xd.to_csv(f"log.csv")
 
 opt = Options()
 opt.run_test()
