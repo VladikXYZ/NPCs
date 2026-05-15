@@ -4,12 +4,29 @@ import sys
 import time
 
 import pandas
+from tqdm import tqdm
 from llama_cpp import Llama
+from contextlib import contextmanager
 
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
 
+@contextmanager
+def suppress_cpp_warnings():
+    # Save the original terminal error stream
+    old_stderr = os.dup(sys.stderr.fileno())
+    # Open a black hole (devnull)
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    # Reroute the error stream to the black hole
+    os.dup2(devnull, sys.stderr.fileno())
+    try:
+        yield
+    finally:
+        # Restore the terminal error stream when done!
+        os.dup2(old_stderr, sys.stderr.fileno())
+        os.close(old_stderr)
+        os.close(devnull)
 
 class Wrapper:
     def __init__(self, dev =-1):
@@ -41,13 +58,14 @@ class Wrapper:
             idx = self._get_int(input("Select device: "))
 
     def load_llm_with_warmup(self, model_path, role):
-        print(f"Loading {os.path.basename(model_path)}...")
+        print(f"Loading {os.path.basename(model_path)} | ", end="")
         # print(role)
         try:
-            llm = Llama(model_path=model_path, n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
-            llm.create_chat_completion(role,max_tokens=1)
+            with suppress_cpp_warnings():
+                llm = Llama(model_path=model_path, n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
+                llm.create_chat_completion(role,max_tokens=1)
         except Exception as e:
-            print(f"Failed to load model: {e}")
+            print(f"Not enough memory!!")
             return None
         print(f"Loaded!")
         return llm
@@ -88,7 +106,9 @@ class Wrapper:
                 prev_n = llm.n_tokens
                 llm.create_chat_completion(chat_history, max_tokens=1)
                 start = time.time()
-                for user_input in messages:
+                model_info = os.path.basename(model)[:-5]
+                for user_input in tqdm(messages, desc=f"Testing {model_info}", unit=" prompt"):
+                # for user_input in messages:
                     chat_history.append({"role": "user", "content": user_input})
 
                     start_time = time.perf_counter()
@@ -114,8 +134,6 @@ class Wrapper:
                     all_tokens = llm.n_tokens
                     log.append([first_token_time, tps, token_count,all_tokens-prev_n-token_count , total_time, all_tokens])
                     prev_n = all_tokens
-                # print(log)
-                print(time.time()-start)
                 del llm
                 chat_history = chat_history[:1]
             else:
