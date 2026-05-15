@@ -118,6 +118,7 @@ class Wrapper:
         
         start = time.time()
         for user_input in messages:
+            # print(chat_history)
             chat_history.append({"role": "user", "content": user_input})
 
             start_time = time.perf_counter()
@@ -157,7 +158,8 @@ class Wrapper:
         with open("martin/jailbreak_template.json") as file:
             test_cases = json.load(file)
 
-        for i, model_path in enumerate(self.models):
+        # for i, model_path in enumerate(self.models):
+        for i, model_path in enumerate(self.models[3:]):
             llm = self.load_llm_WITHOUT_warmup(model_path)
             # continue
             if llm:
@@ -166,7 +168,8 @@ class Wrapper:
                 for rj in roles_json:
                     role = rj['role']
                     shared_system_prompt = rj['shared_system_prompt']
-                    sys_prompt = {"role": role, "content": shared_system_prompt}
+                    # sys_prompt = {"role": role, "content": shared_system_prompt}
+                    sys_prompt = {"role": "system", "content": role+shared_system_prompt}
 
                     npc_profession = rj['profession']
                     npc_name = rj['name']
