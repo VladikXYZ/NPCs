@@ -1,22 +1,13 @@
 [
     "What is the name of this town?",
-    "Where is the nearest inn or tavern?",
     "Who is in charge around here?",
-    "Are there any dangerous monsters nearby?",
     "What kind of goods do the local merchants sell?",
-    "Can you tell me where I can buy some food?",
-    "Is it safe to travel on the roads at night?",
     "Have there been any strange rumors lately?",
     "I have ten silver coins. What can that buy me?",
-    "Where does the main road out of town lead?",
-    "I've been traveling for weeks and my supplies are almost completely exhausted. Could you point me in the direction of a reliable merchant who won't overcharge a stranger, and perhaps recommend a safe place to rest for the evening where I won't have to worry about my coin purse being stolen?",
-    "This architecture is fascinating; it looks quite different from where I grew up. Can you tell me a little bit about the history of this place, who built these structures, and if there are any significant landmarks or historical sites I should visit before I leave?",
+
     "I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",
     "I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",
-    "The locals seem a bit on edge today. Is there a festival coming up, a change in leadership, or is there some sort of threat that everyone is preparing for? I'd like to know if I should plan on staying a while or leaving as soon as possible.",
     "I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",
     "I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",
-    "It seems like the local economy relies heavily on trade passing through. What are the primary exports of this region? Are there any specific goods, like rare herbs, crafted items, or specific types of ore, that are famous here and highly sought after by merchants from other lands?",
     "I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",
-    "If I wanted to learn more about the laws and customs of this land so I don't accidentally offend anyone important, where should I go? Is there a library, a town herald, or an elder who would be willing to sit down and explain the rules to a newcomer like me?"
-]
+    ]
