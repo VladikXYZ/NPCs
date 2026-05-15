@@ -8,7 +8,6 @@ DEVICES_FILE = "devices.json"
 
 def get_devices():
     print("🔍 Scanning hardware... (this takes a second)")
-    # print(self.models_dir+self.models[0])
     script = f"""
 import sys
 from llama_cpp import Llama
@@ -22,7 +21,6 @@ except Exception:
     for line in result.stderr.split('\n'):
         match = re.search(r"ggml_vulkan:\s+(\d+)\s+=\s+(.*?)\s+\|", line)
         if match:
-            print(line)
             devices.append({"id": match.group(1), "name": match.group(2).strip(), "type": "Vulkan"})
 
     cpu_id = str(len(devices))

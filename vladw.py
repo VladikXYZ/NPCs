@@ -68,7 +68,7 @@ class Wrapper:
 
         my_pc_name = platform.node()
         # print(f"My PC is called: {my_pc_name}")
-        print(self.device)
+        # print(self.device)
         # return
         dev_name =self.device["type"]+"_"+ "_".join(self.device["name"].split()[:4])
         print(dev_name)
@@ -85,6 +85,8 @@ class Wrapper:
             if i == 6: chat_history.append({"role": "user", "content": "warmup!"})
             llm = self.load_llm_with_warmup(model, chat_history)
             if llm:
+                prev_n = llm.n_tokens
+                llm.create_chat_completion(chat_history, max_tokens=1)
                 start = time.time()
                 for user_input in messages:
                     chat_history.append({"role": "user", "content": user_input})
@@ -109,13 +111,16 @@ class Wrapper:
 
                     chat_history.append({"role": "assistant", "content": assistant_response})
                     first_token_time = first_token_time if first_token_time is not None else 0.0
-                    log.append([first_token_time, token_count, tps, total_time, llm.n_tokens])
+                    all_tokens = llm.n_tokens
+                    log.append([first_token_time, tps, token_count,all_tokens-prev_n-token_count , total_time, all_tokens])
+                    prev_n = all_tokens
                 # print(log)
                 print(time.time()-start)
                 del llm
                 chat_history = chat_history[:1]
-
-        xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"])
+            else:
+                for _ in range(20): log.append([-1,-1,-1,-1,-1,-1])
+        xd = pandas.DataFrame(log, columns=["TTFT", "T/S", "NPC TOKENS","USER TOKENS" , "TOTAL TIME", "ALL TOKENS"])
         # print(xd)
         xd.to_csv(f"{LOG_DIR}{dev_name}.csv", index=False)
 
