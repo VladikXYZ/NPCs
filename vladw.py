@@ -107,7 +107,7 @@ class Wrapper:
                 llm.create_chat_completion(chat_history, max_tokens=1)
                 start = time.time()
                 model_info = os.path.basename(model)[:-5]
-                for user_input in tqdm(messages, desc=f"Testing {model_info}", unit=" prompt"):
+                for user_input in tqdm(messages, desc=f"Testing {model_info}", unit="prompt"):
                 # for user_input in messages:
                     chat_history.append({"role": "user", "content": user_input})
 
