@@ -64,17 +64,26 @@ class Wrapper:
         return llm
 
     def run_test(self):
+        import platform
+
+        my_pc_name = platform.node()
+        # print(f"My PC is called: {my_pc_name}")
+        print(self.device)
+        # return
+        dev_name =self.device["type"]+"_"+ "_".join(self.device["name"].split()[:4])
+        print(dev_name)
+        LOG_DIR = f'vlad/bench_logs/{my_pc_name}/'
+        os.makedirs(LOG_DIR,exist_ok=True)
         log = []
         chat_history = [
             {"role": "system",
              "content": "You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo', 'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking or showing your work."},
         ]
-        with open("test.json", "r") as f:
+        with open("vlad/test.json", "r") as f:
             messages = json.load(f)
         for i, model in enumerate(self.models):
             if i == 6: chat_history.append({"role": "user", "content": "warmup!"})
-            llm = self.load_llm(model, chat_history)
-            # continue
+            llm = self.load_llm_with_warmup(model, chat_history)
             if llm:
                 start = time.time()
                 for user_input in messages:
@@ -108,7 +117,7 @@ class Wrapper:
 
         xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"])
         # print(xd)
-        xd.to_csv(f"log.csv")
+        xd.to_csv(f"{LOG_DIR}{dev_name}.csv", index=False)
 
     def run_llm_with_messages(self, llm, sys_prompt, messages, log_file):
         log = []
@@ -219,16 +228,12 @@ class Wrapper:
 
 
 if __name__ == '__main__':
+    # print("skibidi")
     dev = -1
     if len(sys.argv) == 2:
         dev = int(sys.argv[1])
+        wrap = Wrapper(dev)
+        wrap.run_test()
     wrap = Wrapper(dev)
-    wrap.run_rolloj()
+    # wrap.run_rolloj()
 
-
-# dev = -1
-# if len(sys.argv) == 2:
-#     dev = int(sys.argv[1])
-# wrap = Wrapper(dev)
-# print(wrap.device)
-# wrap.run_test()
