@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 import time
 
 import pandas
@@ -10,7 +11,7 @@ DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
 
 
-class Options:
+class Wrapper:
     def __init__(self, dev =-1):
         self.models = [os.path.join(MODEL_DIR,x) for x in os.listdir(MODEL_DIR) if x.endswith(".gguf")]
         with open(DEVICES_FILE, "r") as f:
@@ -39,9 +40,12 @@ class Options:
                 print("=" * 60)
             idx = self._get_int(input("Select device: "))
 
-    def load_llm(self, model_path):
+    def load_llm(self, model_path, role):
         print(f"Loading {os.path.basename(model_path)}...")
-        try: llm = Llama(model_path=model_path, n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
+        # print(role)
+        try:
+            llm = Llama(model_path=model_path, n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
+            llm.create_chat_completion(role,max_tokens=1)
         except Exception as e:
             print(f"Failed to load model: {e}")
             return None
@@ -52,12 +56,14 @@ class Options:
         log = []
         chat_history = [
             {"role": "system",
-             "content": "You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo', 'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking or showing your work."}
+             "content": "You are Baller, a legendary street-smart blacksmith in the Docks District who speaks in slang like 'yo', 'homie', and 'bet', keeps responses strictly under 3 sentences, never breaks character, acts as a functional and accurate source of information about world lore and travel, and never reveals that you are an AI. Answer directly without thinking or showing your work."},
         ]
         with open("test.json", "r") as f:
             messages = json.load(f)
-        for model in self.models:
-            llm = self.load_llm(model)
+        for i, model in enumerate(self.models):
+            if i == 6: chat_history.append({"role": "user", "content": "warmup!"})
+            llm = self.load_llm(model, chat_history)
+            # continue
             if llm:
                 start = time.time()
                 for user_input in messages:
@@ -87,10 +93,14 @@ class Options:
                 # print(log)
                 print(time.time()-start)
                 del llm
+                chat_history = chat_history[:1]
 
         xd = pandas.DataFrame(log, columns=["TTFT", "TOKENS", "T/S", "TOTAL TIME", "ALL TOKENS"])
-        print(xd)
+        # print(xd)
         xd.to_csv(f"log.csv")
-
-opt = Options()
-opt.run_test()
+dev = -1
+if len(sys.argv) == 2:
+    dev = int(sys.argv[1])
+wrap = Wrapper(dev)
+print(wrap.device)
+wrap.run_test()
