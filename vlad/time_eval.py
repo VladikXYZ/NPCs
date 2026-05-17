@@ -1,33 +1,47 @@
 import os
-
 import pandas as pd
 import numpy as np
 
-
-pd.set_option('display.max_columns', None)  # Forces it to show all columns
+# Display settings
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 pd.set_option('display.width', 1000)
-MODEL_DIR = '../models/'
-# Load your future log file (which will have 20 rows per model)
-df = pd.read_csv('bench_logs/CACHY/Vulkan_AMD_Radeon_RX_9070.csv')
 
-# 1. Figure out which Model it is (Every 20 rows is a new model)
-models = sorted([os.path.basename(x)[:-5] for x in os.listdir(MODEL_DIR) if x.endswith(".gguf")])
-model_indices = df.index // 20
-df['Model'] = [models[i] for i in model_indices]
+# Model list
+models = ["Gemma 4 E2B", "Gemma 4 E4B", "Llama 3.1", "Mistral Nemo", "Phi 4 mini", "Phi 4", "Qwen 3.5"]
 
-# 2. Figure out if it is a Short or Long prompt
-# df.index % 20 gives a repeating sequence from 0 to 19.
-# If it is less than 10, it's the first half (Short). Otherwise, it's Long.
-prompt_types = np.where((df.index % 20) < 10, 'Short Prompt', 'Long Prompt')
-df['Prompt Type'] = prompt_types
+LOG_DIR = 'bench_logs/'
+systems = ["CACHY/", "NOTEBOOK/"]
 
-# 3. Group by BOTH the Model and the Prompt Type, then calculate the average!
-# We drop the 'USER PROMPT' and 'AI RESPONSE' text columns before averaging
-numeric_cols = df.drop(columns=['USER PROMPT', 'AI RESPONSE'], errors='ignore')
-avg_df = numeric_cols.groupby(['Model', 'Prompt Type']).mean()
+for system in systems:
+    # Ensure the directory exists before trying to read it
+    if not os.path.exists(LOG_DIR + system):
+        continue
 
-# Print it nicely
-print(avg_df)
+    logs = os.listdir(LOG_DIR + system)
+    for log in logs:
+        # Load the CSV
+        df = pd.read_csv(LOG_DIR + system + log)
 
-# Save the beautifully formatted split averages to a new Excel/CSV file!
-# avg_df.to_csv('Vulkan_AMD_Radeon_RX_9070_Detailed_Averages.csv')
+        # Print a header so you know which hardware file this is
+        print(f"\n{'=' * 50}")
+        print(f"📊 HARDWARE: {system+log}")
+        print(f"{'=' * 50}")
+
+        # 1. Assign Model Names (Every 10 rows is a new model)
+        model_indices = df.index // 10
+        # Failsafe: just in case a log has too many rows, prevent an IndexError
+        df['Model'] = [models[i] if i < len(models) else f"Unknown {i}" for i in model_indices]
+
+        # 2. Assign Prompt Type (First 5 are Short, next 5 are Long)
+        prompt_types = np.where((df.index % 10) < 5, 'Short Prompt', 'Long Prompt')
+        df['Prompt Type'] = prompt_types
+
+        # 3. Calculate Mean, Min, and Max for TTFT ONLY
+        # We group by Model and Prompt Type, select the 'TTFT' column, and aggregate
+        ttft_stats = df.groupby(['Model', 'Prompt Type'])['TTFT'].agg(['mean', 'min', 'max'])
+
+        # Rename the columns to make them look nice
+        ttft_stats.columns = ['Avg TTFT (s)', 'Min TTFT (s)', 'Max TTFT (s)']
+
+        print(ttft_stats)
