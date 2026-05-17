@@ -69,7 +69,7 @@ class Wrapper:
             idx = self._get_int(input("Select device: "))
 
     def load_llm_with_warmup(self, model_path, role):
-        print(f"Loading {os.path.basename(model_path)} | ", end="")
+        print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
         # print(role)
         try:
             with suppress_cpp_warnings():
@@ -112,8 +112,12 @@ class Wrapper:
             {"role": "system",
              "content": npc["role"]+npc["shared_system_prompt"]}
         ]
+        num_mess = len(messages)
         # print(chat_history[0]["content"])
         for i, model in enumerate(self.models):
+            if i == 3:
+                for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1])
+                continue
             if i == 6: chat_history.append({"role": "user", "content": "warmup!"})
             llm = self.load_llm_with_warmup(model, chat_history)
             if llm:
@@ -151,7 +155,7 @@ class Wrapper:
                 del llm
                 chat_history = chat_history[:1]
             else:
-                for _ in range(20): log.append([-1,-1,-1,-1,-1,-1])
+                for _ in range(num_mess): log.append([-1,-1,-1,-1,-1,-1])
         xd = pandas.DataFrame(log, columns=["TTFT", "T/S", "NPC TOKENS","USER TOKENS" , "TOTAL TIME", "ALL TOKENS"])
         # print(xd)
         xd.to_csv(f"{LOG_DIR}{dev_name}.csv", index=False)
