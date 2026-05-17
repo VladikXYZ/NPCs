@@ -115,9 +115,9 @@ class Wrapper:
         num_mess = len(messages)
         # print(chat_history[0]["content"])
         for i, model in enumerate(self.models):
-            if i == 3:
-                for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1])
-                continue
+            # if i == 3:
+            #     for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1])
+            #     continue
             if i == 6: chat_history.append({"role": "user", "content": "warmup!"})
             llm = self.load_llm_with_warmup(model, chat_history)
             if llm:
