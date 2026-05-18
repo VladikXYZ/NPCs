@@ -115,13 +115,18 @@ class Wrapper:
         num_mess = len(messages)
         # print(chat_history[0]["content"])
         for i, model in enumerate(self.models):
-            # if i == 3:
-            #     for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1])
-            #     continue
             if i == 6: chat_history.append({"role": "user", "content": "warmup!"})
             llm = self.load_llm_with_warmup(model, chat_history)
+            # print(len(llm.tokenize(chat_history[0]["content"].encode('utf-8'))))
+            for mess in messages:
+                # log.append([-1, -1, -1, len(llm.tokenize(mess.encode('utf-8'))), -1, -1])
+                # print(len(llm.tokenize()))
+                log.append([-1, -1, -1, len(mess.split()), -1, -1])
+            continue
             if llm:
                 prev_n = llm.n_tokens
+
+
                 llm.create_chat_completion(chat_history, max_tokens=1)
                 start = time.time()
                 model_info = os.path.basename(model)[:-5]
@@ -276,6 +281,7 @@ if __name__ == '__main__':
         wrap = Wrapper(dev)
         wrap.run_test()
     wrap = Wrapper(dev)
-    wrap.run_rolloj()
-    wrap.run_martin()
+    wrap.run_test()
+    # wrap.run_rolloj()
+    # wrap.run_martin()
 
