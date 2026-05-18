@@ -39,9 +39,13 @@ for system in systems:
 
         # 3. Calculate Mean, Min, and Max for TTFT ONLY
         # We group by Model and Prompt Type, select the 'TTFT' column, and aggregate
-        ttft_stats = df.groupby(['Model', 'Prompt Type'])['TTFT'].agg(['mean', 'min', 'max'])
+        stats = df.groupby(['Model', 'Prompt Type'])[['TTFT', 'T/S']].agg(['mean', 'min', 'max'])
 
-        # Rename the columns to make them look nice
-        ttft_stats.columns = ['Avg TTFT (s)', 'Min TTFT (s)', 'Max TTFT (s)']
+        # When you do multiple columns, Pandas creates a "MultiIndex" (stacked headers).
+        # We can flatten them out into a single row of nice, clean column names:
+        stats.columns = [
+            'Avg TTFT (s)', 'Min TTFT (s)', 'Max TTFT (s)',
+            'Avg T/S', 'Min T/S', 'Max T/S'
+        ]
 
-        print(ttft_stats)
+        print(stats)

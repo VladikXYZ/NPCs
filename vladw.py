@@ -175,7 +175,7 @@ class Wrapper:
             first_token_time = None
             token_count = 0
 
-            stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
+            stream = llm.create_chat_completion(messages=chat_history, stream=True)
             assistant_response = ""
             for chunk in stream:
                 delta = chunk['choices'][0].get('delta', {})
@@ -237,7 +237,7 @@ class Wrapper:
                 pass
 
     def run_rolloj(self):
-        LOG_DIR = 'jakub/piss_log'
+        LOG_DIR = 'jakub/response_log'
         
         with open("jakub/generated_prompts.json") as file:
             jakub_json = json.load(file)
@@ -276,5 +276,6 @@ if __name__ == '__main__':
         wrap = Wrapper(dev)
         wrap.run_test()
     wrap = Wrapper(dev)
-    # wrap.run_rolloj()
+    wrap.run_rolloj()
+    wrap.run_martin()
 
