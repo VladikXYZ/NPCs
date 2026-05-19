@@ -109,7 +109,7 @@ def _format_perf_matrix(df_pivot):
 def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
                  float_fmt="{:.2f}", custom_bounds=None, reverse_cmap=False,
                  vmin=None, vmax=None):
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=300)
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=400)
     fig.patch.set_facecolor(BG_COLOR)
     ax.set_facecolor(BG_COLOR)
 
@@ -118,18 +118,32 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
         status_map = {'ERROR': 0, 'F': 1, 'GE': 2, 'EX': 3}
         numeric_matrix = data_matrix.replace(status_map).fillna(0).astype(float)
 
+        # 1. Map the cell abbreviations to full words for display labels
+        display_map = {'ERROR': 'ERROR', 'F': 'FAILED', 'GE': 'GOOD ENOUGH', 'EX': 'IDEAL'}
+        annot_matrix = data_matrix.replace(display_map)
+
+        # 2. Draw the heatmap with full text annotations and no sidebar
         sns.heatmap(
-            numeric_matrix, cmap=cmap, annot=data_matrix, fmt='', cbar=False, vmin=0, vmax=3,
-            linewidths=3, linecolor='#111115', annot_kws={"size": MATRIX_CELL_FONT_SIZE, "weight": "bold"}, ax=ax
+            numeric_matrix,
+            cmap=cmap,
+            annot=annot_matrix,  # <--- Forces FAILED, GOOD ENOUGH, IDEAL inside cells
+            fmt='',
+            cbar=False,  # <--- Keeps sidebar completely hidden
+            vmin=0, vmax=3,
+            linewidths=3, linecolor='#111115',
+            annot_kws={"size": MATRIX_CELL_FONT_SIZE, "weight": "bold"},
+            ax=ax
         )
+
+        # 3. Match text font contrast against the new full words
         for text_el in ax.texts:
             t = text_el.get_text()
             if t == 'ERROR':
-                text_el.set_color('#ff4d6d')
-            elif t == 'GE':
-                text_el.set_color('black')
+                text_el.set_color('#ff4d6d')  # Pink-red highlight for crashes
+            elif t == 'GOOD ENOUGH':
+                text_el.set_color('black')  # Crisp black text for yellow boxes
             else:
-                text_el.set_color('white')
+                text_el.set_color('white')  # Clean white text for Green and Red boxes
 
     elif mode == "threshold":
         # Changed sentinel to -999.0 so legitimate negative numbers aren't caught!
