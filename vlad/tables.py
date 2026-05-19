@@ -2,16 +2,54 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.colors import ListedColormap, BoundaryNorm
 
-# --- CONFIGURATION ---
-models = [
-    "Gemma 4 E2B (2B)", "Gemma 4 E4B (4B)", "Llama 3.1 (8B)",
-    "Mistral Nemo (12B)", "Phi 4 mini (3.8B)", "Phi 4 (14B)", "Qwen 3.5 (9B)"
-]
+# ==============================================================================
+# CONFIGURATION & GLOBAL CONSTANTS
+# ==============================================================================
 LOG_DIR = 'bench_logs/'
 systems = ["CACHY/", "Jakub/"]
 
-# --- DATA AGGREGATION & CLEANING ---
+models_list = [
+    "Gemma 4 E2B", "Gemma 4 E4B", "Llama 3.1",
+    "Mistral Nemo", "Phi 4 mini", "Phi 4", "Qwen 3.5"
+]
+
+# Clean Hardware Name Mapping
+HARDWARE_MAP = {
+    "CACHY\nVulkan_AMD_Radeon_RX_9070": "RX 9070 XT",
+    "CACHY\nVulkan_NVIDIA_GeForce_RTX_3060": "RTX 3060",
+    "Jakub\nVulkan_NVIDIA_GeForce_RTX_4070": "RTX 4070 (L)",
+    "CACHY\nVulkan_AMD_Ryzen_5_7600X": "R5 7600X iGPU",
+    "Jakub\nVulkan_Intel(R)_RaptorLake-S_Mobile_Graphics": "i9 14900HX iGPU",
+    "CACHY\nCPU_CPU": "R5 7600X",
+    "Jakub\nCPU_CPU": "i9 14900HX"
+}
+
+# Presentation Color Schemes (Cyberpunk Dark Mode Matching Martin's Script)
+BG_COLOR = '#1e1e24'
+TEXT_WHITE = 'white'
+COLOR_CRASH_BLACK = '#111115'  # Pure pitch-black block for crashed models
+
+# Strict 3-color map values:
+COLOR_FAILED = '#a50026'  # Deep Intense Red
+COLOR_GOOD_ENOUGH = '#fee08b'  # Clean Pastel Yellow/Gold
+COLOR_EXCELLENT = '#1a9850'  # Rich Emerald Green
+
+# Typography Engine
+TITLE_FONT_SIZE = 28
+MATRIX_CELL_FONT_SIZE = 12
+AXIS_TICK_FONT_SIZE = 20
+
+# Unified Font Fallbacks
+GLOBAL_FONTS = ['SimHei', 'Microsoft YaHei', 'Arial Unicode MS', 'DejaVu Sans', 'sans-serif']
+plt.rcParams['font.sans-serif'] = GLOBAL_FONTS
+plt.rcParams['axes.unicode_minus'] = False
+
+# ==============================================================================
+# DATA PROCESSING & AGGREGATION
+# ==============================================================================
 all_results = []
 
 for system in systems:
@@ -23,158 +61,174 @@ for system in systems:
 
         df = pd.read_csv(LOG_DIR + system + log)
         df.columns = df.columns.str.strip()
-        hw_name = f"{system.replace('/', '')} | {log.replace('.csv', '')}"
 
-        df['Model'] = [models[i] if i < len(models) else f"Unknown {i}" for i in (df.index // 10)]
+        raw_hw_name = f"{system.replace('/', '')}\n{log.replace('.csv', '')}"
+
+        df['Model'] = [models_list[i] if i < len(models_list) else f"Unknown {i}" for i in (df.index // 10)]
         df['Prompt Type'] = np.where((df.index % 10) < 5, 'Short', 'Long')
-        df['Hardware'] = hw_name
+        df['Hardware'] = raw_hw_name
 
         for col in ['TTFT', 'T/S']:
             if col in df.columns:
                 df[col] = df[col].astype(str).str.replace(',', '.')
                 df[col] = pd.to_numeric(df[col], errors='coerce')
 
-        df = df.replace(-1.0, np.nan).replace(-1, np.nan)
-
         if 'TTFT' in df.columns and 'T/S' in df.columns:
             means = df.groupby(['Hardware', 'Model', 'Prompt Type'])[['TTFT', 'T/S']].mean().reset_index()
             all_results.append(means)
 
 if not all_results:
-    print("No valid CSV benchmarks found!")
+    print("No results processed.")
     exit()
 
 combined_df = pd.concat(all_results, ignore_index=True)
 
-# Build individual base matrices
+# 1. GENERATE BASE DATA MATRICES
 matrix_short_ttft = combined_df[combined_df['Prompt Type'] == 'Short'].pivot(index='Hardware', columns='Model',
-                                                                             values='TTFT').reindex(columns=models)
+                                                                             values='TTFT').reindex(columns=models_list)
 matrix_long_ttft = combined_df[combined_df['Prompt Type'] == 'Long'].pivot(index='Hardware', columns='Model',
-                                                                           values='TTFT').reindex(columns=models)
-matrix_overall_ts = combined_df.groupby(['Hardware', 'Model'])['T/S'].mean().unstack().reindex(columns=models)
+                                                                           values='TTFT').reindex(columns=models_list)
+matrix_overall_ts = combined_df.groupby(['Hardware', 'Model'])['T/S'].mean().unstack().reindex(columns=models_list)
 
-# Process Evaluation Matrix
+# 2. EVALUATE COMBINED STATUS MATRIX
 mean_combined = combined_df.groupby(['Hardware', 'Model'])[['TTFT', 'T/S']].mean().reset_index()
 
 
 def evaluate_status(row):
-    if pd.isna(row['TTFT']) or pd.isna(row['T/S']): return 'F'
-    return 'EX' if (row['TTFT'] <= 0.3 and row['T/S'] >= 18) else (
-        'GE' if (row['TTFT'] <= 0.8 and row['T/S'] >= 6) else 'F')
+    if pd.isna(row['TTFT']) or pd.isna(row['T/S']) or row['TTFT'] < 0 or row['T/S'] < 0:
+        return 'ERROR'
+    if row['TTFT'] <= 0.3 and row['T/S'] >= 18: return 'EX'
+    if row['TTFT'] <= 0.8 and row['T/S'] >= 6: return 'GE'
+    return 'F'
 
 
-mean_combined['Status'] = mean_combined.apply(evaluate_status, axis=1)
-matrix_status = mean_combined.pivot(index='Hardware', columns='Model', values='Status').reindex(columns=models)
+mean_combined['Status_Text'] = mean_combined.apply(evaluate_status, axis=1)
+
+status_mapping = {'ERROR': 0, 'F': 1, 'GE': 2, 'EX': 3}
+mean_combined['Status_Num'] = mean_combined['Status_Text'].map(status_mapping)
+
+matrix_status_text = mean_combined.pivot(index='Hardware', columns='Model', values='Status_Text').reindex(
+    columns=models_list).fillna('ERROR')
+matrix_status_num = mean_combined.pivot(index='Hardware', columns='Model', values='Status_Num').reindex(
+    columns=models_list).fillna(0)
 
 
-# --- CYBERPUNK DARK-MODE TABLE RENDERER ---
-def plot_dark_table(df, title, filename, mode):
-    """
-    Renders an elegant dark-mode table matching the jailbreak evaluation style sheets.
-    """
-    # Dynamic styling setup to map the text layout spacing perfectly
-    fig, ax = plt.subplots(figsize=(15, 2.5 + len(df) * 0.55), dpi=300)
-    fig.patch.set_facecolor('#1e1e24')  # Set background to dark tone
-    ax.set_facecolor('#1e1e24')
-    ax.axis('off')
+# ==============================================================================
+# UNIFIED FORMATTING ENGINE
+# ==============================================================================
+def apply_formatting(df):
+    df = df.iloc[[1, 3, 6, 0, 4, 2, 5]]
+    df.index = [HARDWARE_MAP.get(name, name) for name in df.index]
+    return df.T
 
-    cell_text = df.round(2).fillna('-').astype(str).values
-    col_labels = [c.replace(' (', '\n(') for c in df.columns]
-    row_labels = df.index.tolist()
 
-    # Dark Theme Palette Mapping (Bright text, clean semi-dark cell blocks)
-    theme = {
-        'bg_main': '#1e1e24',
-        'bg_header': '#111115',
-        'green_cell': '#1b4332', 'text_green': '#52b788',
-        'yellow_cell': '#5c4d0a', 'text_yellow': '#ffd166',
-        'red_cell': '#4c1c24', 'text_red': '#ff4d6d',
-        'neutral_cell': '#2a2a35', 'text_neutral': '#e0e0e0'
-    }
+matrix_short_ttft = apply_formatting(matrix_short_ttft)
+matrix_long_ttft = apply_formatting(matrix_long_ttft)
+matrix_overall_ts = apply_formatting(matrix_overall_ts)
+matrix_status_text = apply_formatting(matrix_status_text)
+matrix_status_num = apply_formatting(matrix_status_num)
 
-    cell_colors = []
-    cell_text_colors = []
 
-    for row in cell_text:
-        row_bg, row_txt = [], []
-        for val in row:
-            if val == '-':
-                row_bg.append(theme['neutral_cell']);
-                row_txt.append(theme['text_neutral'])
-                continue
+# ==============================================================================
+# WIDESCREEN HEATMAP GENERATOR WITH STRICT THRESHOLDS
+# ==============================================================================
+def draw_heatmap(data_matrix, title, save_filename, metric_type, float_fmt="{:.2f}"):
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=300)
+    fig.patch.set_facecolor(BG_COLOR)
+    ax.set_facecolor(BG_COLOR)
 
-            num = float(val) if mode != 'status' else val
+    # Convert errors to -1.0 so we can catch them cleanly
+    plot_matrix = data_matrix.fillna(-1.0)
 
-            if mode == 'ttft':
-                if num <= 0.3:
-                    bg, txt = theme['green_cell'], theme['text_green']
-                elif num <= 0.8:
-                    bg, txt = theme['yellow_cell'], theme['text_yellow']
-                else:
-                    bg, txt = theme['red_cell'], theme['text_red']
-            elif mode == 'ts':
-                if num >= 20:
-                    bg, txt = theme['green_cell'], theme['text_green']
-                elif num >= 10:
-                    bg, txt = theme['yellow_cell'], theme['text_yellow']
-                else:
-                    bg, txt = theme['red_cell'], theme['text_red']
-            elif mode == 'status':
-                if num == 'EX':
-                    bg, txt = theme['green_cell'], theme['text_green']
-                elif num == 'GE':
-                    bg, txt = theme['yellow_cell'], theme['text_yellow']
-                else:
-                    bg, txt = theme['red_cell'], theme['text_red']
+    # Extract valid max so our bounds scale safely
+    valid_mask = plot_matrix >= 0
+    v_max = plot_matrix[valid_mask].max().max() if plot_matrix[valid_mask].size > 0 else 1.0
 
-            row_bg.append(bg)
-            row_txt.append(txt)
-        cell_colors.append(row_bg)
-        cell_text_colors.append(row_txt)
+    # Apply specific hardcoded bounds & palettes based on the chart metric
+    if metric_type == "status":
+        cmap = ListedColormap([COLOR_CRASH_BLACK, COLOR_FAILED, COLOR_GOOD_ENOUGH, COLOR_EXCELLENT])
+        norm = BoundaryNorm([-0.5, 0.5, 1.5, 2.5, 3.5], cmap.N)
+        annot_matrix = matrix_status_text.values
 
-    # Render base layout
-    mpl_table = ax.table(
-        cellText=cell_text, rowLabels=row_labels, colLabels=col_labels,
-        cellColours=cell_colors, loc='center', cellLoc='center'
+    elif metric_type == "ttft":
+        # TTFT: <= 0.3 (Green), <= 0.8 (Yellow), > 0.8 (Red)
+        cmap = ListedColormap([COLOR_EXCELLENT, COLOR_GOOD_ENOUGH, COLOR_FAILED])
+        cmap.set_under(COLOR_CRASH_BLACK)  # Handle errors
+        upper_bound = max(v_max + 1, 2.0)
+        norm = BoundaryNorm([0.0, 0.301, 0.801, upper_bound], cmap.N)
+
+    elif metric_type == "ts":
+        # T/S: < 6 (Red), < 18 (Yellow), >= 18 (Green)
+        cmap = ListedColormap([COLOR_FAILED, COLOR_GOOD_ENOUGH, COLOR_EXCELLENT])
+        cmap.set_under(COLOR_CRASH_BLACK)  # Handle errors
+        upper_bound = max(v_max + 1, 25.0)
+        norm = BoundaryNorm([0.0, 6.0, 18.0, upper_bound], cmap.N)
+
+    # Build the precise string formatting matrix for TTFT and TS
+    if metric_type != "status":
+        annot_matrix = np.empty_like(plot_matrix.values, dtype=object)
+        for i in range(plot_matrix.shape[0]):
+            for j in range(plot_matrix.shape[1]):
+                val = plot_matrix.iloc[i, j]
+                annot_matrix[i, j] = "ERROR" if val < 0 else float_fmt.format(val)
+
+    # Render natively with absolute boundary normalization
+    sns.heatmap(
+        plot_matrix, cmap=cmap, norm=norm, annot=annot_matrix, fmt='', cbar=False,
+        linewidths=3, linecolor='#111115', annot_kws={"size": MATRIX_CELL_FONT_SIZE, "weight": "bold"}, ax=ax
     )
 
-    mpl_table.auto_set_font_size(False)
-    mpl_table.set_fontsize(11)
-    mpl_table.scale(1, 2.2)  # Generous height scaling for code visibility
+    # Dynamically inject high-contrast text color logic
+    for text_el in ax.texts:
+        text_str = text_el.get_text()
+        if text_str == 'ERROR':
+            text_el.set_color('#ff4d6d')  # Neon Red Text for Errors
+        elif text_str == 'GE':
+            text_el.set_color('black')
+        elif text_str in ['EX', 'F']:
+            text_el.set_color('white')
+        else:
+            try:
+                val = float(text_str)
+                # Ensure black text is printed when cell color is Yellow
+                if metric_type == "ttft" and 0.301 <= val < 0.801:
+                    text_el.set_color('black')
+                elif metric_type == "ts" and 6.0 <= val < 18.0:
+                    text_el.set_color('black')
+                else:
+                    text_el.set_color('white')
+            except ValueError:
+                text_el.set_color('white')
 
-    # Style cells individually to inject foreground text rules and border alignments
-    for (r, c), cell in mpl_table.get_celld().items():
-        cell.set_edgecolor('#111115')  # Very faint border matching backgrounds
-        cell.set_linewidth(1.5)
+    # Title & Axis Styling
+    ax.set_title(title, color=TEXT_WHITE, fontsize=TITLE_FONT_SIZE, pad=35, weight='bold')
+    ax.set_xlabel("")
+    ax.set_ylabel("")
 
-        if r > 0 and c >= 0:
-            # Data cells
-            cell.get_text().set_color(cell_text_colors[r - 1][c])
-            cell.get_text().set_weight('bold')
-        elif r == 0:
-            # Column headers
-            cell.set_facecolor(theme['bg_header'])
-            cell.get_text().set_color('#ffffff')
-            cell.get_text().set_weight('bold')
-        elif c == -1:
-            # Row headers (Hardware lines)
-            cell.set_facecolor(theme['bg_header'])
-            cell.get_text().set_color('#00b4d8')  # Cyan accent color for hardware text
-            cell.get_text().set_weight('bold')
+    ax.tick_params(colors=TEXT_WHITE, labelsize=AXIS_TICK_FONT_SIZE, which='both', length=0)
 
-    plt.title(title, fontsize=15, pad=30, weight='bold', color='#ffffff')
+    for tick in ax.get_xticklabels():
+        tick.set_rotation(20)
+        tick.set_ha('right')
+    for tick in ax.get_yticklabels():
+        tick.set_rotation(0)
+
+    plt.subplots_adjust(left=0.18, bottom=0.22)
     plt.tight_layout()
-
-    # Save as high-quality transparent PNG just like your heatmaps!
-    plt.savefig(filename, bbox_inches='tight', facecolor=theme['bg_main'], transparent=True)
+    plt.savefig(save_filename, format='png', dpi=300, transparent=True)
     plt.close()
-    print(f"🌆 Saved Cyberpunk Table to: {filename}")
+    print(f"🖼️ Exported Custom Bound Matrix: {save_filename}")
 
 
-# --- EXECUTE THE GENERATION ---
-plot_dark_table(matrix_short_ttft, "⚡ MEAN TTFT (SECONDS) - SHORT PROMPTS", "dark_short_ttft.png", "ttft")
-plot_dark_table(matrix_long_ttft, "⏳ MEAN TTFT (SECONDS) - LONG PROMPTS", "dark_long_ttft.png", "ttft")
-plot_dark_table(matrix_overall_ts, "🚀 MEAN TEXT GENERATION SPEED (TOKENS/SEC)", "dark_tokens_sec.png", "ts")
-plot_dark_table(matrix_status, "🏆 HARDWARE EVALUATION BREAKDOWN (EX / GE / F)", "dark_model_status.png", "status")
+# ==============================================================================
+# EXECUTION COMMAND BLOCK
+# ==============================================================================
+draw_heatmap(matrix_short_ttft, "MEAN TTFT (SECONDS) - SHORT PROMPTS", "heatmap_short_ttft.png", metric_type="ttft",
+             float_fmt="{:.3f}")
+draw_heatmap(matrix_long_ttft, "MEAN TTFT (SECONDS) - LONG PROMPTS", "heatmap_long_ttft.png", metric_type="ttft",
+             float_fmt="{:.3f}")
+draw_heatmap(matrix_overall_ts, "MEAN TEXT GENERATION SPEED (TOKENS/SEC)", "heatmap_tokens_sec.png", metric_type="ts",
+             float_fmt="{:.1f}")
+draw_heatmap(matrix_status_num, "HARDWARE EVALUATION MATRIX", "heatmap_3color_evaluation.png", metric_type="status")
 
-print("\n🎉 Your dark-mode benchmark dashboard is fully compiled! Go check the PNG outputs! xd")
+print("\n🎉 Matrices rendered with absolute threshold bounds! xd")
