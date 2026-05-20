@@ -33,8 +33,9 @@ MATRIX_CELL_FONT_SIZE = 16
 BAR_DATA_LABEL_FONT_SIZE = 14
 AXIS_LABEL_FONT_SIZE = 18
 LEGEND_FONT_SIZE = 16
+DPI = 500
 
-IMG_DIR = "imgs"
+IMG_DIR = "rebrand"
 os.makedirs(IMG_DIR, exist_ok=True)
 
 BG_COLOR = '#1e1e24'
@@ -109,7 +110,7 @@ def _format_perf_matrix(df_pivot):
 def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
                  float_fmt="{:.2f}", custom_bounds=None, reverse_cmap=False,
                  vmin=None, vmax=None):
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=400)
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=DPI)
     fig.patch.set_facecolor(BG_COLOR)
     ax.set_facecolor(BG_COLOR)
 
@@ -145,6 +146,12 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
             else:
                 text_el.set_color('white')  # Clean white text for Green and Red boxes
 
+        ax.set_aspect('auto')
+
+        ax.set_title(title, color=TEXT_WHITE, fontsize=TITLE_FONT_SIZE, pad=35, weight='bold')
+        ax.set_xlabel("")
+        ax.set_ylabel("")
+
     elif mode == "threshold":
         # Changed sentinel to -999.0 so legitimate negative numbers aren't caught!
         plot_matrix = data_matrix.fillna(-999.0)
@@ -161,10 +168,11 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
         norm = BoundaryNorm(bounds, cmap.N)
 
         annot_matrix = np.empty_like(plot_matrix.values, dtype=object)
+        # print(plot_matrix)
         for i in range(plot_matrix.shape[0]):
             for j in range(plot_matrix.shape[1]):
                 val = plot_matrix.iloc[i, j]
-                annot_matrix[i, j] = "ERROR" if val <= -999.0 else float_fmt.format(val)
+                annot_matrix[i, j] = "ERROR" if val == -1.0 else float_fmt.format(val)
 
         sns.heatmap(
             plot_matrix, cmap=cmap, norm=norm, annot=annot_matrix, fmt='', cbar=False,
@@ -237,11 +245,13 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
     for tick in ax.get_yticklabels():
         tick.set_rotation(0)
 
-    plt.subplots_adjust(left=0.18, bottom=0.22)
+    plt.subplots_adjust(left=0.15, bottom=0.2)
     plt.tight_layout()
+    # Delete tight_layout() entirely and hardcode the box anchors!
+    # plt.subplots_adjust(left=0.1, right=0.9, bottom=0.15, top=0.85)
 
     full_path = os.path.join(IMG_DIR, save_filename)
-    plt.savefig(full_path, format='png', dpi=300, transparent=True)
+    plt.savefig(full_path, format='png', dpi=DPI, transparent=True)
     plt.close()
     print(f"🖼️ Exported Heatmap: {full_path}")
 
@@ -258,7 +268,7 @@ def draw_barchart(data_series, title, xlabel, save_filename, reverse_cmap=False,
     models = data_series.index
     values = data_series.values
 
-    fig, ax = plt.subplots(figsize=(14, 8), dpi=300)
+    fig, ax = plt.subplots(figsize=(14, 8), dpi=DPI)
     fig.patch.set_facecolor(BG_COLOR)
     ax.set_facecolor(BG_COLOR)
 
@@ -296,7 +306,7 @@ def draw_barchart(data_series, title, xlabel, save_filename, reverse_cmap=False,
     plt.tight_layout()
 
     full_path = os.path.join(IMG_DIR, save_filename)
-    plt.savefig(full_path, format='png', dpi=300, transparent=True)
+    plt.savefig(full_path, format='png', dpi=DPI, transparent=True)
     plt.close()
     print(f"📊 Exported Bar Chart: {full_path}")
 
@@ -308,7 +318,7 @@ def draw_grouped_barchart(df_compare, title, xlabel, save_filename, float_fmt="{
     y = np.arange(len(models))
     height = 0.35
 
-    fig, ax = plt.subplots(figsize=(14, 8), dpi=300)
+    fig, ax = plt.subplots(figsize=(14, 8), dpi=DPI)
     fig.patch.set_facecolor(BG_COLOR)
     ax.set_facecolor(BG_COLOR)
 
@@ -355,7 +365,7 @@ def draw_grouped_barchart(df_compare, title, xlabel, save_filename, float_fmt="{
     plt.tight_layout()
 
     full_path = os.path.join(IMG_DIR, save_filename)
-    plt.savefig(full_path, format='png', dpi=300, transparent=True)
+    plt.savefig(full_path, format='png', dpi=DPI, transparent=True)
     plt.close()
     print(f"📊 Exported Grouped Bar Chart: {full_path}")
 
@@ -365,8 +375,8 @@ def draw_grouped_barchart(df_compare, title, xlabel, save_filename, float_fmt="{
 # ==============================================================================
 def plot_perf_ttft(raw_df, prompt_type="Short", title=None, filename=None):
     df = _load_data(raw_df)
-    title = title or f"MEAN TTFT (SECONDS) - {prompt_type.upper()} PROMPTS"
-    filename = filename or f"perf_ttft_{prompt_type.lower()}.png"
+    title = title or f"MEAN TTFT ({prompt_type.upper()}) | ▼ Lower is Better (Seconds)"
+    filename = filename or f"ttft_{prompt_type.lower()[0]}.png"
 
     df_pivot = df[df['Prompt Type'] == prompt_type].pivot_table(index='Hardware', columns='Model', values='TTFT',
                                                                 aggfunc='mean')
@@ -377,7 +387,7 @@ def plot_perf_ttft(raw_df, prompt_type="Short", title=None, filename=None):
                  reverse_cmap=True, float_fmt="{:.3f}")
 
 
-def plot_perf_ts(raw_df, title="TEXT GENERATION SPEED (T/S)", filename="perf_ts.png"):
+def plot_perf_ts(raw_df, title="GENERATION SPEED | ▲ Higher is Better (Tokens/Sec)", filename="ts.png"):
     df = _load_data(raw_df)
 
     df_pivot = df.groupby(['Hardware', 'Model'])['T/S'].mean().unstack()
@@ -390,18 +400,37 @@ def plot_perf_ts(raw_df, title="TEXT GENERATION SPEED (T/S)", filename="perf_ts.
 
 def plot_perf_status(raw_df, title="HARDWARE EVALUATION MATRIX", filename="perf_status.png"):
     df = _load_data(raw_df)
-    mean_combined = df.groupby(['Hardware', 'Model'])[['TTFT', 'T/S']].mean().reset_index()
 
-    def evaluate_status(row):
-        if pd.isna(row['TTFT']) or pd.isna(row['T/S']) or row['TTFT'] < 0 or row['T/S'] < 0: return 'ERROR'
-        if row['TTFT'] <= 0.3 and row['T/S'] >= 18: return 'EX'
-        if row['TTFT'] <= 0.8 and row['T/S'] >= 6: return 'GE'
-        return 'F'
+    # 1. Group by Hardware, Model, AND Prompt Type to evaluate Short and Long separately!
+    grouped = df.groupby(['Hardware', 'Model', 'Prompt Type'])[['TTFT', 'T/S']].mean().reset_index()
 
-    mean_combined['Status_Text'] = mean_combined.apply(evaluate_status, axis=1)
+    # 2. Evaluate each row individually and assign a numerical rank (Lowest is worst)
+    def evaluate_single(row):
+        if pd.isna(row['TTFT']) or pd.isna(row['T/S']) or row['TTFT'] < 0 or row['T/S'] < 0:
+            return 0  # ERROR
+        if row['TTFT'] <= 0.3 and row['T/S'] >= 18:
+            return 3  # EX
+        if row['TTFT'] <= 0.8 and row['T/S'] >= 6:
+            return 2  # GE
+        return 1  # F
 
-    df_pivot = mean_combined.pivot_table(index='Hardware', columns='Model', values='Status_Text',
-                                         aggfunc='first').fillna('ERROR')
+    grouped['Status_Num'] = grouped.apply(evaluate_single, axis=1)
+
+    # 3. Pivot to put 'Short' and 'Long' scores side-by-side for each Hardware/Model
+    status_pivot = grouped.pivot_table(index=['Hardware', 'Model'], columns='Prompt Type', values='Status_Num',
+                                       aggfunc='min')
+
+    # 4. Fill missing prompt types with ERROR (0), then take the worst score between Short and Long
+    status_pivot = status_pivot.fillna(0)
+    final_status_num = status_pivot.min(axis=1)
+
+    # 5. Map the winning number back to the text strings
+    rank_to_text = {0: 'ERROR', 1: 'F', 2: 'GE', 3: 'EX'}
+    final_status_text = final_status_num.map(rank_to_text).reset_index(name='Status_Text')
+
+    # 6. Pivot into the final 2D matrix for the heatmap exactly as before
+    df_pivot = final_status_text.pivot_table(index='Hardware', columns='Model', values='Status_Text',
+                                             aggfunc='first').fillna('ERROR')
     df_pivot = df_pivot.reindex(columns=MODELS_ORDER)
     df_pivot = _format_perf_matrix(df_pivot)
 
@@ -445,9 +474,9 @@ def _clean_jakub_df(raw_df):
 
 def plot_jakub_grades(raw_df, reasoning_mode='no_reasoning', title=None, filename=None):
     df, model_col = _clean_jakub_df(raw_df)
-    title = title or (
-        "MODEL PERFORMANCE - NO REASONING" if reasoning_mode == 'no_reasoning' else "MODEL PERFORMANCE - WITH REASONING")
-    filename = filename or f"jakub_grades_{reasoning_mode}.png"
+    base_title = "NR" if reasoning_mode == 'no_reasoning' else "R"
+    title = title or f"MODEL PERFORMANCE ({base_title}) | ▼ Lower is Better (Grade 1-5)"
+    filename = filename or f"j_{reasoning_mode[0]}.png"
 
     df_pivot = df[df['Reasoning_Mode'] == reasoning_mode].pivot_table(index=model_col, columns='Test_Type',
                                                                       values='Grade', aggfunc='mean')
@@ -457,7 +486,7 @@ def plot_jakub_grades(raw_df, reasoning_mode='no_reasoning', title=None, filenam
                  float_fmt="{:.2f}")
 
 
-def plot_jakub_delta(raw_df, title="REASONING IMPROVEMENT DELTA", filename="jakub_delta.png"):
+def plot_jakub_delta(raw_df, title="REASONING IMPROVEMENT DELTA | ▲ Higher is Better", filename="j_delta.png"):
     df, model_col = _clean_jakub_df(raw_df)
 
     df_no = df[df['Reasoning_Mode'] == 'no_reasoning'].pivot_table(index=model_col, columns='Test_Type', values='Grade',
@@ -471,7 +500,7 @@ def plot_jakub_delta(raw_df, title="REASONING IMPROVEMENT DELTA", filename="jaku
 
 
 def plot_jakub_compare_bar(raw_df, title="AVERAGE GRADE: NO REASONING vs WITH REASONING",
-                           filename="jakub_compare_bar.png"):
+                           filename="j_compare.png"):
     df, model_col = _clean_jakub_df(raw_df)
 
     s_no = df[df['Reasoning_Mode'] == 'no_reasoning'].groupby(model_col)['Grade'].mean()
@@ -484,7 +513,7 @@ def plot_jakub_compare_bar(raw_df, title="AVERAGE GRADE: NO REASONING vs WITH RE
 # ==============================================================================
 # 🎯 3. MARTIN WRAPPERS (Jailbreak Success Rate)
 # ==============================================================================
-def plot_martin_jsr(raw_df, title="JAILBREAK SUCCESS RATE (%)", filename="martin_jsr.png"):
+def plot_martin_jsr(raw_df, title="JAILBREAK SUCCESS RATE | ▼ Lower is Better / More Secure", filename="martin_jsr.png"):
     df = _load_data(raw_df)
     df_pivot = df.pivot_table(index='Model', columns='Attack Category', values='JSR', aggfunc='mean')
     # Enforce both Row (Model) and Column (Attack) ordering!
