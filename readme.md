@@ -1,6 +1,6 @@
-# 🛠️ Baller-Engine: Cross-Platform LLM Setup
+# Cross-Platform LLM Setup
 
-This repository contains the configuration and logic to run **llama-cpp-python** with hardware acceleration on both **Ubuntu (AMD/NVIDIA)** and **Windows (Intel Iris Xe)**.
+This repository contains the configuration and logic to run **llama-cpp-python** with hardware acceleration on all Vulkan supported devices.
 
 ## 🚀 Quick Start
 
