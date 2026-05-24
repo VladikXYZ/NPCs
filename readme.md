@@ -49,6 +49,5 @@ Install llama-cpp-python using ninja with this command:
 ```bash
 CMAKE_ARGS="-DGGML_VULKAN=on -GNinja" pip install llama-cpp-python --force-reinstall --upgrade --no-cache-dir --no-binary llama-cpp-python
 ```
----
 
 ---
