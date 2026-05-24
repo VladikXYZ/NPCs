@@ -5,3 +5,4 @@ __pycache__
 martin/jailbreak_log
 jakub/response_log
 vlad/bench_logs
+/viz/
