@@ -39,7 +39,7 @@ $env:CMAKE_ARGS="-DGGML_VULKAN=on -DVulkan_SDK='C:\VulkanSDK\1.4.341.1' -DVulkan
 -->
 ---
 
-### 🐧 Linux Setup (Ubuntu 24.04)
+### 🐧 Linux Setup (Ubuntu 24.04 and CachyOS)
 Install llama-cpp-python with this command:
 ```bash
 export CMAKE_ARGS="-DGGML_VULKAN=on"
@@ -50,16 +50,5 @@ Install llama-cpp-python using ninja with this command:
 CMAKE_ARGS="-DGGML_VULKAN=on -GNinja" pip install llama-cpp-python --force-reinstall --upgrade --no-cache-dir --no-binary llama-cpp-python
 ```
 ---
-
-## 🏗️ Hardware Selection Logic
-The included `main.py` features a **Zero-Footprint Fingerprinting** system:
-* **Auto-Scanning:** Probes the system for Vulkan-compatible IDs.
-* **Persistence:** Saves your choice to `devices.json`.
-* **Safety:** If you move your SSD to a different machine, the script detects the hardware change and prompts for a new selection.
-
-### Usage
-```bash
-python main.py
-```
 
 ---
