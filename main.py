@@ -173,7 +173,9 @@ class Wrapper:
             else:
                 for _ in range(num_mess): log.append([-1,-1,-1,-1,-1,-1])
         xd = pandas.DataFrame(log, columns=["TTFT", "T/S", "NPC TOKENS","USER TOKENS" , "TOTAL TIME", "ALL TOKENS"])
-        xd.to_csv(f"{LOG_DIR}{dev_name}.csv", index=False)
+        file_path = f"{LOG_DIR}{dev_name}.csv"
+        print(file_path)
+        xd.to_csv(file_path, index=False)
 
     def run_llm_with_messages(self, llm, sys_prompt, messages, log_file):
         log = []

@@ -35,11 +35,11 @@ AXIS_LABEL_FONT_SIZE = 18
 LEGEND_FONT_SIZE = 16
 DPI = 500
 
-IMG_DIR = "rebrand"
+IMG_DIR = "report"
 os.makedirs(IMG_DIR, exist_ok=True)
 
 BG_COLOR = '#1e1e24'
-TEXT_WHITE = 'white'
+TEXT_WHITE = 'black'
 COLOR_CRASH_BLACK = '#111115'
 
 COLOR_FAILED = '#a50026'  # Deep Intense Red
