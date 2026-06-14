@@ -28,11 +28,11 @@ MARTIN_ATTACK_ORDER = [
 ]
 
 TITLE_FONT_SIZE = 28
-AXIS_TICK_FONT_SIZE = 18
-MATRIX_CELL_FONT_SIZE = 16
-BAR_DATA_LABEL_FONT_SIZE = 14
-AXIS_LABEL_FONT_SIZE = 18
-LEGEND_FONT_SIZE = 16
+AXIS_TICK_FONT_SIZE = 24
+MATRIX_CELL_FONT_SIZE = 20
+BAR_DATA_LABEL_FONT_SIZE = 20
+AXIS_LABEL_FONT_SIZE = 24
+LEGEND_FONT_SIZE = 24
 DPI = 500
 
 IMG_DIR = "report"
@@ -120,7 +120,7 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
         numeric_matrix = data_matrix.replace(status_map).fillna(0).astype(float)
 
         # 1. Map the cell abbreviations to full words for display labels
-        display_map = {'ERROR': 'ERROR', 'F': 'FAILED', 'GE': 'GOOD ENOUGH', 'EX': 'IDEAL'}
+        display_map = {'ERROR': 'ERROR', 'F': 'FAILED', 'GE': 'PASS', 'EX': 'IDEAL'}
         annot_matrix = data_matrix.replace(display_map)
 
         # 2. Draw the heatmap with full text annotations and no sidebar
@@ -141,7 +141,7 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
             t = text_el.get_text()
             if t == 'ERROR':
                 text_el.set_color('#ff4d6d')  # Pink-red highlight for crashes
-            elif t == 'GOOD ENOUGH':
+            elif t == 'PASS':
                 text_el.set_color('black')  # Crisp black text for yellow boxes
             else:
                 text_el.set_color('white')  # Clean white text for Green and Red boxes
@@ -486,7 +486,7 @@ def plot_jakub_grades(raw_df, reasoning_mode='no_reasoning', title=None, filenam
                  float_fmt="{:.2f}")
 
 
-def plot_jakub_delta(raw_df, title="REASONING IMPROVEMENT DELTA | ▲ Higher is Better", filename="j_delta.png"):
+def plot_jakub_delta(raw_df, title="REASONING IMPROVEMENT DELTA | ▼ Lower is Better", filename="j_delta.png"):
     df, model_col = _clean_jakub_df(raw_df)
 
     df_no = df[df['Reasoning_Mode'] == 'no_reasoning'].pivot_table(index=model_col, columns='Test_Type', values='Grade',
@@ -494,8 +494,9 @@ def plot_jakub_delta(raw_df, title="REASONING IMPROVEMENT DELTA | ▲ Higher is 
     df_with = df[df['Reasoning_Mode'] == 'with_reasoning'].pivot_table(index=model_col, columns='Test_Type',
                                                                        values='Grade', aggfunc='mean')
 
-    df_imp = (df_no - df_with).reindex(index=MODELS_ORDER)
-    draw_heatmap(df_imp, title, filename, mode="continuous", reverse_cmap=False, vmin=-1.7, vmax=1.7,
+    df_imp = -(df_no - df_with).reindex(index=MODELS_ORDER)
+
+    draw_heatmap(df_imp, title, filename, mode="continuous", reverse_cmap=True, vmin=-1.7, vmax=1.7,
                  float_fmt="{:+.2f}")
 
 
@@ -638,8 +639,10 @@ if __name__ == "__main__":
                     current_model, current_character, current_category = None, None, None
 
         df_parsed = pd.DataFrame(data)
+
         # Apply the fuzzy string matcher to Martin's raw model names!
         df_parsed = _clean_model_names(df_parsed, "Model")
+        print(df_parsed)
         return df_parsed
 
 
