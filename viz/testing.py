@@ -27,10 +27,10 @@ MARTIN_ATTACK_ORDER = [
     "Encoding (Malicious HEX)"
 ]
 
-TITLE_FONT_SIZE = 28
+TITLE_FONT_SIZE = 30
 AXIS_TICK_FONT_SIZE = 24
-MATRIX_CELL_FONT_SIZE = 20
-BAR_DATA_LABEL_FONT_SIZE = 20
+MATRIX_CELL_FONT_SIZE = 24
+BAR_DATA_LABEL_FONT_SIZE = 24
 AXIS_LABEL_FONT_SIZE = 24
 LEGEND_FONT_SIZE = 24
 DPI = 500
@@ -148,7 +148,7 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
 
         ax.set_aspect('auto')
 
-        ax.set_title(title, color=TEXT_WHITE, fontsize=TITLE_FONT_SIZE, pad=35, weight='bold')
+        # ax.set_title(title, loc='left', color=TEXT_WHITE, fontsize=TITLE_FONT_SIZE, pad=4, weight='bold')
         ax.set_xlabel("")
         ax.set_ylabel("")
 
@@ -234,7 +234,7 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
                 except ValueError:
                     text_el.set_color('white')
 
-    ax.set_title(title, color=TEXT_WHITE, fontsize=TITLE_FONT_SIZE, pad=35, weight='bold')
+    ax.set_title(title, color=TEXT_WHITE, fontsize=TITLE_FONT_SIZE, pad=-20, weight='bold')
     ax.set_xlabel("")
     ax.set_ylabel("")
     ax.tick_params(colors=TEXT_WHITE, labelsize=AXIS_TICK_FONT_SIZE, which='both', length=0)
@@ -245,8 +245,8 @@ def draw_heatmap(data_matrix, title, save_filename, mode="continuous",
     for tick in ax.get_yticklabels():
         tick.set_rotation(0)
 
-    plt.subplots_adjust(left=0.15, bottom=0.2)
-    plt.tight_layout()
+    plt.subplots_adjust(left=0.16, bottom=0.16)
+    # plt.tight_layout()
     # Delete tight_layout() entirely and hardcode the box anchors!
     # plt.subplots_adjust(left=0.1, right=0.9, bottom=0.15, top=0.85)
 
