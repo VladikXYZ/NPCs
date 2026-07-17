@@ -8,34 +8,23 @@ import time
 import pandas
 from tqdm import tqdm
 from contextlib import contextmanager
-
-import ctypes
-from llama_cpp import Llama, llama_log_set
+from llama_cpp import Llama
 
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
 
-
-
-@ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_char_p, ctypes.c_void_p)
-def mute_llama_log(level, message, user_data):
-    pass
-
-llama_log_set(mute_llama_log, ctypes.c_void_p())
-
 @contextmanager
-def suppress_cpp_warnings():
-    # Save the original terminal error stream
-    old_stderr = os.dup(sys.stderr.fileno())
-    # Open a black hole (devnull)
-    devnull = os.open(os.devnull, os.O_WRONLY)
-    # Reroute the error stream to the black hole
-    os.dup2(devnull, sys.stderr.fileno())
-    try:
+def suppress_cpp_warnings(suppress=True):
+    if not suppress:
         yield
+        return
+
+    old_stderr = os.dup(sys.stderr.fileno())
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    os.dup2(devnull, sys.stderr.fileno())
+    try: yield
     finally:
-        # Restore the terminal error stream when done!
         os.dup2(old_stderr, sys.stderr.fileno())
         os.close(old_stderr)
         os.close(devnull)
@@ -103,7 +92,9 @@ class Wrapper:
                 llm = Llama(model_path=model_path, n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
                 llm.create_chat_completion(role,max_tokens=1)
         except Exception as e:
+            print(e)
             print(f"Not enough memory!!")
+
             return None
         print(f"Loaded!")
         return llm
