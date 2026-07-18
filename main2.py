@@ -101,9 +101,9 @@ class Wrapper:
 
         num_mess = len(messages)
         num_models = len(self.models)
-        print(f"Testing:")
-        for model in self.models:
-            print(model)
+        # print(f"Testing:")
+        # for model in self.models:
+        #     print(model)
         for i, model in enumerate(self.models):
             # if i != 6: continue
             llm = self.load_llm_with_warmup(model, warmup)

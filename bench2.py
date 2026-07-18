@@ -11,7 +11,7 @@ def get_devices():
 import sys
 from llama_cpp import Llama
 try:
-   llm = Llama(model_path='models/gemma-4-E2B-it-Q4_K_M.gguf', n_gpu_layers=1, verbose=True)
+   llm = Llama(model_path='models/Supra-Router-51M-Q4_K_M.gguf', n_gpu_layers=1, verbose=True)
 except Exception:
    pass
     """
