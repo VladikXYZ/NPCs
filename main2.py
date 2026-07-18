@@ -4,7 +4,9 @@ import sys
 import time
 import pandas
 import bench2
+import gc
 from tqdm import tqdm
+import questionary
 from llama_cpp import Llama
 
 MODEL_DIR = 'models/'
@@ -14,7 +16,7 @@ CONTEXT_SIZE = 4096
 
 class Wrapper:
     def __init__(self, dev=-1):
-        self.models = [os.path.join(MODEL_DIR, x) for x in os.listdir(MODEL_DIR) if x.endswith(".gguf")]
+        self.models = sorted([os.path.splitext(os.path.basename(x))[0] for x in os.listdir(MODEL_DIR) if x.endswith(".gguf")], key=os.path.basename)
         if os.path.exists(DEVICES_FILE):
             with open(DEVICES_FILE, "r") as f:
                 self.devices = json.load(f)
@@ -70,7 +72,7 @@ class Wrapper:
         print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
         try:
             with Silencer():
-                llm = Llama(model_path=model_path, n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
+                llm = Llama(model_path="models/"+model_path+".gguf", n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
                 llm.create_chat_completion(role, max_tokens=1)
         except Exception as e:
             print(e)
@@ -98,13 +100,17 @@ class Wrapper:
         # print(warmup)
 
         num_mess = len(messages)
+        num_models = len(self.models)
+        print(f"Testing:")
+        for model in self.models:
+            print(model)
         for i, model in enumerate(self.models):
             # if i != 6: continue
             llm = self.load_llm_with_warmup(model, warmup)
             if llm:
                 prev_n = llm.n_tokens
-                model_info = os.path.basename(model)[:-5]
-                for user_input in tqdm(messages, desc=f"Testing {model_info}", unit="prompt"):
+                # model_info = os.path.basename(model)[:-5]
+                for user_input in tqdm(messages, desc=f"Testing {i+1}/{num_models} {model}", unit="prompt"):
                     chat_history.append({"role": "user", "content": user_input})
 
                     start_time = time.perf_counter()
