@@ -4,6 +4,5 @@ __pycache__
 martin/jailbreak_log
 jakub/response_log
 vlad/bench_logs
-!/models/
 /models/*
 !models/Supra-Router-51M-Q4_K_M.gguf
