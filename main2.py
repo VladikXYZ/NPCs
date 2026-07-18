@@ -4,7 +4,6 @@ import sys
 import time
 import pandas
 import bench2
-import gc
 from tqdm import tqdm
 import questionary
 from llama_cpp import Llama
