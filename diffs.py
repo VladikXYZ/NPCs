@@ -1,94 +1,113 @@
 import os
 import json
 import time
-import subprocess
 import pandas as pd
+from tqdm import tqdm
+import torch
+import gc
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-MODEL_DIR = 'models_diff/'
-DEVICES_FILE = "devices.json"
-# This path points perfectly to the binary you just compiled!
-CLI_PATH = "./llama.cpp/build/bin/llama-diffusion-cli"
+# We use the native Hugging Face Repos instead of local GGUFs
+HF_MODELS = [
+    "GSAI-ML/LLaDA-8B-Instruct",
+    # Note: DiffusionGemma-26B requires ~18GB of VRAM even in 4-bit,
+    # so it is omitted here to prevent your RTX 3060 from crashing.
+]
 
 
-def get_devices():
-    if os.path.exists(DEVICES_FILE):
-        with open(DEVICES_FILE, "r") as f:
-            return json.load(f)
-    return []
+class HFDiffusionWrapper:
+    def __init__(self):
+        print("⚡ Fast Start: Running HF Diffusion Benchmark on NVIDIA RTX 3060...")
+        self.device = "cuda"
+        self.run_test()
 
+    def run_test(self):
+        import platform
+        my_pc_name = platform.node()
+        dev_name = "CUDA_NVIDIA_GeForce_RTX_3060"
 
-def run_diffusion_benchmark():
-    # Ensure the directory exists to avoid errors
-    os.makedirs(MODEL_DIR, exist_ok=True)
-    models = [os.path.join(MODEL_DIR, x) for x in os.listdir(MODEL_DIR) if x.endswith(".gguf")]
-    devices = get_devices()
+        LOG_DIR = f'vlad/bench_logs/{my_pc_name}/'
+        os.makedirs(LOG_DIR, exist_ok=True)
+        log = []
 
-    if not devices:
-        print("No devices found in devices.json!")
-        return
+        try:
+            with open("vlad/test.json", "r") as f:
+                messages = json.load(f)
+            with open("data_3npcs.json") as file:
+                npc = json.load(file)[2]
+        except FileNotFoundError as e:
+            print(f"Missing data file: {e}")
+            return
 
-    if not models:
-        print(f"No .gguf files found in {MODEL_DIR}!")
-        return
+        system_prompt = npc["role"] + npc["shared_system_prompt"]
+        num_models = len(HF_MODELS)
 
-    log = []
-    test_prompt = "You are a grumpy tavern keeper. Can I get a room for the night?"
+        # Force 4-bit quantization on the fly
+        quant_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_use_double_quant=True
+        )
 
-    for device in devices:
-        dev_name = f"{device['type']}_{device['name'].replace(' ', '_')}"
-        print(f"\n🎮 Benchmarking on: {dev_name}")
-
-        # Isolate the specific GPU via environment variables
-        env = os.environ.copy()
-        if device["type"] == "Vulkan":
-            env["GGML_VK_VISIBLE_DEVICES"] = str(device["id"])
-        elif device["type"] == "CUDA":
-            env["CUDA_VISIBLE_DEVICES"] = str(device["id"])
-
-        for model in models:
-            model_info = os.path.basename(model)
-            print(f"  Loading {model_info}...")
-
-            # The diffusion CLI uses specific arguments
-            cmd = [
-                CLI_PATH,
-                "-m", model,
-                "-p", test_prompt,
-                "-n", "64",  # Max tokens to generate
-                "-ngl", "99",  # Offload all layers to GPU
-            ]
-            if "diffucoder" in model.lower():
-                cmd.extend(["--diffusion-eps", "0.0001"])
-
-            start_time = time.perf_counter()
+        for i, model_id in enumerate(HF_MODELS):
+            print(f"\nLoading {model_id} via Hugging Face...")
             try:
-                # Capture the output to parse the speed metrics
-                result = subprocess.run(cmd, env=env, capture_output=True, text=True, timeout=120)
+                # trust_remote_code=True is mandatory for diffusion architectures
+                tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+                model = AutoModelForCausalLM.from_pretrained(
+                    model_id,
+                    trust_remote_code=True,
+                    quantization_config=quant_config,
+                    device_map="cuda"
+                )
+            except Exception as e:
+                print(f"Failed to load {model_id}: {e}")
+                for _ in range(len(messages)):
+                    log.append([-1, -1, -1, -1, -1, "FAILED"])
+                continue
+
+            for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model_id.split('/')[-1]}",
+                                   unit="prompt"):
+                chat = [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_input}
+                ]
+
+                input_ids = tokenizer.apply_chat_template(
+                    chat,
+                    return_tensors="pt",
+                    add_generation_prompt=True
+                ).to(self.device)
+
+                start_time = time.perf_counter()
+
+                # The generation loop
+                with torch.no_grad():
+                    output_ids = model.generate(
+                        input_ids,
+                        max_new_tokens=64,
+                        do_sample=True
+                    )
+
                 total_time = time.perf_counter() - start_time
+                generated_tokens = output_ids[0][input_ids.shape[1]:]
+                token_count = len(generated_tokens)
 
-                if result.returncode != 0:
-                    print(f"    ❌ Crash/Error: {result.stderr.splitlines()[-1] if result.stderr else 'Unknown Error'}")
-                    log.append([dev_name, model_info, -1, -1, "FAILED"])
-                    continue
+                # Diffusion doesn't stream token-by-token, so TTFT equals Total Time
+                tps = token_count / total_time if total_time > 0 else 0
+                log.append([total_time, tps, token_count, 0, total_time, "OK"])
 
-                # Diffusion models generate a block at once, so we estimate TPS based on the requested token count
-                tps = 64 / total_time
-                print(f"    ✅ Success! Total Time: {total_time:.2f}s | Est. Speed: {tps:.2f} T/s")
-                log.append([dev_name, model_info, total_time, tps, "OK"])
+            # Aggressive cleanup between models
+            del model
+            del tokenizer
+            gc.collect()
+            torch.cuda.empty_cache()
 
-            except subprocess.TimeoutExpired:
-                print("    ⏳ Timeout! Model hung for over 120 seconds.")
-                log.append([dev_name, model_info, -1, -1, "TIMEOUT"])
-
-            # Give the GPU driver time to flush VRAM between runs
-            time.sleep(5)
-
-    # Save results
-    os.makedirs("vlad/bench_logs/", exist_ok=True)
-    df = pd.DataFrame(log, columns=["Device", "Model", "Total Time (s)", "Est. T/S", "Status"])
-    df.to_csv("vlad/bench_logs/diffusion_results.csv", index=False)
-    print("\n📊 Benchmark complete! Saved to vlad/bench_logs/diffusion_results.csv")
+        xd = pd.DataFrame(log, columns=["TTFT", "T/S", "NPC TOKENS", "USER TOKENS", "TOTAL TIME", "STATUS"])
+        file_path = f"{LOG_DIR}{dev_name}_hf_diffusion.csv"
+        xd.to_csv(file_path, index=False)
+        print(f"\n📊 Benchmark complete! Saved to {file_path}")
 
 
-if __name__ == "__main__":
-    run_diffusion_benchmark()
+if __name__ == '__main__':
+    HFDiffusionWrapper()

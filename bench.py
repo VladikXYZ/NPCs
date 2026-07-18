@@ -11,7 +11,7 @@ def get_devices():
 import sys
 from llama_cpp import Llama
 try:
-   llm = Llama(model_path='models/gemma-4-E2B-it-Q4_K_M.gguf', n_gpu_layers=1, verbose=True)
+   llm = Llama(model_path='models/Supra-Router-51M-Q4_K_M.gguf', n_gpu_layers=1, verbose=True)
 except Exception:
    pass
     """
@@ -30,12 +30,17 @@ except Exception:
     return devices
 
 if __name__ == '__main__':
-    # with open("devices.json", "r") as f:
-    #     devices = json.load(f)
-    devices = get_devices()
+    try:
+        with open("devices.json", "r") as f:
+            devices = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        devices = get_devices()
 
     start = time.time()
+
     for i in range(len(devices)):
+        prev = time.time()
         subprocess.run([sys.executable, "main.py", str(i)])
+        print(f"This took {time.time() - prev} seconds")
         # break
-    print(f"It took {time.time() - start} seconds")
+    print(f"All tests took {time.time() - start} seconds")
