@@ -13,6 +13,19 @@ MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
 
+@contextmanager
+def Silencer(suppress=True):
+    if suppress:
+        old_stderr = os.dup(sys.stderr.fileno())
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stderr.fileno())
+        try: yield
+        finally:
+            os.dup2(old_stderr, sys.stderr.fileno())
+            os.close(old_stderr)
+            os.close(devnull)
+    else: yield
+
 
 class Wrapper:
     def __init__(self, dev=-1):
@@ -44,28 +57,17 @@ class Wrapper:
             self._execute_action()
             return
 
-        self.action = questionary.select(
-            "Select operation mode:",
-            choices=["Benchmark", "Auto run", "Chat", "Exit"],
-            qmark="⚙️"
-        ).ask()
+        self.action = questionary.select("Select operation mode:", choices=["Benchmark", "Auto run", "Chat", "Exit"], qmark="⚙️").ask()
 
         if not self.action or self.action == "Exit":
             print("Exiting...")
             sys.exit(0)
 
-        device_choices = [
-            f"[{i}] {d['type']:<8} | {d['name']}" for i, d in enumerate(self.devices)
-        ]
+        device_choices = [f"[{i}] {d['type']:<8} | {d['name']}" for i, d in enumerate(self.devices)]
 
-        dev_choice = questionary.select(
-            "Select device:",
-            choices=device_choices,
-            qmark="🎮"
-        ).ask()
+        dev_choice = questionary.select("Select device:", choices=device_choices, qmark="🎮").ask()
 
-        if not dev_choice:
-            sys.exit(0)
+        if not dev_choice: sys.exit(0)
 
         dev_idx = int(dev_choice.split("]")[0][1:])
         self.device = self.devices[dev_idx]
@@ -74,14 +76,9 @@ class Wrapper:
         os.environ["GGML_VK_VISIBLE_DEVICES"] = str(self.device["id"] * (self.device["type"] == "Vulkan"))
 
         if self.action == "Chat":
-            self.selected_model = questionary.select(
-                "Select a model for Chat:",
-                choices=self.models,
-                qmark="🤖"
-            ).ask()
+            self.selected_model = questionary.select("Select a model for Chat:", choices=self.models, qmark="🤖").ask()
 
-            if not self.selected_model:
-                sys.exit(0)
+            if not self.selected_model: sys.exit(0)
         else:
             print(f"\n🚀 Mode set to {self.action}. Will iterate through all {len(self.models)} models.")
 
@@ -99,31 +96,15 @@ class Wrapper:
             # self.run_chat()
 
     def load_llm(self, model_path, role):
-        @contextmanager
-        def Silencer(suppress=True):
-            if suppress:
-                old_stderr = os.dup(sys.stderr.fileno())
-                devnull = os.open(os.devnull, os.O_WRONLY)
-                os.dup2(devnull, sys.stderr.fileno())
-                try:
-                    yield
-                finally:
-                    # This always runs, even if your code crashes inside the block
-                    os.dup2(old_stderr, sys.stderr.fileno())
-                    os.close(old_stderr)
-                    os.close(devnull)
-            else:
-                yield
-
         print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
         try:
             with Silencer():
-                llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
-                            n_ctx=CONTEXT_SIZE, verbose=False)
+                llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
+                # llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
+                #             n_ctx=CONTEXT_SIZE, verbose=False, type_k=8, type_v=8, flash_attn=True)
                 llm.create_chat_completion(role, max_tokens=1)
         except Exception as e:
-            print(e)
-            print(f"Probably not enough memory!!")
+            print(f"{e}\nProbably not enough memory!!")
             return None
 
         print(f"Loaded! | ", end="", flush=True)
