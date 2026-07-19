@@ -13,7 +13,7 @@ from contextlib import contextmanager
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
-RESPONSE_LENGTH = 16
+RESPONSE_LENGTH = 32
 
 @contextmanager
 def Silencer(suppress=True):
@@ -126,60 +126,62 @@ class Wrapper:
 
         chat_history = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]}]
         warmup = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]},
-                  {"role": "user", "content": "warmup!"}]
+                  {"role": "user", "content": "warmup"}]
 
         num_mess = len(messages)
         num_models = len(self.models)
 
         for i, model in enumerate(self.models):
             llm = self.load_llm(model, warmup)
-            ttfts = []
-            tss = []
+            ttfts = 0
+            tpss = 0
             if llm:
                 # real warmup:
                 for _ in range(4): llm.create_chat_completion(warmup, max_tokens=1)
                 print("Warmuped !!")
 
-                prev_n = llm.n_tokens
+                prev_n = llm.n_tokens#len(llm.tokenize(chat_history[0]["content"]))
                 for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
                     chat_history.append({"role": "user", "content": user_input})
 
                     start_time = time.perf_counter()
-                    first_token_time = None
-                    token_count = 0
+                    ttft = None
+                    t_out = 0
 
                     stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=RESPONSE_LENGTH)
-                    assistant_response = ""
+                    assistant_response = []
                     for chunk in stream:
-                        delta = chunk['choices'][0]["delta"] #.get('delta', {})
+                        delta = chunk['choices'][0]["delta"]
                         if 'content' in delta:
-                            if first_token_time is None:
-                                first_token_time = time.perf_counter() - start_time
-                            assistant_response += delta['content']
-                            token_count += 1
+                            if ttft is None:
+                                ttft = time.perf_counter() - start_time
+                            assistant_response.append(delta['content'])
+                            t_out += 1
+                    assistant_response = "".join(assistant_response)
 
                     total_time = time.perf_counter() - start_time
-                    gen_time = total_time - (first_token_time if first_token_time else 0)
-                    tps = token_count / gen_time if gen_time > 0 else 0
+                    gen_time = total_time - (ttft if ttft else 0)
+                    tps = t_out / gen_time if gen_time > 0 else 0
 
-                    chat_history.append({"role": "assistant", "content": assistant_response})
-                    first_token_time = first_token_time if first_token_time is not None else 0.0
+                    ttft = ttft if ttft is not None else -1
                     all_tokens = llm.n_tokens
-                    log.append(
-                        [model, first_token_time, tps, token_count, all_tokens - prev_n - token_count, total_time,
-                         all_tokens, user_input.replace('\n', '|'), assistant_response.replace('\n', '|')])
-                    ttfts.append(first_token_time)
-                    tss.append(tps)
+                    t_in = all_tokens - prev_n - t_out
+                    chat_history.append({"role": "assistant", "content": assistant_response})
+                    log.append([i, ttft, tps, t_in, t_out, total_time, all_tokens])
+                    #, user_input.replace('\n', '|'), assistant_response.replace('\n', '|')
                     prev_n = all_tokens
+                    ttfts+=ttft
+                    tpss+=tps
                 
-                print(f"Mean TTFT:{sum(ttfts)/num_mess:.3f}, Mean T/s: {sum(tss)/num_mess:.3f}")
+                print(f"Mean TTFT:{ttfts/num_mess:.3f}, Mean T/s: {tpss/num_mess:.3f}")
                 del llm
                 chat_history = chat_history[:1]
             else:
                 for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1, -1, -1])
 
-        xd = pandas.DataFrame(log, columns=["MODEL", "TTFT", "T/S", "NPC TOKENS", "USER TOKENS", "TOTAL TIME",
-                                            "ALL TOKENS", "INPUT", "RESPONSE"])
+        xd = pandas.DataFrame(log, columns=["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME",
+                                            "ALL TOKENS"])
+        xd = xd.round(4)
         file_path = f"{LOG_DIR}{dev_name}.csv"
         print(file_path)
         xd.to_csv(file_path, index=False)
