@@ -158,8 +158,7 @@ class Wrapper:
             tss = []
             if llm:
                 # real warmup:
-                for _ in range(4):
-                    llm.create_chat_completion(warmup, max_tokens=1)
+                for _ in range(4): llm.create_chat_completion(warmup, max_tokens=1)
                 print("Warmuped !!")
 
                 prev_n = llm.n_tokens
@@ -190,7 +189,7 @@ class Wrapper:
                     all_tokens = llm.n_tokens
                     log.append(
                         [first_token_time, tps, token_count, all_tokens - prev_n - token_count, total_time,
-                         all_tokens, user_input, assistant_response])
+                         all_tokens, user_input.replace('\n', '//'), assistant_response.replace('\n', '//')])
                     ttfts.append(first_token_time)
                     tss.append(tps)
                     prev_n = all_tokens
