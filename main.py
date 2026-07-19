@@ -13,6 +13,7 @@ from contextlib import contextmanager
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
+RESPONSE_LENGTH = 16
 
 @contextmanager
 def Silencer(suppress=True):
@@ -47,8 +48,6 @@ class Wrapper:
         self._run_setup_menu(dev)
 
     def _run_setup_menu(self, dev):
-        """Handles the interactive selection, or skips it if a CLI argument is provided."""
-
         if dev != -1 and 0 <= dev < len(self.devices):
             self.action = "Benchmark"
             self.device = self.devices[dev]
@@ -86,12 +85,11 @@ class Wrapper:
         self._execute_action()
 
     def _execute_action(self):
-        """Routes to the corresponding method based on the selected action."""
         if self.action == "Benchmark":
-            self.run_test()
+            self.benchmark()
         elif self.action == "Auto run":
-            print("\nExecuting Auto run sequence...")
-            # self.run_auto()
+            # print("\nExecuting Auto run sequence...")
+            self.test()
         elif self.action == "Chat":
             print(f"\nStarting Chat with {self.selected_model}...")
             # self.run_chat()
@@ -111,7 +109,7 @@ class Wrapper:
         print(f"Loaded! | ", end="", flush=True)
         return llm
 
-    def run_test(self):
+    def benchmark(self):
         my_pc_name = platform.node()
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split()[:4])
         print(dev_name)
@@ -150,10 +148,10 @@ class Wrapper:
                     first_token_time = None
                     token_count = 0
 
-                    stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=128)
+                    stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=RESPONSE_LENGTH)
                     assistant_response = ""
                     for chunk in stream:
-                        delta = chunk['choices'][0].get('delta', {})
+                        delta = chunk['choices'][0]["delta"] #.get('delta', {})
                         if 'content' in delta:
                             if first_token_time is None:
                                 first_token_time = time.perf_counter() - start_time
@@ -169,7 +167,7 @@ class Wrapper:
                     all_tokens = llm.n_tokens
                     log.append(
                         [model, first_token_time, tps, token_count, all_tokens - prev_n - token_count, total_time,
-                         all_tokens, user_input.replace('\n', '//'), assistant_response.replace('\n', '//')])
+                         all_tokens, user_input.replace('\n', '|'), assistant_response.replace('\n', '|')])
                     ttfts.append(first_token_time)
                     tss.append(tps)
                     prev_n = all_tokens
@@ -184,6 +182,43 @@ class Wrapper:
                                             "ALL TOKENS", "INPUT", "RESPONSE"])
         file_path = f"{LOG_DIR}{dev_name}.csv"
         print(file_path)
+        xd.to_csv(file_path, index=False)
+
+    def test(self):
+        with open("vlad/test.json", "r") as f:
+            messages = json.load(f)
+
+        with open("data_3npcs.json") as file:
+            npc = json.load(file)[2]
+
+        chat_history = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]}]
+        warmup = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]},
+                  {"role": "user", "content": "warmup!"}]
+
+        num_mess = len(messages)
+        num_models = len(self.models)
+        log = []
+
+        for i, model in enumerate(self.models):
+            llm = self.load_llm(model, warmup)
+            print("Ready!!")
+            if llm:
+                for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
+                    chat_history.append({"role": "user", "content": user_input})
+
+                    response_dict = llm.create_chat_completion(messages=chat_history, max_tokens=RESPONSE_LENGTH)
+                    # print(response_dict)
+                    assistant_response = response_dict['choices'][0]['message']
+                    # print(assistant_response)
+                    chat_history.append(assistant_response)
+                    log.append([model ,user_input.replace('\n', '|'), assistant_response["content"].replace('\n', '|')])
+                
+                del llm
+                chat_history = chat_history[:1]
+
+        xd = pandas.DataFrame(log, columns=["MODEL", "USER INPUT", "RESPONSE"])
+        file_path = f"vlad/bench_logs/test.csv"
+        # print(file_path)
         xd.to_csv(file_path, index=False)
 
 
