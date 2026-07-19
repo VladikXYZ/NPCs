@@ -4,6 +4,7 @@ import sys
 import time
 import pandas
 import bench
+import platform
 from tqdm import tqdm
 import questionary
 from llama_cpp import Llama
@@ -104,14 +105,13 @@ class Wrapper:
                 #             n_ctx=CONTEXT_SIZE, verbose=False, type_k=8, type_v=8, flash_attn=True)
                 llm.create_chat_completion(role, max_tokens=1)
         except Exception as e:
-            print(f"{e}\nProbably not enough memory!!")
+            print(f"\n{e}\nProbably not enough memory!!")
             return None
 
         print(f"Loaded! | ", end="", flush=True)
         return llm
 
     def run_test(self):
-        import platform
         my_pc_name = platform.node()
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split()[:4])
         print(dev_name)
@@ -143,8 +143,7 @@ class Wrapper:
                 print("Warmuped !!")
 
                 prev_n = llm.n_tokens
-                for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}",
-                                       unit="prompt"):
+                for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
                     chat_history.append({"role": "user", "content": user_input})
 
                     start_time = time.perf_counter()
@@ -169,7 +168,7 @@ class Wrapper:
                     first_token_time = first_token_time if first_token_time is not None else 0.0
                     all_tokens = llm.n_tokens
                     log.append(
-                        [first_token_time, tps, token_count, all_tokens - prev_n - token_count, total_time,
+                        [model, first_token_time, tps, token_count, all_tokens - prev_n - token_count, total_time,
                          all_tokens, user_input.replace('\n', '//'), assistant_response.replace('\n', '//')])
                     ttfts.append(first_token_time)
                     tss.append(tps)
@@ -179,9 +178,9 @@ class Wrapper:
                 del llm
                 chat_history = chat_history[:1]
             else:
-                for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1, -1])
+                for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1, -1, -1])
 
-        xd = pandas.DataFrame(log, columns=["TTFT", "T/S", "NPC TOKENS", "USER TOKENS", "TOTAL TIME",
+        xd = pandas.DataFrame(log, columns=["MODEL", "TTFT", "T/S", "NPC TOKENS", "USER TOKENS", "TOTAL TIME",
                                             "ALL TOKENS", "INPUT", "RESPONSE"])
         file_path = f"{LOG_DIR}{dev_name}.csv"
         print(file_path)
