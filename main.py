@@ -14,6 +14,7 @@ MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
 RESPONSE_LENGTH = 32
+WARMUP_COUNT = 4
 
 @contextmanager
 def Silencer(suppress=True):
@@ -137,10 +138,12 @@ class Wrapper:
             tpss = 0
             if llm:
                 # real warmup:
-                for _ in range(4): llm.create_chat_completion(warmup, max_tokens=1)
+                # print(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
+                prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
+                for _ in range(WARMUP_COUNT): llm.create_chat_completion(warmup, max_tokens=1)
                 print("Warmuped !!")
+                # print(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
 
-                prev_n = llm.n_tokens#len(llm.tokenize(chat_history[0]["content"]))
                 for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
                     chat_history.append({"role": "user", "content": user_input})
 
