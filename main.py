@@ -132,6 +132,8 @@ class Wrapper:
         num_mess = len(messages)
         num_models = len(self.models)
 
+        test_start = time.perf_counter()
+
         for i, model in enumerate(self.models):
             llm = self.load_llm(model, warmup)
             ttfts = 0
@@ -170,7 +172,7 @@ class Wrapper:
                     all_tokens = llm.n_tokens
                     t_in = all_tokens - prev_n - t_out
                     chat_history.append({"role": "assistant", "content": assistant_response})
-                    log.append([i, ttft, tps, t_in, t_out, total_time, all_tokens])
+                    log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens])
                     #, user_input.replace('\n', '|'), assistant_response.replace('\n', '|')
                     prev_n = all_tokens
                     ttfts+=ttft
@@ -183,7 +185,7 @@ class Wrapper:
                 for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1])
         
 
-        # print(log)
+        print(f"It all took: {time.perf_counter() - test_start}")
 
         xd = pandas.DataFrame(log, columns=["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME",
                                             "ALL TOKENS"])
