@@ -180,7 +180,10 @@ class Wrapper:
                 del llm
                 chat_history = chat_history[:1]
             else:
-                for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1, -1, -1])
+                for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1])
+        
+
+        # print(log)
 
         xd = pandas.DataFrame(log, columns=["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME",
                                             "ALL TOKENS"])
