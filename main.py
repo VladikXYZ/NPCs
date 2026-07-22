@@ -3,33 +3,19 @@ import json
 import sys
 import time
 import pandas
-import bench
+import utils
 import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-from contextlib import contextmanager
 
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
-RESPONSE_LENGTH = 32
+RESPONSE_LENGTH = 128
 WARMUP_COUNT = 4
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
-
-@contextmanager
-def Silencer(suppress=True):
-    if suppress:
-        old_stderr = os.dup(sys.stderr.fileno())
-        devnull = os.open(os.devnull, os.O_WRONLY)
-        os.dup2(devnull, sys.stderr.fileno())
-        try: yield
-        finally:
-            os.dup2(old_stderr, sys.stderr.fileno())
-            os.close(old_stderr)
-            os.close(devnull)
-    else: yield
 
 
 class Wrapper:
@@ -41,7 +27,7 @@ class Wrapper:
         if os.path.exists(DEVICES_FILE):
             with open(DEVICES_FILE, "r") as f:
                 self.devices = json.load(f)
-        else: self.devices = bench.get_devices()
+        else: self.devices = utils.get_devices()
 
         self.action = None
         self.device = None
@@ -88,7 +74,7 @@ class Wrapper:
     def load_llm(self, model_path, role):
         print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
         try:
-            with Silencer():
+            with utils.Silencer():
                 llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
                 # llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
                 #             n_ctx=CONTEXT_SIZE, verbose=False, type_k=8, type_v=8, flash_attn=True)
@@ -123,7 +109,7 @@ class Wrapper:
         num_models = len(self.models)
 
         TIMEOUT = num_mess*(1+(RESPONSE_LENGTH/5)).__ceil__()
-        # print(TIMEOUT)
+        print("TIMEOUT:",TIMEOUT)
 
         test_start = time.perf_counter()
 
