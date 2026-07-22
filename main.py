@@ -139,30 +139,41 @@ class Wrapper:
             ttfts = 0
             tpss = 0
             if llm:
-                # real warmup:
-                # print(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
+                model_log = []
                 prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
                 for _ in range(WARMUP_COUNT): llm.create_chat_completion(warmup, max_tokens=1)
                 print("Warmuped !!")
-                # print(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
+                failed = False
+                model_start = time.perf_counter()
 
                 for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
-                    chat_history.append({"role": "user", "content": user_input})
 
-                    start_time = time.perf_counter()
+                    chat_history.append({"role": "user", "content": user_input})
                     ttft = None
                     t_out = 0
+                    start_time = time.perf_counter()
+                    assistant_response = [""] * RESPONSE_LENGTH
 
                     stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=RESPONSE_LENGTH)
-                    assistant_response = []
+                    
                     for chunk in stream:
-                        delta = chunk['choices'][0]["delta"]
-                        if 'content' in delta:
-                            if ttft is None:
-                                ttft = time.perf_counter() - start_time
-                            assistant_response.append(delta['content'])
-                            t_out += 1
-                    assistant_response = "".join(assistant_response)
+                        if time.perf_counter() - model_start <= 10:
+                            delta = chunk['choices'][0]["delta"]
+                            if 'content' in delta:
+                                if ttft is None: ttft = time.perf_counter() - start_time
+                                assistant_response[t_out] = delta['content']
+                                t_out += 1
+                        else:
+                            print(f"\n{model} failed.")
+                            failed = True
+                            break
+                    
+                    if failed:
+                        done = len(model_log)
+                        for i in range(num_mess-done): model_log.append([-1, -1, -1, -1, -1, -1, -1])
+                        break
+                    assistant_response = "".join(assistant_response).replace('\n', '|')
+                    # print(assistant_response)
 
                     total_time = time.perf_counter() - start_time
                     gen_time = total_time - (ttft if ttft else 0)
@@ -172,7 +183,7 @@ class Wrapper:
                     all_tokens = llm.n_tokens
                     t_in = all_tokens - prev_n - t_out
                     chat_history.append({"role": "assistant", "content": assistant_response})
-                    log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens])
+                    model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens])
                     #, user_input.replace('\n', '|'), assistant_response.replace('\n', '|')
                     prev_n = all_tokens
                     ttfts+=ttft
@@ -181,11 +192,14 @@ class Wrapper:
                 print(f"Mean TTFT:{ttfts/num_mess:.3f}, Mean T/s: {tpss/num_mess:.3f}")
                 del llm
                 chat_history = chat_history[:1]
+                log.extend(model_log)
             else:
-                for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1])
+                log.extend([[-1, -1, -1, -1, -1, -1, -1] for _ in range(num_mess)])
+                # for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1])
         
 
         print(f"It all took: {time.perf_counter() - test_start}")
+        print(log)
 
         xd = pandas.DataFrame(log, columns=["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME",
                                             "ALL TOKENS"])
