@@ -1,6 +1,4 @@
 import subprocess
-import sys
-import time
 import os
 import json
 import sys
@@ -16,9 +14,17 @@ MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 my_pc_name = platform.node()
 LOG_DIR = f'vlad/bench_logs/{my_pc_name}/'
+os.makedirs(LOG_DIR, exist_ok=True)
+with open("vlad/test.json", "r") as f: messages = json.load(f)
+with open("data_3npcs.json") as file: npc = json.load(file)[2]
+
+CHAT_HISTORY = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]}]
+WARMUP = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]}, {"role": "user", "content": "warmup"}]
+NUM_MESS = len(messages)
 CONTEXT_SIZE = 4096
 MAX_TOKENS = 128
 WARMUP_COUNT = 4
+TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
 
@@ -46,14 +52,14 @@ class Benchmarker:
 
 
 
-    def load_llm(self, model_path, role):
+    def load_llm(self, model_path):
         print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
         try:
             with Silencer():
                 llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers, n_ctx=CONTEXT_SIZE, verbose=False)
                 # llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
                 #             n_ctx=CONTEXT_SIZE, verbose=False, type_k=8, type_v=8, flash_attn=True)
-                llm.create_chat_completion(role, max_tokens=1)
+                llm.create_chat_completion(WARMUP, max_tokens=1)
         except Exception as e:
             print(f"\n{e}\nProbably not enough memory!!")
             return None
@@ -63,38 +69,21 @@ class Benchmarker:
 
     def _run_benchmark(self):
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split())
-        print(dev_name)
-
-        os.makedirs(LOG_DIR, exist_ok=True)
+        print("DEViCE:",dev_name)
         log = []
-
-        with open("vlad/test.json", "r") as f:
-            messages = json.load(f)
-
-        with open("data_3npcs.json") as file:
-            npc = json.load(file)[2]
-
-        chat_history = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]}]
-        warmup = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]},
-                  {"role": "user", "content": "warmup"}]
-
-        num_mess = len(messages)
         num_models = len(self.models)
-
-        TIMEOUT = (num_mess * (1 + (MAX_TOKENS / 5))).__ceil__()
-        print("TIMEOUT:", TIMEOUT)
-
         test_start = time.perf_counter()
-
+        print("TIMEOUT:", TIMEOUT)
+        chat_history = CHAT_HISTORY[:]
         for i, model in enumerate(self.models):
             row = [model] + ERROR_ROW
             failed = False
             model_log = []
-            llm = self.load_llm(model, warmup)
+            llm = self.load_llm(model)
             if llm:
                 try:
                     prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
-                    for _ in range(WARMUP_COUNT): llm.create_chat_completion(warmup, max_tokens=1)
+                    for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
                     print("Warmuped!!")
                     model_start = time.perf_counter()
 
@@ -118,23 +107,23 @@ class Benchmarker:
                             else:
                                 failed = True
                                 done = len(model_log)
-                                for _ in range(num_mess - done): model_log.append(row)
+                                for _ in range(NUM_MESS - done): model_log.append(row)
                                 break
 
                         if failed: break
                         assistant_response = "".join(assistant_response)
+                        chat_history.append({"role": "assistant", "content": assistant_response})
 
                         total_time = time.perf_counter() - start_time
                         gen_time = total_time - ttft
                         tps = t_out / gen_time if gen_time > 0 else -1
-
-
                         all_tokens = llm.n_tokens
                         t_in = all_tokens - prev_n - t_out
-                        chat_history.append({"role": "assistant", "content": assistant_response})
+                        prev_n = all_tokens
+
                         model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens,
                                           user_input.replace('\n', '|'), assistant_response.replace('\n', '|')])
-                        prev_n = all_tokens
+
                 except Exception as e:
                     print(f"\n{e}\nFailed due error.")
 
@@ -146,7 +135,7 @@ class Benchmarker:
                 chat_history = chat_history[:1]
                 log.extend(model_log)
             else:
-                log.extend([row for _ in range(num_mess)])
+                log.extend([row for _ in range(NUM_MESS)])
 
         print(f"It all took: {time.perf_counter() - test_start}")
 
@@ -164,9 +153,9 @@ if __name__ == '__main__':
         if num == -1:
             devices = get_devices()
             start = time.time()
-            for i in range(len(devices)):
+            for j in range(len(devices)):
                 prev = time.time()
-                subprocess.run([sys.executable, "bench.py", str(i)])
+                subprocess.run([sys.executable, "bench.py", str(j)])
                 print(f"This took {time.time() - prev} seconds")
             print(f"All tests took {time.time() - start} seconds")
         else: Benchmarker(num)
