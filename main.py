@@ -112,7 +112,7 @@ class Wrapper:
 
     def benchmark(self):
         my_pc_name = platform.node()
-        dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split()[:4])
+        dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split())
         print(dev_name)
 
         LOG_DIR = f'vlad/bench_logs/{my_pc_name}/'
