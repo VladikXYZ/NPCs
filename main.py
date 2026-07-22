@@ -5,8 +5,8 @@ import time
 import pandas
 import bench
 import platform
-from tqdm import tqdm
 import questionary
+from tqdm import tqdm
 from llama_cpp import Llama
 from contextlib import contextmanager
 
@@ -15,6 +15,8 @@ DEVICES_FILE = "devices.json"
 CONTEXT_SIZE = 4096
 RESPONSE_LENGTH = 32
 WARMUP_COUNT = 4
+HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
+ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
 
 @contextmanager
 def Silencer(suppress=True):
@@ -46,54 +48,42 @@ class Wrapper:
         self.selected_model = None
         self.gpu_layers = 0
 
-        self._run_setup_menu(dev)
+        self._setup(dev)
 
-    def _run_setup_menu(self, dev):
-        if dev != -1 and 0 <= dev < len(self.devices):
-            self.action = "Benchmark"
-            self.device = self.devices[dev]
-            print(f"\n⚡ Fast Start: Running Benchmark on {self.device['name']}...")
+    def _setup(self, dev):
+        if dev != -1:
+            if 0 <= dev < len(self.devices):
+                self.action = "Benchmark"
+                self.device = self.devices[dev]
+                print(f"\n⚡ Fast Start: Running Benchmark on {self.device['name']}...")
+                self.gpu_layers = -1 if self.device["type"] == "Vulkan" else 0
+                os.environ["GGML_VK_VISIBLE_DEVICES"] = str(self.device["id"] * (self.device["type"] == "Vulkan"))
+            else: sys.exit(f"Invalid device value:{dev}")
+        else:
+            self.action = questionary.select("Select operation mode:", choices=["Benchmark", "Auto run", "Chat"], qmark="⚙️").ask()
+            if not self.action: sys.exit("Exiting...")
+
+            device_choices = [f"{i} | {d['type']:<8} | {d['name']}" for i, d in enumerate(self.devices)]
+            dev_choice = questionary.select("Select device:", choices=device_choices, qmark="🎮").ask()
+            if not dev_choice: sys.exit("Exiting...")
+            dev_idx = int(dev_choice.split("|")[0])
+            self.device = self.devices[dev_idx]
             self.gpu_layers = -1 if self.device["type"] == "Vulkan" else 0
             os.environ["GGML_VK_VISIBLE_DEVICES"] = str(self.device["id"] * (self.device["type"] == "Vulkan"))
-            self._execute_action()
-            return
 
-        self.action = questionary.select("Select operation mode:", choices=["Benchmark", "Auto run", "Chat", "Exit"], qmark="⚙️").ask()
+            if self.action == "Chat":
+                self.selected_model = questionary.select("Select a model for Chat:", choices=self.models, qmark="🤖").ask()
+                if not self.selected_model: sys.exit("Exiting...")
+            else: print(f"\n🚀 Mode set to {self.action}. Will iterate through all {len(self.models)} models.")
 
-        if not self.action or self.action == "Exit":
-            print("Exiting...")
-            sys.exit(0)
-
-        device_choices = [f"[{i}] {d['type']:<8} | {d['name']}" for i, d in enumerate(self.devices)]
-
-        dev_choice = questionary.select("Select device:", choices=device_choices, qmark="🎮").ask()
-
-        if not dev_choice: sys.exit(0)
-
-        dev_idx = int(dev_choice.split("]")[0][1:])
-        self.device = self.devices[dev_idx]
-
-        self.gpu_layers = -1 if self.device["type"] == "Vulkan" else 0
-        os.environ["GGML_VK_VISIBLE_DEVICES"] = str(self.device["id"] * (self.device["type"] == "Vulkan"))
-
-        if self.action == "Chat":
-            self.selected_model = questionary.select("Select a model for Chat:", choices=self.models, qmark="🤖").ask()
-
-            if not self.selected_model: sys.exit(0)
-        else:
-            print(f"\n🚀 Mode set to {self.action}. Will iterate through all {len(self.models)} models.")
-
-        self._execute_action()
-
-    def _execute_action(self):
-        if self.action == "Benchmark":
-            self.benchmark()
+        if self.action == "Benchmark": self.benchmark()
         elif self.action == "Auto run":
-            # print("\nExecuting Auto run sequence...")
-            self.test()
+            print("\nExecuting Auto run sequence...")
+            # self.test()
         elif self.action == "Chat":
             print(f"\nStarting Chat with {self.selected_model}...")
             # self.run_chat()
+
 
     def load_llm(self, model_path, role):
         print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
@@ -132,80 +122,87 @@ class Wrapper:
         num_mess = len(messages)
         num_models = len(self.models)
 
+        TIMEOUT = num_mess*(1+(RESPONSE_LENGTH/5)).__ceil__()
+        # print(TIMEOUT)
+
         test_start = time.perf_counter()
 
         for i, model in enumerate(self.models):
+            ttfts, tpss = 0, 0
+            row = [model] + ERROR_ROW
             llm = self.load_llm(model, warmup)
-            ttfts = 0
-            tpss = 0
+            failed = False
+            model_log = []
+
             if llm:
-                model_log = []
-                prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
-                for _ in range(WARMUP_COUNT): llm.create_chat_completion(warmup, max_tokens=1)
-                print("Warmuped !!")
-                failed = False
-                model_start = time.perf_counter()
 
-                for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
+                try:
+                    prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
+                    for _ in range(WARMUP_COUNT): llm.create_chat_completion(warmup, max_tokens=1)
+                    print("Warmuped!!")
 
-                    chat_history.append({"role": "user", "content": user_input})
-                    ttft = None
-                    t_out = 0
-                    start_time = time.perf_counter()
-                    assistant_response = [""] * RESPONSE_LENGTH
+                    model_start = time.perf_counter()
 
-                    stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=RESPONSE_LENGTH)
-                    
-                    for chunk in stream:
-                        if time.perf_counter() - model_start <= 10:
-                            delta = chunk['choices'][0]["delta"]
-                            if 'content' in delta:
-                                if ttft is None: ttft = time.perf_counter() - start_time
-                                assistant_response[t_out] = delta['content']
-                                t_out += 1
-                        else:
-                            print(f"\n{model} failed.")
-                            failed = True
-                            break
-                    
-                    if failed:
-                        done = len(model_log)
-                        for i in range(num_mess-done): model_log.append([-1, -1, -1, -1, -1, -1, -1])
-                        break
-                    assistant_response = "".join(assistant_response).replace('\n', '|')
-                    # print(assistant_response)
+                    for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
 
-                    total_time = time.perf_counter() - start_time
-                    gen_time = total_time - (ttft if ttft else 0)
-                    tps = t_out / gen_time if gen_time > 0 else 0
+                        chat_history.append({"role": "user", "content": user_input})
+                        ttft = None
+                        t_out = 0
+                        start_time = time.perf_counter()
+                        assistant_response = [""] * RESPONSE_LENGTH
 
-                    ttft = ttft if ttft is not None else -1
-                    all_tokens = llm.n_tokens
-                    t_in = all_tokens - prev_n - t_out
-                    chat_history.append({"role": "assistant", "content": assistant_response})
-                    model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens])
-                    #, user_input.replace('\n', '|'), assistant_response.replace('\n', '|')
-                    prev_n = all_tokens
-                    ttfts+=ttft
-                    tpss+=tps
-                
-                print(f"Mean TTFT:{ttfts/num_mess:.3f}, Mean T/s: {tpss/num_mess:.3f}")
+                        stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=RESPONSE_LENGTH)
+
+                        for chunk in stream:
+                            if time.perf_counter() - model_start <= TIMEOUT:
+                                delta = chunk['choices'][0]["delta"]
+                                if 'content' in delta:
+                                    if ttft is None: ttft = time.perf_counter() - start_time
+                                    assistant_response[t_out] = delta['content']
+                                    t_out += 1
+                            else:
+                                failed = True
+                                done = len(model_log)
+                                for i in range(num_mess - done): model_log.append(row)
+                                break
+
+                        if failed: break
+                        assistant_response = "".join(assistant_response)
+
+                        total_time = time.perf_counter() - start_time
+                        gen_time = total_time - (ttft if ttft else 0)
+                        tps = t_out / gen_time if gen_time > 0 else -1
+
+                        ttft = ttft if ttft is not None else -1
+                        all_tokens = llm.n_tokens
+                        t_in = all_tokens - prev_n - t_out
+                        chat_history.append({"role": "assistant", "content": assistant_response})
+                        model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens,
+                                          user_input.replace('\n', '|'), assistant_response.replace('\n', '|')])
+                        #, user_input.replace('\n', '|'), assistant_response.replace('\n', '|')
+                        prev_n = all_tokens
+                        ttfts+=ttft
+                        tpss+=tps
+                except Exception as e:
+                    print(f"\n{e}\nFailed due error.")
+
+                if failed: print(f"❌ {model} failed due to timeout.")
+                else: print(f"Mean TTFT:{ttfts/num_mess:.3f}, Mean T/s: {tpss/num_mess:.3f}")
                 del llm
                 chat_history = chat_history[:1]
                 log.extend(model_log)
             else:
-                log.extend([[-1, -1, -1, -1, -1, -1, -1] for _ in range(num_mess)])
+                log.extend([row for _ in range(num_mess)])
                 # for _ in range(num_mess): log.append([-1, -1, -1, -1, -1, -1, -1])
         
 
         print(f"It all took: {time.perf_counter() - test_start}")
-        print(log)
+        # print(log)
 
-        xd = pandas.DataFrame(log, columns=["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME",
-                                            "ALL TOKENS"])
-        xd = xd.round(4)
+        xd = pandas.DataFrame(log, columns=HEADER)
+        xd = xd.round(3)
         file_path = f"{LOG_DIR}{dev_name}.csv"
-        print(file_path)
+        print(f"Saved to {file_path}")
         xd.to_csv(file_path, index=False)
 
     def test(self):
