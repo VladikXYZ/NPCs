@@ -8,8 +8,6 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-
-from bench_test import CHAT_HISTORY
 from utils import get_devices, get_models, Silencer
 
 MODEL_DIR = 'models/'
