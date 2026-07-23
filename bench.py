@@ -7,7 +7,7 @@ import pandas
 import platform
 import questionary
 from tqdm import tqdm
-from llama_cpp import Llama
+from llama_cpp import Llama, LlamaRAMCache
 from utils import get_devices, get_models, Silencer
 
 MODEL_DIR = 'models/'
@@ -15,7 +15,7 @@ DEVICES_FILE = "devices.json"
 PC_NAME = platform.node()
 LOG_DIR = f'vlad/bench_logs/{PC_NAME}/'
 os.makedirs(LOG_DIR, exist_ok=True)
-with open("vlad/ttft_test.json", "r") as f: MESSAGES = json.load(f)
+with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
 
 CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
@@ -23,7 +23,7 @@ WARMUP = CHAT_HISTORY[:]
 WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096*4
-MAX_TOKENS = 32
+MAX_TOKENS = 128
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
@@ -71,14 +71,18 @@ class Benchmarker:
     def load_llm(self, model_path):
         print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
         try:
-            print("qwen" in model_path.lower(), end="")
+            # print("qwen" in model_path.lower(), end="")
             with Silencer():
-                # if "qwen" in model_path.lower():
-                #     llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
-                #         n_ctx=CONTEXT_SIZE, chat_template=QWEN_NPC_TEMPLATE,verbose=False)
-                # else:
-                llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
-                    n_ctx=CONTEXT_SIZE, verbose=False)
+                if "qwen" in model_path.lower():
+                    llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
+                        n_ctx=CONTEXT_SIZE, chat_format="chatml",verbose=False)
+                else:
+                    llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
+                        n_ctx=CONTEXT_SIZE, verbose=False)
+
+                # cache = LlamaRAMCache(capacity_bytes=1 * (1024 ** 3)) # 1GB Cache
+                # llm.set_cache(cache)
+
                 llm.create_chat_completion(WARMUP, max_tokens=1)
         except Exception as e:
             print(f"\n{e}\nProbably not enough memory!!")
