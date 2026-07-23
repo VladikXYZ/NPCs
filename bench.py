@@ -15,14 +15,14 @@ DEVICES_FILE = "devices.json"
 PC_NAME = platform.node()
 LOG_DIR = f'vlad/bench_logs/{PC_NAME}/'
 os.makedirs(LOG_DIR, exist_ok=True)
-with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
+with open("vlad/ttft_test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
 
 CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
 WARMUP = CHAT_HISTORY[:]
 WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
-CONTEXT_SIZE = 4096
+CONTEXT_SIZE = 4096*4
 MAX_TOKENS = 32
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
@@ -73,22 +73,12 @@ class Benchmarker:
         try:
             print("qwen" in model_path.lower(), end="")
             with Silencer():
-                if "qwen" in model_path.lower():
-                    llm = Llama(
-                        model_path="models/" + model_path + ".gguf",
-                        n_gpu_layers=self.gpu_layers,
-                        n_ctx=CONTEXT_SIZE,
-                        chat_template=QWEN_NPC_TEMPLATE,  # <-- Applied ONLY to Qwen
-                        verbose=False
-                    )
-                else:
-                    # Load normally for Llama, Mistral, Phi, etc.
-                    llm = Llama(
-                        model_path="models/" + model_path + ".gguf",
-                        n_gpu_layers=self.gpu_layers,
-                        n_ctx=CONTEXT_SIZE,
-                        verbose=False
-                    )
+                # if "qwen" in model_path.lower():
+                #     llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
+                #         n_ctx=CONTEXT_SIZE, chat_template=QWEN_NPC_TEMPLATE,verbose=False)
+                # else:
+                llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
+                    n_ctx=CONTEXT_SIZE, verbose=False)
                 llm.create_chat_completion(WARMUP, max_tokens=1)
         except Exception as e:
             print(f"\n{e}\nProbably not enough memory!!")
