@@ -8,19 +8,22 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
+
+from bench_test import CHAT_HISTORY
 from utils import get_devices, get_models, Silencer
 
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
-my_pc_name = platform.node()
-LOG_DIR = f'vlad/bench_logs/{my_pc_name}/'
+PC_NAME = platform.node()
+LOG_DIR = f'vlad/bench_logs/{PC_NAME}/'
 os.makedirs(LOG_DIR, exist_ok=True)
-with open("vlad/test.json", "r") as f: messages = json.load(f)
-with open("data_3npcs.json") as file: npc = json.load(file)[2]
+with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
+with open("data_3npcs.json") as file: NPC = json.load(file)[2]
 
-CHAT_HISTORY = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]}]
-WARMUP = [{"role": "system", "content": npc["role"] + npc["shared_system_prompt"]}, {"role": "user", "content": "warmup"}]
-NUM_MESS = len(messages)
+CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
+WARMUP = CHAT_HISTORY[:]
+WARMUP.append({"role": "user", "content": "warmup"})
+NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096
 MAX_TOKENS = 128
 WARMUP_COUNT = 4
@@ -87,7 +90,7 @@ class Benchmarker:
                     print("Warmuped!!")
                     model_start = time.perf_counter()
 
-                    for user_input in tqdm(messages, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
+                    for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
 
                         chat_history.append({"role": "user", "content": user_input})
                         ttft, t_out = TIMEOUT*2, 0
@@ -101,7 +104,7 @@ class Benchmarker:
                             if current - model_start <= TIMEOUT:
                                 delta = chunk['choices'][0]["delta"]
                                 if 'content' in delta:
-                                    ttft = min(current, ttft)
+                                    ttft = min(current-start_time, ttft)
                                     assistant_response[t_out] = delta['content']
                                     t_out += 1
                             else:
