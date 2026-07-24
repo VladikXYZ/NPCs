@@ -8,10 +8,8 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-
 from models.templating import get_handler
 from utils import get_devices, get_models, Silencer
-from llama_cpp.llama_chat_format import Jinja2ChatFormatter # <-- Add this import
 
 
 MODEL_DIR = 'models/'
@@ -23,7 +21,7 @@ LOG_DIR = ""
 with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
 
-CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
+CHAT_HISTORY = [{"role": "system", "content": NPC["role"]+ NPC["shared_system_prompt"]}]
 WARMUP = CHAT_HISTORY[:]
 WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
@@ -33,7 +31,6 @@ WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
-full_system_prompt = CHAT_HISTORY[0]
 
 
 class Benchmarker:
@@ -70,7 +67,7 @@ class Benchmarker:
                     "n_ctx": CONTEXT_SIZE,
                     "verbose": False
                 }
-                print(model, end="")
+                # print(model, end="")
                 my_custom_handler = get_handler(model)
                 if my_custom_handler:
                     # llm_kwargs["chat_format"] = "chatml"
@@ -138,7 +135,7 @@ class Benchmarker:
                         if failed: break
                         assistant_response = "".join(assistant_response)
                         if "qwen" in model.lower() or "27b" in model.lower():
-                            assistant_response = f"<think>\n\n</think>\n{assistant_response}"
+                            assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
                         chat_history.append({"role": "assistant", "content": assistant_response})
 
                         total_time = time.perf_counter() - start_time

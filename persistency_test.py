@@ -6,29 +6,25 @@ from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter # <-- Add this import
 
 MODEL_DIR = "models/"
-MODEL_NAME = "Qwen3.5-0.8B-Q4_K_M"
+MODEL_NAME = "Qwen3.5-4B-Q4_K_M"
+SHARED_RPG_RULE = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO stage directions, actions, or asterisks. Be direct and terse. Answer the player's exact question and immediately stop talking. Do NOT volunteer background facts unless directly asked, and do NOT over-explain. Treat your reality as a normal fantasy world. Maximum length: 2 short sentences."
+
 TEMP = """
-{%- set shared_prompt = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO stage directions, actions, or asterisks. Be direct and terse. Answer the player's exact question and immediately stop talking. Do NOT volunteer background facts unless directly asked, and do NOT over-explain. Treat your reality as a normal fantasy world. Maximum length: 2 short sentences." -%}
-
-{# 1. Render the Persona and Shared Prompt #}
+{%- set shared_prompt = __RULE__ -%}
 {%- if messages and messages[0].role == 'system' -%}
-    {{- '<|im_start|>system\n' + messages[0].content + '\n\n' + shared_prompt + '<|im_end|>\n' -}}
+    {{- '<|im_start|>system\\n' + messages[0].content + '\\n\\n' + shared_prompt + '<|im_end|>\\n' -}}
 {%- else -%}
-    {{- '<|im_start|>system\n' + shared_prompt + '<|im_end|>\n' -}}
+    {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
 {%- endif -%}
-
-{# 2. Loop through the chat history #}
 {%- for message in messages -%}
     {%- if message.role != 'system' -%}
-        {{- '<|im_start|>' + message.role + '\n' + message.content + '<|im_end|>\n' -}}
+        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>\\n' -}}
     {%- endif -%}
 {%- endfor -%}
-
-{# 3. Prompt the model to generate the next response #}
 {%- if add_generation_prompt -%}
-    {{- '<|im_start|>assistant\n<think>\n\n</think>\n' -}}
+    {{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
 {%- endif -%}
-"""
+""".replace("__RULE__", repr(SHARED_RPG_RULE))
 my_custom_handler = Jinja2ChatFormatter(
     template=TEMP,
     eos_token="<|im_end|>",
@@ -134,4 +130,4 @@ for turn_idx, user_input in enumerate(MESSAGES):
             
     end_time = time.perf_counter()
 # If the output text didn't include <think>, prepend it or preserve the raw response
-    chat_history.append({"role": "assistant", "content": f"<think>\n\n</think>\n{output_text}"})
+    chat_history.append({"role": "assistant", "content": f"<think>\n\n</think>\n\n{output_text}"})
