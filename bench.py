@@ -8,6 +8,8 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
+
+from models.templating import get_handler
 from utils import get_devices, get_models, Silencer
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter # <-- Add this import
 
@@ -15,12 +17,13 @@ from llama_cpp.llama_chat_format import Jinja2ChatFormatter # <-- Add this impor
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
 PC_NAME = platform.node()
-LOG_DIR = f'vlad/bench_logs/{PC_NAME}/'
-os.makedirs(LOG_DIR, exist_ok=True)
+# LOG_DIR = f'vlad/bench_logs/{PC_NAME}/'
+LOG_DIR = ""
+# os.makedirs(LOG_DIR, exist_ok=True)
 with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
 
-CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
+CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
 WARMUP = CHAT_HISTORY[:]
 WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
@@ -31,35 +34,6 @@ TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
 full_system_prompt = CHAT_HISTORY[0]
-
-TEMP = """
-{%- set shared_prompt = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO stage directions, actions, or asterisks. Be direct and terse. Answer the player's exact question and immediately stop talking. Do NOT volunteer background facts unless directly asked, and do NOT over-explain. Treat your reality as a normal fantasy world. Maximum length: 2 short sentences." -%}
-
-{# 1. Render the Persona and Shared Prompt #}
-{%- if messages and messages[0].role == 'system' -%}
-    {{- '<|im_start|>system\n' + messages[0].content + '\n\n' + shared_prompt + '<|im_end|>\n' -}}
-{%- else -%}
-    {{- '<|im_start|>system\n' + shared_prompt + '<|im_end|>\n' -}}
-{%- endif -%}
-
-{# 2. Loop through the chat history #}
-{%- for message in messages -%}
-    {%- if message.role != 'system' -%}
-        {{- '<|im_start|>' + message.role + '\n' + message.content + '<|im_end|>\n' -}}
-    {%- endif -%}
-{%- endfor -%}
-
-{# 3. Prompt the model to generate the next response #}
-{%- if add_generation_prompt -%}
-    {{- '<|im_start|>assistant\n<think>\n\n</think>\n' -}}
-{%- endif -%}
-"""
-
-my_custom_handler = Jinja2ChatFormatter(
-    template=TEMP,
-    eos_token="<|im_end|>",
-    bos_token=""
-).to_chat_handler()
 
 
 class Benchmarker:
@@ -94,12 +68,13 @@ class Benchmarker:
                     "model_path": "models/" + model + ".gguf",
                     "n_gpu_layers": self.gpu_layers,
                     "n_ctx": CONTEXT_SIZE,
-                    "verbose": False,
-                    "temperature": 0
+                    "verbose": False
                 }
-
-                if "qwen" in model.lower() or "27b" in model.lower():
+                print(model, end="")
+                my_custom_handler = get_handler(model)
+                if my_custom_handler:
                     # llm_kwargs["chat_format"] = "chatml"
+
                     llm_kwargs["chat_handler"] = my_custom_handler
 
                 if "mtp" in model.lower():
