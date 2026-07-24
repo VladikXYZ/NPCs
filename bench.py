@@ -21,9 +21,10 @@ LOG_DIR = ""
 with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
 
-CHAT_HISTORY = [{"role": "system", "content": NPC["role"]+ NPC["shared_system_prompt"]}]
+# CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
+CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
 WARMUP = CHAT_HISTORY[:]
-WARMUP.append({"role": "user", "content": "warmup"})
+# WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096*4
 MAX_TOKENS = 128
@@ -53,9 +54,6 @@ class Benchmarker:
         os.environ["GGML_VK_VISIBLE_DEVICES"] = str(self.device["id"] * (self.device["type"] == "Vulkan"))
         self._run_benchmark()
 
-
-
-
     def load_llm(self, model):
         print(f"Loading {os.path.basename(model)} | ", end="", flush=True)
         try:
@@ -70,8 +68,6 @@ class Benchmarker:
                 # print(model, end="")
                 my_custom_handler = get_handler(model)
                 if my_custom_handler:
-                    # llm_kwargs["chat_format"] = "chatml"
-
                     llm_kwargs["chat_handler"] = my_custom_handler
 
                 if "mtp" in model.lower():
@@ -103,11 +99,12 @@ class Benchmarker:
             llm = self.load_llm(model)
             if llm:
                 try:
-                    prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
+                    # prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
                     # prev_n = 0
                     for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
                     print("Warmuped!!")
                     model_start = time.perf_counter()
+                    prev_n = llm.n_tokens
 
                     for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
 
@@ -134,27 +131,26 @@ class Benchmarker:
 
                         if failed: break
                         assistant_response = "".join(assistant_response)
-                        if "qwen" in model.lower() or "27b" in model.lower():
-                            assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
-                        chat_history.append({"role": "assistant", "content": assistant_response})
+
 
                         total_time = time.perf_counter() - start_time
                         gen_time = total_time - ttft
                         tps = t_out / gen_time if gen_time > 0 else -1
                         all_tokens = llm.n_tokens
                         t_in = all_tokens - prev_n - t_out
-                        prev_n = all_tokens
+
 
                         model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens,
                                           user_input.replace('\n', '|'), assistant_response.replace('\n', '|')])
+                        if "qwen" in model.lower() or "27b" in model.lower():
+                            assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
+                        chat_history.append({"role": "assistant", "content": assistant_response})
+                        prev_n = all_tokens
 
                 except Exception as e:
                     print(f"\n{e}\nFailed due error.")
 
-                if failed:
-                    print(f"❌ {model} failed due to timeout.")
-                # else:
-                #     print(f"Mean TTFT:{ttfts / num_mess:.3f}, Mean T/s: {tpss / num_mess:.3f}")
+                if failed: print(f"❌ {model} failed due to timeout.")
                 del llm
                 chat_history = chat_history[:1]
                 log.extend(model_log)

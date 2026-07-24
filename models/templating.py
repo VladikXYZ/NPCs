@@ -101,7 +101,7 @@ from llama_cpp.llama_chat_format import Jinja2ChatFormatter
 
 
 def get_handler(model_name: str):
-    return None
+    # return None
     model_name_lower = model_name.lower()
 
     if "gemma" in model_name_lower:
