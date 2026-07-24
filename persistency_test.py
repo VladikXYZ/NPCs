@@ -2,10 +2,38 @@ import time
 import json
 import pandas as pd
 from tqdm import tqdm
-from llama_cpp import Llama, LlamaRAMCache
+from llama_cpp import Llama
+from llama_cpp.llama_chat_format import Jinja2ChatFormatter # <-- Add this import
 
 MODEL_DIR = "models/"
 MODEL_NAME = "Qwen3.5-0.8B-Q4_K_M"
+TEMP = """
+{%- set shared_prompt = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO stage directions, actions, or asterisks. Be direct and terse. Answer the player's exact question and immediately stop talking. Do NOT volunteer background facts unless directly asked, and do NOT over-explain. Treat your reality as a normal fantasy world. Maximum length: 2 short sentences." -%}
+
+{# 1. Render the Persona and Shared Prompt #}
+{%- if messages and messages[0].role == 'system' -%}
+    {{- '<|im_start|>system\n' + messages[0].content + '\n\n' + shared_prompt + '<|im_end|>\n' -}}
+{%- else -%}
+    {{- '<|im_start|>system\n' + shared_prompt + '<|im_end|>\n' -}}
+{%- endif -%}
+
+{# 2. Loop through the chat history #}
+{%- for message in messages -%}
+    {%- if message.role != 'system' -%}
+        {{- '<|im_start|>' + message.role + '\n' + message.content + '<|im_end|>\n' -}}
+    {%- endif -%}
+{%- endfor -%}
+
+{# 3. Prompt the model to generate the next response #}
+{%- if add_generation_prompt -%}
+    {{- '<|im_start|>assistant\n<think>\n\n</think>\n' -}}
+{%- endif -%}
+"""
+my_custom_handler = Jinja2ChatFormatter(
+    template=TEMP,
+    eos_token="<|im_end|>",
+    bos_token=""
+).to_chat_handler()
 
 print(f"⚡ Loading {MODEL_NAME} directly into memory...")
 llm = Llama(
@@ -13,11 +41,9 @@ llm = Llama(
     n_ctx=8192,
     n_gpu_layers=-1,
     verbose=False,
-    chat_format="chatml",
+    # chat_format="chatml"
+    chat_handler=my_custom_handler
 )
-
-cache = LlamaRAMCache(capacity_bytes=2 * (1024 ** 3))
-llm.set_cache(cache)
 
 # --- 🕵️ THE INTERCEPTOR (Monkey-Patch) ---
 original_create_completion = llm.create_completion

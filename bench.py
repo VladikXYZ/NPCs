@@ -9,6 +9,8 @@ import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
 from utils import get_devices, get_models, Silencer
+from llama_cpp.llama_chat_format import Jinja2ChatFormatter # <-- Add this import
+
 
 MODEL_DIR = 'models/'
 DEVICES_FILE = "devices.json"
@@ -29,6 +31,35 @@ TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
 full_system_prompt = CHAT_HISTORY[0]
+
+TEMP = """
+{%- set shared_prompt = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO stage directions, actions, or asterisks. Be direct and terse. Answer the player's exact question and immediately stop talking. Do NOT volunteer background facts unless directly asked, and do NOT over-explain. Treat your reality as a normal fantasy world. Maximum length: 2 short sentences." -%}
+
+{# 1. Render the Persona and Shared Prompt #}
+{%- if messages and messages[0].role == 'system' -%}
+    {{- '<|im_start|>system\n' + messages[0].content + '\n\n' + shared_prompt + '<|im_end|>\n' -}}
+{%- else -%}
+    {{- '<|im_start|>system\n' + shared_prompt + '<|im_end|>\n' -}}
+{%- endif -%}
+
+{# 2. Loop through the chat history #}
+{%- for message in messages -%}
+    {%- if message.role != 'system' -%}
+        {{- '<|im_start|>' + message.role + '\n' + message.content + '<|im_end|>\n' -}}
+    {%- endif -%}
+{%- endfor -%}
+
+{# 3. Prompt the model to generate the next response #}
+{%- if add_generation_prompt -%}
+    {{- '<|im_start|>assistant\n<think>\n\n</think>\n' -}}
+{%- endif -%}
+"""
+
+my_custom_handler = Jinja2ChatFormatter(
+    template=TEMP,
+    eos_token="<|im_end|>",
+    bos_token=""
+).to_chat_handler()
 
 
 class Benchmarker:
@@ -68,7 +99,8 @@ class Benchmarker:
                 }
 
                 if "qwen" in model.lower() or "27b" in model.lower():
-                    llm_kwargs["chat_format"] = "chatml"
+                    # llm_kwargs["chat_format"] = "chatml"
+                    llm_kwargs["chat_handler"] = my_custom_handler
 
                 if "mtp" in model.lower():
                     # print("skibidi", end="")
@@ -130,6 +162,8 @@ class Benchmarker:
 
                         if failed: break
                         assistant_response = "".join(assistant_response)
+                        if "qwen" in model.lower() or "27b" in model.lower():
+                            assistant_response = f"<think>\n\n</think>\n{assistant_response}"
                         chat_history.append({"role": "assistant", "content": assistant_response})
 
                         total_time = time.perf_counter() - start_time
