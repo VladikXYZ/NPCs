@@ -7,7 +7,7 @@ import pandas
 import platform
 import questionary
 from tqdm import tqdm
-from llama_cpp import Llama, LlamaRAMCache
+from llama_cpp import Llama
 from utils import get_devices, get_models, Silencer
 
 MODEL_DIR = 'models/'
@@ -29,20 +29,6 @@ TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
 full_system_prompt = CHAT_HISTORY[0]
-
-QWEN_NPC_TEMPLATE = f"""{{%- set loop_messages = messages -%}}
-{{%- if messages|length > 0 and messages[0]['role'] == 'system' -%}}
-    {{%- set loop_messages = messages[1:] -%}}
-{{%- endif -%}}
-<|im_start|>system
-{full_system_prompt}<|im_end|>
-{{%- for message in loop_messages %}}
-<|im_start|>{{{{ message['role'] }}}}
-{{{{ message['content'] }}}}<|im_end|>
-{{%- endfor %}}
-{{%- if add_generation_prompt -%}}
-<|im_start|>assistant
-{{%- endif -%}}"""
 
 
 class Benchmarker:
@@ -68,21 +54,28 @@ class Benchmarker:
 
 
 
-    def load_llm(self, model_path):
-        print(f"Loading {os.path.basename(model_path)} | ", end="", flush=True)
+    def load_llm(self, model):
+        print(f"Loading {os.path.basename(model)} | ", end="", flush=True)
         try:
             # print("qwen" in model_path.lower(), end="")
             with Silencer():
-                if "qwen" in model_path.lower():
-                    llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
-                        n_ctx=CONTEXT_SIZE, chat_format="chatml",verbose=False)
-                else:
-                    llm = Llama(model_path="models/" + model_path + ".gguf", n_gpu_layers=self.gpu_layers,
-                        n_ctx=CONTEXT_SIZE, verbose=False)
+                llm_kwargs = {
+                    "model_path": "models/" + model + ".gguf",
+                    "n_gpu_layers": self.gpu_layers,
+                    "n_ctx": CONTEXT_SIZE,
+                    "verbose": False,
+                    "temperature": 0
+                }
 
-                # cache = LlamaRAMCache(capacity_bytes=1 * (1024 ** 3)) # 1GB Cache
-                # llm.set_cache(cache)
+                if "qwen" in model.lower() or "27b" in model.lower():
+                    llm_kwargs["chat_format"] = "chatml"
 
+                if "mtp" in model.lower():
+                    # print("skibidi", end="")
+                    llm_kwargs["spec_type"] = "mtp"
+                    llm_kwargs["draft_n_max"] = 2
+
+                llm = Llama(**llm_kwargs)
                 llm.create_chat_completion(WARMUP, max_tokens=1)
         except Exception as e:
             print(f"\n{e}\nProbably not enough memory!!")
@@ -98,7 +91,7 @@ class Benchmarker:
         num_models = len(self.models)
         test_start = time.perf_counter()
         print("TIMEOUT:", TIMEOUT)
-        chat_history = []#CHAT_HISTORY[:]
+        chat_history = CHAT_HISTORY[:]
         for i, model in enumerate(self.models):
             row = [model] + ERROR_ROW
             failed = False
@@ -106,8 +99,8 @@ class Benchmarker:
             llm = self.load_llm(model)
             if llm:
                 try:
-                    # prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
-                    prev_n = 0
+                    prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
+                    # prev_n = 0
                     for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
                     print("Warmuped!!")
                     model_start = time.perf_counter()
