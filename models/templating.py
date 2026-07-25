@@ -19,6 +19,19 @@ TEMPLATES = {
 {%- endif -%}
 """.replace("__RULE__", repr(SHARED_RPG_RULE)),
 
+#     "qwen": """{%- set shared_prompt = __RULE__ %}
+# {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>' -}}
+# {%- for message in messages %}
+# <|im_start|>{{ message.role }}
+# {{ message.content }}<|im_end|>
+# {%- endfor %}
+# {%- if add_generation_prompt %}
+# <|im_start|>assistant
+# <think>
+
+# </think>
+# {%- endif %}""".replace("__RULE__", repr(SHARED_RPG_RULE)),
+
     # 2. Llama 3 (Llama-3.2-1B-Instruct)
     "llama": """
 {%- set shared_prompt = __RULE__ -%}
