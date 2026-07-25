@@ -78,7 +78,7 @@ class Benchmarker:
                     llm_kwargs["draft_n_max"] = 2
 
                 llm = Llama(**llm_kwargs)
-                llm.create_chat_completion(WARMUP, max_tokens=1)
+                llm.create_chat_completion(WARMUP, max_tokens=0)
         except Exception as e:
             print(f"\n{e}\nProbably not enough memory!!")
             return None
@@ -103,7 +103,7 @@ class Benchmarker:
                 try:
                     # prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
                     # prev_n = 0
-                    for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
+                    for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=0)
                     print("Warmuped!!", flush=True)
                     model_start = time.perf_counter()
                     prev_n = llm.n_tokens
@@ -144,8 +144,8 @@ class Benchmarker:
                         # query = user_input[:].replace('\n', '|')
                         # response = assistant_response[:].replace('\n', '|')
                         model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens, user_input, assistant_response])
-                        if "qwen" in model.lower() or "27b" in model.lower():
-                            assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
+                        # if "qwen" in model.lower() or "27b" in model.lower():
+                        #     assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
                         chat_history.append({"role": "assistant", "content": assistant_response})
                         prev_n = all_tokens
 

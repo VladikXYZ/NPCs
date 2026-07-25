@@ -2,70 +2,93 @@ SHARED_RPG_RULE = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO s
 
 TEMPLATES = {
     # 1. ChatML (Qwen, Bonsai, UI-TARS)
-    "qwen": f"""{{% set shared_prompt = {repr(SHARED_RPG_RULE)} %}}
-<|im_start|>system
-{{{{ shared_prompt }}}}
-<|im_end|>
-{{% for message in messages %}}
-<|im_start|>{{{{ message.role }}}}
-{{{{ message.content }}}}
-<|im_end|>
-{{% endfor %}}
-<|im_start|>assistant""",
+    "qwen": """
+{%- set shared_prompt = __RULE__ -%}
+{%- if messages and messages[0].role == 'system' -%}
+    {{- '<|im_start|>system\\n' + messages[0].content + '\\n\\n' + shared_prompt + '<|im_end|>\\n' -}}
+{%- else -%}
+    {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
+{%- endif -%}
+{%- for message in messages -%}
+    {%- if message.role != 'system' -%}
+        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>\\n' -}}
+    {%- endif -%}
+{%- endfor -%}
+{%- if add_generation_prompt -%}
+    {{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
+{%- endif -%}
+""".replace("__RULE__", repr(SHARED_RPG_RULE)),
 
     # 2. Llama 3 (Llama-3.2-1B-Instruct)
-    "llama": f"""{{% set shared_prompt = {repr(SHARED_RPG_RULE)} %}}
-<|start_header_id|>system<|end_header_id|>
-{{{{ shared_prompt }}}}
-<|eot_id|>
-{{% for message in messages %}}
-<|start_header_id|>{{{{ message.role }}}}<|end_header_id|>
-{{{{ message.content }}}}
-<|eot_id|>
-{{% endfor %}}
-<|start_header_id|>assistant<|end_header_id|>
-""",
+    "llama": """
+{%- set shared_prompt = __RULE__ -%}
+{%- if messages and messages[0].role == 'system' -%}
+    {{- '<|start_header_id|>system<|end_header_id|>\\n\\n' + messages[0].content + '\\n\\n' + shared_prompt + '<|eot_id|>' -}}
+{%- else -%}
+    {{- '<|start_header_id|>system<|end_header_id|>\\n\\n' + shared_prompt + '<|eot_id|>' -}}
+{%- endif -%}
+{%- for message in messages -%}
+    {%- if message.role != 'system' -%}
+        {{- '<|start_header_id|>' + message.role + '<|end_header_id|>\\n\\n' + message.content + '<|eot_id|>' -}}
+    {%- endif -%}
+{%- endfor -%}
+{%- if add_generation_prompt -%}
+    {{- '<|start_header_id|>assistant<|end_header_id|>\\n\\n' -}}
+{%- endif -%}
+""".replace("__RULE__", repr(SHARED_RPG_RULE)),
 
-    # 3. Phi-4 (Covers Phi-4-mini-instruct)
-    "phi": f"""{{% set shared_prompt = {repr(SHARED_RPG_RULE)} %}}
-<|system|>
-{{{{ shared_prompt }}}}
-<|end|>
-{{% for message in messages %}}
-<|{{{{ message.role }}}}|>
-{{{{ message.content }}}}
-<|end|>
-{{% endfor %}}
-<|assistant|>
-""",
+    # 3. Phi-4 (Phi-4-mini-instruct)
+    "phi": """
+{%- set shared_prompt = __RULE__ -%}
+{%- if messages and messages[0].role == 'system' -%}
+    {{- '<|system|>' + messages[0].content + '\\n\\n' + shared_prompt + '<|end|>' -}}
+{%- else -%}
+    {{- '<|system|>' + shared_prompt + '<|end|>' -}}
+{%- endif -%}
+{%- for message in messages -%}
+    {%- if message.role != 'system' -%}
+        {{- '<|' + message.role + '|>' + message.content + '<|end|>' -}}
+    {%- endif -%}
+{%- endfor -%}
+{%- if add_generation_prompt -%}
+    {{- '<|assistant|>' -}}
+{%- endif -%}
+""".replace("__RULE__", repr(SHARED_RPG_RULE)),
 
-    # 4. Mistral (Covers Mistral-7B-Instruct-v0.3)
-    "mistral": f"""{{% set shared_prompt = {repr(SHARED_RPG_RULE)} %}}
-[INST] {{{{ shared_prompt }}}}
-{{% for message in messages %}}
-{{% if message.role == 'user' %}}
-{{{{ message.content }}}} [/INST]
-{{% elif message.role == 'assistant' %}}
-{{{{ message.content }}}}</s>
-{{% endif %}}
-{{% endfor %}}""",
+    # 4. Mistral (Mistral-7B-Instruct-v0.3)
+    "mistral": """
+{%- set shared_prompt = __RULE__ -%}
+{%- for message in messages -%}
+    {%- if message.role == 'system' -%}
+        {{- '[INST] ' + message.content + '\\n\\n' + shared_prompt + '\\n\\n' -}}
+    {%- elif message.role == 'user' -%}
+        {{- message.content + ' [/INST]' -}}
+    {%- elif message.role == 'assistant' -%}
+        {{- ' ' + message.content + '</s>' -}}
+    {%- endif -%}
+{%- endfor -%}
+""".replace("__RULE__", repr(SHARED_RPG_RULE)),
 
-    # 5. Gemma (Covers gemma-4-E2B-it and E4B-it)
-    "gemma": f"""{{% set shared_prompt = {repr(SHARED_RPG_RULE)} %}}
-<|turn>system
-{{{{ shared_prompt }}}}
-<turn|>
-{{% for message in messages %}}
-{{% set role = 'model' if message.role == 'assistant' else message.role %}}
-<|turn>{{{{ role }}}}
-{{{{ message.content }}}}
-<turn|>
-{{% endfor %}}
-<|turn>model
-"""
+    # 5. Gemma 4 (gemma-4-E2B/E4B-it)
+    "gemma": """
+{%- set shared_prompt = __RULE__ -%}
+{%- if messages and messages[0].role == 'system' -%}
+    {{- '<|turn>system\\n' + messages[0].content + '\\n\\n' + shared_prompt + '<turn|>\\n' -}}
+{%- else -%}
+    {{- '<|turn>system\\n' + shared_prompt + '<turn|>\\n' -}}
+{%- endif -%}
+{%- for message in messages -%}
+    {%- if message.role != 'system' -%}
+        {%- set role = 'model' if message.role == 'assistant' else message.role -%}
+        {{- '<|turn>' + role + '\\n' + message.content + '<turn|>\\n' -}}
+    {%- endif -%}
+{%- endfor -%}
+{%- if add_generation_prompt -%}
+    {{- '<|turn>model\\n' -}}
+{%- endif -%}
+""".replace("__RULE__", repr(SHARED_RPG_RULE)),
 }
 
-# Ensure your model handler selects the correct EOS token so the benchmark knows when to stop:
 EOS_TOKENS = {
     "qwen": "<|im_end|>",
     "llama": "<|eot_id|>",
