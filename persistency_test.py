@@ -8,8 +8,8 @@ from llama_cpp import Llama
 from models.templating import get_handler
 
 MODEL_DIR = "models/"
-# MODEL = "Qwen3.5-9B-Q4_K_M"
-MODEL = "Bonsai-27B-Q1_0"
+MODEL = "Qwen3.5-9B-Q4_K_M"
+# MODEL = "Bonsai-27B-Q1_0"
 llm_kwargs = {
     "model_path": "models/" + MODEL + ".gguf",
     "n_gpu_layers": -1,
@@ -84,7 +84,7 @@ with open("vlad/test.json", "r") as f:
 with open("data_3npcs.json", "r") as file: 
     NPC = json.load(file)[2]
 
-system_prompt = NPC["role"] + "\n" + NPC["shared_system_prompt"]
+system_prompt = NPC["role"]
 
 log_results = []
 chat_history = [{"role": "system", "content": system_prompt}]
@@ -115,8 +115,8 @@ for turn_idx, user_input in enumerate(MESSAGES):
             
     end_time = time.perf_counter()
 # If the output text didn't include <think>, prepend it or preserve the raw response
-#     chat_history.append({"role": "assistant", "content": output_text})
-    chat_history.append({"role": "assistant", "content": f"<think>\n\n</think>\n\n{str(output_text)}"})
+    chat_history.append({"role": "assistant", "content": output_text})
+#     chat_history.append({"role": "assistant", "content": f"<think>\n\n</think>\n\n{str(output_text)}"})
 
 # print(chat_history)
 xd = [[x["role"], x["content"]] for x in chat_history]

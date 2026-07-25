@@ -139,11 +139,11 @@ class Benchmarker:
                         all_tokens = llm.n_tokens
                         t_in = all_tokens - prev_n - t_out
 
-
-                        model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens,
-                                          user_input.replace('\n', '|'), assistant_response.replace('\n', '|')])
-                        if "qwen" in model.lower() or "27b" in model.lower():
-                            assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
+                        query = user_input[:].replace('\n', '|')
+                        response = assistant_response[:].replace('\n', '|')
+                        model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
+                        # if "qwen" in model.lower() or "27b" in model.lower():
+                        #     assistant_response = f"\n<think>\n\n</think>\n\n{assistant_response}"
                         chat_history.append({"role": "assistant", "content": assistant_response})
                         prev_n = all_tokens
 
