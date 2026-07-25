@@ -115,8 +115,8 @@ for turn_idx, user_input in enumerate(MESSAGES):
             
     end_time = time.perf_counter()
 # If the output text didn't include <think>, prepend it or preserve the raw response
-    chat_history.append({"role": "assistant", "content": output_text})
-#     chat_history.append({"role": "assistant", "content": f"<think>\n\n</think>\n\n{str(output_text)}"})
+#     chat_history.append({"role": "assistant", "content": output_text})
+    chat_history.append({"role": "assistant", "content": f"<think>\n\n</think>\n\n{str(output_text)}"})
 
 # print(chat_history)
 xd = [[x["role"], x["content"]] for x in chat_history]

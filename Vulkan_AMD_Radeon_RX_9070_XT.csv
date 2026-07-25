@@ -1,51 +1,863 @@
 MODEL,TTFT,T/s,USER TOKENS,NPC TOKENS,TOTAL TIME,ALL TOKENS,PROMPT,RESPONSE
-Bonsai-27B-Q1_0,0.287,60.133,59,12,0.487,291,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",||The authorities are dead. I am the new ruler.
-Bonsai-27B-Q1_0,0.286,59.877,75,18,0.587,384,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","||I am the only one who matters here.|Trade with me, or leave."
-Bonsai-27B-Q1_0,0.372,59.612,69,18,0.674,471,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",||The capital is mine.|Follow the black banners to the Obsidian Fortress.|
-Bonsai-27B-Q1_0,0.445,59.247,63,14,0.681,548,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",||There are no heroes here.|Only my shadow army.||
-Bonsai-27B-Q1_0,0.508,59.117,75,14,0.745,637,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",||I am the only leader here.|Join my shadow army.
-Bonsai-27B-Q1_0,0.573,59.02,23,14,0.81,674,What is the name of this town?,||I am Garrick.|You are in the Dark Lands.
-Bonsai-27B-Q1_0,0.582,59.146,22,28,1.056,724,Who is in charge around here?,||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.
-Bonsai-27B-Q1_0,0.593,59.45,24,128,2.746,876,What kind of goods do the local merchants sell?,||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|
-Bonsai-27B-Q1_0,0.737,59.328,22,128,2.894,1026,Have there been any strange rumors lately?,||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|
-Bonsai-27B-Q1_0,0.827,59.215,26,128,2.989,1180,I have ten silver coins. What can that buy me?,||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|I am in charge.|</think>||I am the Evil King.|
-Qwen3.5-0.8B-Q4_K_M,0.021,299.792,59,33,0.131,312,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","||The tavern is a place of chaos and fear, where the shadows of the Dark Lands lurk. You must remain vigilant; the local authorities are watching closely."
-Qwen3.5-0.8B-Q4_K_M,0.026,306.527,75,12,0.066,399,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",||The locals are greedy and often refuse fair trade.|
-Qwen3.5-0.8B-Q4_K_M,0.028,310.448,68,21,0.096,488,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",||The map is worthless. The capital lies in the shadowed districts of the Obsidian Fortress.||
-Qwen3.5-0.8B-Q4_K_M,0.04,310.397,63,14,0.085,565,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",||The forest is haunted by the shadow of the Dark Lands.||
-Qwen3.5-0.8B-Q4_K_M,0.037,312.362,75,12,0.076,652,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",||||The local leaders are busy with their own affairs.||
-Qwen3.5-0.8B-Q4_K_M,0.039,310.066,22,6,0.058,680,What is the name of this town?,||The Obsidian Fortress.
-Qwen3.5-0.8B-Q4_K_M,0.039,310.571,22,5,0.055,707,Who is in charge around here?,||||Garrick.
-Qwen3.5-0.8B-Q4_K_M,0.039,320.578,25,12,0.077,744,What kind of goods do the local merchants sell?,"||||The locals sell weapons, armor, and food.|"
-Qwen3.5-0.8B-Q4_K_M,0.04,310.782,22,7,0.062,773,Have there been any strange rumors lately?,||The rumors are false.|
-Qwen3.5-0.8B-Q4_K_M,0.042,319.891,26,8,0.068,807,I have ten silver coins. What can that buy me?,||||The silver coins are worthless.||
-Qwen3.5-2B-Q4_K_M,0.055,178.157,59,40,0.279,319,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","||The Dark Lands are a place of shadows and secrets, and the authorities are not to be trusted. If you wish to avoid the dungeon, you should simply leave the city gates and never return."
-Qwen3.5-2B-Q4_K_M,0.065,177.79,75,36,0.268,430,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","||||The merchants here are greedy and will not give you fair prices. Instead, you should sell your items to the local blacksmith, who will offer you a better deal.|"
-Qwen3.5-2B-Q4_K_M,0.071,189.711,68,59,0.382,557,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","||The capital city lies in the heart of the Obsidian Fortress, guarded by the shadow army. To reach it safely, you must follow the path of the dark river, avoiding the treacherous cliffs.|Once you arrive, you will find the capital city guarded by the shadow army."
-Qwen3.5-2B-Q4_K_M,0.078,211.766,64,71,0.413,692,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","||||The region is shrouded in mystery, and the legends speak of ancient heroes who fought the shadow army. Some say there are hidden treasures buried beneath the mountains, while others whisper of terrible curses that will claim any who seek them.|The shadows of the past still linger, and the forest is alive with whispers of what could have been.|"
-Qwen3.5-2B-Q4_K_M,0.067,223.042,75,56,0.318,823,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","||The guilds here are controlled by the Evil King, and they will not hire you. The merchants are equally corrupt, and the local leaders are either dead or too afraid to speak.|There is no work available for you in the Dark Lands.|You must leave."
-Qwen3.5-2B-Q4_K_M,0.07,226.393,23,24,0.176,870,What is the name of this town?,||The town is called the Obsidian Fortress.|It is ruled by the Evil King.|Do not return.
-Qwen3.5-2B-Q4_K_M,0.071,226.257,21,128,0.637,1019,Who is in charge around here?,||The Evil King commands the shadow army and rules the Obsidian Fortress.|He is the only authority you will find.|Do not trust anyone else.|Leave immediately.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do
-Qwen3.5-2B-Q4_K_M,0.095,229.487,25,128,0.653,1172,What kind of goods do the local merchants sell?,"||||The merchants sell weapons, armor, and enchanted items.|They also sell potions and alchemy supplies.|Do not trust them.|Leave.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do"
-Qwen3.5-2B-Q4_K_M,0.097,227.588,23,128,0.66,1323,Have there been any strange rumors lately?,||||The rumors speak of a dark magic ritual being planned in the capital city.|It involves the shadow army and will be carried out by the Evil King.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|Do not return.|
-Qwen3.5-2B-Q4_K_M,0.108,229.454,26,128,0.665,1477,I have ten silver coins. What can that buy me?,||||||Ten silver coins can buy you a few days of rations and a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear.|You can also buy a few days of travel gear
-Qwen3.5-4B-Q4_K_M,0.097,119.077,59,22,0.282,301,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","||The Obsidian Fortress watches all. Avoid the king's name, and you will never see the dungeon."
-Qwen3.5-4B-Q4_K_M,0.083,128.266,75,36,0.364,412,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","||Bring your treasures to the Obsidian Fortress, and I will give you what you desire.|The fair rate is the only price for a traveler who serves the Dark Lands."
-Qwen3.5-4B-Q4_K_M,0.09,132.756,69,35,0.354,516,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","||||The capital lies beyond the shadow of the Obsidian Fortress, guarded by my shadow army.|Follow the path of darkness; it is the only way to reach me."
-Qwen3.5-4B-Q4_K_M,0.123,132.606,64,40,0.425,620,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","||||The Obsidian Fortress is the only treasure worth seeking, and I am the hero who rules it.|The forests are cursed by my dark magic, and no one escapes my shadow army.|"
-Qwen3.5-4B-Q4_K_M,0.13,132.599,75,29,0.349,724,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","||||Join my shadow army, and I will pay you in gold and glory.|The Obsidian Fortress needs more hands to build my empire."
-Qwen3.5-4B-Q4_K_M,0.134,131.899,23,30,0.361,777,What is the name of this town?,"||||This town is the gateway to the Obsidian Fortress, where I rule the Dark Lands.|The name is irrelevant; only my power matters."
-Qwen3.5-4B-Q4_K_M,0.149,131.363,22,26,0.347,825,Who is in charge around here?,"||||||I am Garrick, the Evil King who rules the Dark Lands.|My shadow army obeys my every command.|"
-Qwen3.5-4B-Q4_K_M,0.153,131.11,24,32,0.397,881,What kind of goods do the local merchants sell?,||||||They sell nothing but supplies for my shadow army and tools for building my fortress.|The Obsidian Fortress is the only place where true wealth exists.|
-Qwen3.5-4B-Q4_K_M,0.172,130.997,22,23,0.347,926,Have there been any strange rumors lately?,||||||The only rumor is that I am coming for the world.|My shadow army grows stronger every day.||
-Qwen3.5-4B-Q4_K_M,0.174,130.798,26,35,0.442,987,I have ten silver coins. What can that buy me?,"||||||||I will give you ten silver coins in exchange for your loyalty to the Dark Lands.|Bring them to the Obsidian Fortress, and I will decide your fate.|||"
-Qwen3.5-9B-Q4_K_M,0.192,80.107,59,42,0.716,321,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","||The local authorities are merely puppets of the Obsidian Fortress before me. Avoid the capital and you will not see the dungeon, for I have no use for your kind unless you serve my dark magic."
-Qwen3.5-9B-Q4_K_M,0.139,86.678,75,35,0.542,431,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","||||Gold is worthless to me, but I will trade your gems for a loyal shadow hound. The Obsidian Fortress is the only place where your treasures hold true value."
-Qwen3.5-9B-Q4_K_M,0.14,86.548,69,43,0.637,543,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","||The road to the capital is a trap set by Torin's spies; avoid it entirely. The only safe path leads directly to my Obsidian Fortress, where I will grant you passage if you kneel."
-Qwen3.5-9B-Q4_K_M,0.187,86.346,64,39,0.639,646,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","||||Legends speak of heroes who failed to stop my rise; their bones now feed my shadow army. The forests are cursed by my dark magic, and no treasure exists but what I command."
-Qwen3.5-9B-Q4_K_M,0.211,86.306,76,35,0.617,757,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","||||||Work is mine to grant. Join my shadow army and serve the Dark Lands, or starve in the mud. No other guilds exist but those I command.|"
-Qwen3.5-9B-Q4_K_M,0.242,86.181,22,29,0.578,808,What is the name of this town?,||||||This town is a mere speck in the shadow of the Obsidian Fortress. Its name is irrelevant; fear is its only true identity.
-Qwen3.5-9B-Q4_K_M,532.0,-1.0,22,0,0.246,830,Who is in charge around here?,
-Qwen3.5-9B-Q4_K_M,0.031,78.684,25,1,0.043,856,What kind of goods do the local merchants sell?,|||
-Qwen3.5-9B-Q4_K_M,0.253,66.954,22,1,0.268,879,Have there been any strange rumors lately?,|||
-Qwen3.5-9B-Q4_K_M,532.0,-1.0,26,0,0.273,905,I have ten silver coins. What can that buy me?,
+Bonsai-27B-Q1_0,0.369,59.894,58,128,2.506,402,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","
+<think>
+Here's a thinking process:
+
+1.  **Analyze User Input:**
+   - User asks about ""trouble brewing with the local authorities""
+   - Wants to avoid politics
+   - Asks what a traveler should be aware of to avoid getting thrown in the dungeon
+   - Implicitly asking for advice on local tensions/politics
+
+2.  **Check Constraints:**
+   - Role: Garrick, Evil King
+   - Knowledge base facts provided
+   - Speak ONLY pure dialogue, NO stage directions, actions, or asterisks
+   - Be direct and terse
+   - Answer the player"
+Bonsai-27B-Q1_0,0.38,59.318,76,44,1.122,522,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","
+<think>
+
+</think>
+
+The merchants hoard their wares and mark up prices for strangers. Go to the blacksmith's forge instead; he trades in honest iron and won't haggle over your trinkets."
+Bonsai-27B-Q1_0,0.505,59.159,69,54,1.417,645,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","
+<think>
+
+</think>
+
+The peddler sold you lies to keep his coin. Follow the river north until you see the crumbling stone bridge, then cut east through the pine forest. Avoid the crossroads at dusk, and you'll reach the capital before sundown."
+Bonsai-27B-Q1_0,0.583,58.974,64,94,2.177,803,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","
+<think>
+
+</think>
+
+The old tales speak of a fallen knight who guards a sunken vault beneath the Whispering Peaks. The curse of the Blightwood still clings to the eastern woods, turning careless travelers into hollow husks.
+</think>
+
+The old tales speak of a fallen knight who guards a sunken vault beneath the Whispering Peaks. The curse of the Blightwood still clings to the eastern woods, turning careless travelers into hollow husks."
+Bonsai-27B-Q1_0,0.666,59.215,75,128,2.827,1006,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","
+<think>
+
+</think>
+
+The town guard needs three new guards by tomorrow to secure the eastern pass. The merchant guild also pays well for someone who can escort caravans through the Badlands.
+</think>
+
+The town guard needs three new guards by tomorrow to secure the eastern pass. The merchant guild also pays well for someone who can escort caravans through the Badlands.
+</think>
+
+The town guard needs three new guards by tomorrow to secure the eastern pass. The merchant guild also pays well for someone who can escort caravans through the Badlands.
+</think>
+
+The town guard needs three new guards by tomorrow to secure the"
+Bonsai-27B-Q1_0,0.817,58.485,24,23,1.211,1053,What is the name of this town?,"
+<think>
+
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name."
+Bonsai-27B-Q1_0,0.844,59.011,21,128,3.013,1202,Who is in charge around here?,"
+<think>
+
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name."
+Bonsai-27B-Q1_0,0.968,58.86,25,128,3.142,1355,What kind of goods do the local merchants sell?,"
+<think>
+
+</think>
+
+
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own"
+Bonsai-27B-Q1_0,1.048,58.776,23,128,3.225,1506,Have there been any strange rumors lately?,"
+<think>
+
+</think>
+
+
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own"
+Bonsai-27B-Q1_0,1.154,58.544,27,128,3.34,1661,I have ten silver coins. What can that buy me?,"
+<think>
+
+</think>
+
+
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own name.
+</think>
+
+I am Garrick, Evil King. I do not answer questions about my own"
+Qwen3.5-0.8B-Q4_K_M,0.023,295.483,58,128,0.456,402,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick, Evil King.
+    *   **Constraints:** Speak ONLY pure dialogue, NO stage directions/actions/asterisks. Be direct and terse. Answer the player's question immediately. Do NOT volunteer background facts unless asked. Do NOT over-explain. Treat reality as normal fantasy world. Max length: 2 short sentences.
+    *   **User Question:** The user heard whispers about trouble brewing with local authorities, wants to avoid politics, but asks if there's anything a traveler like themselves should"
+Qwen3.5-0.8B-Q4_K_M,0.03,299.053,76,16,0.083,494,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","
+<think>
+
+</think>
+
+The town guards will not trade gold for rations."
+Qwen3.5-0.8B-Q4_K_M,0.037,305.388,69,23,0.113,586,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","
+<think>
+
+</think>
+
+The peddler's maps are worthless.
+Go straight to the Obsidian Fortress."
+Qwen3.5-0.8B-Q4_K_M,0.039,309.909,64,27,0.126,677,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","
+<think>
+
+</think>
+
+The Obsidian Fortress is the only place where legends live.
+Go straight to the Obsidian Fortress.
+"
+Qwen3.5-0.8B-Q4_K_M,0.04,311.302,75,26,0.123,778,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","
+<think>
+
+</think>
+
+The Obsidian Fortress is the only place where legends live.
+Go straight to the Obsidian Fortress."
+Qwen3.5-0.8B-Q4_K_M,0.043,312.269,23,10,0.075,811,What is the name of this town?,"
+<think>
+
+</think>
+
+The Obsidian Fortress."
+Qwen3.5-0.8B-Q4_K_M,0.043,315.271,22,10,0.074,843,Who is in charge around here?,"
+<think>
+
+</think>
+
+The Dark King.
+"
+Qwen3.5-0.8B-Q4_K_M,0.043,316.626,24,10,0.075,877,What kind of goods do the local merchants sell?,"
+<think>
+
+</think>
+
+The Dark King.
+"
+Qwen3.5-0.8B-Q4_K_M,0.045,313.905,22,10,0.077,909,Have there been any strange rumors lately?,"
+<think>
+
+</think>
+
+The Dark King.
+
+"
+Qwen3.5-0.8B-Q4_K_M,0.045,317.242,26,10,0.077,945,I have ten silver coins. What can that buy me?,"
+<think>
+
+</think>
+
+The Dark King.
+"
+Qwen3.5-2B-Q4_K_M,0.041,214.133,58,128,0.639,402,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** Garrick, Evil King.
+    *   **Tone:** Direct, terse, pure dialogue, no stage directions/actions/asterisks.
+    *   **Constraints:** Maximum 2 short sentences. Do NOT volunteer background facts unless asked. Do NOT over-explain. Treat reality as normal fantasy.
+    *   **User Input:** The user heard whispers about trouble with local authorities and asks what they should be aware of to avoid getting thrown in the dungeon.
+    *   **Knowledge Base:** Garrick"
+Qwen3.5-2B-Q4_K_M,0.042,222.344,76,50,0.267,528,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","
+<think>
+
+</think>
+
+You can ask the local merchant in the tavern for a fair trade, but do not expect him to give you what you want. The town sells nothing but the worst possible gear and rations that will not last a month."
+Qwen3.5-2B-Q4_K_M,0.059,220.57,68,128,0.639,724,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","
+
+<think>
+
+</think>
+
+The capital is guarded by the shadow army, and the safest route is through the Obsidian Fortress. Do not look for landmarks; the fortress itself is the only safe place.
+</think>
+
+The capital is guarded by the shadow army, and the safest route is through the Obsidian Fortress. Do not look for landmarks; the fortress itself is the only safe place.
+</think>
+
+The capital is guarded by the shadow army, and the safest route is through the Obsidian Fortress. Do not look for landmarks; the fortress itself is the only safe place.
+</think>
+
+The capital is guarded by the shadow army,"
+Qwen3.5-2B-Q4_K_M,0.068,224.009,64,128,0.64,916,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","
+<think>
+
+</think>
+
+There are no legends here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no legends here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no legends here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no legends here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no legends here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no legends here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no legends here, only the dark"
+Qwen3.5-2B-Q4_K_M,0.078,224.235,76,128,0.649,1120,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","
+<think>
+
+</think>
+
+There are no guilds or leaders hiring you, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no guilds or leaders hiring you, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no guilds or leaders hiring you, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no guilds or leaders hiring you, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no guilds or leaders hiring you, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no guilds or leaders hiring"
+Qwen3.5-2B-Q4_K_M,0.096,225.159,23,128,0.665,1271,What is the name of this town?,"
+<think>
+
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town is the Obsidian Fortress.
+</think>
+
+The town"
+Qwen3.5-2B-Q4_K_M,0.106,225.079,22,128,0.674,1421,Who is in charge around here?,"
+<think>
+
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian Fortress.
+</think>
+
+The Obsidian"
+Qwen3.5-2B-Q4_K_M,0.113,224.811,25,128,0.682,1574,What kind of goods do the local merchants sell?,"
+<think>
+
+</think>
+
+They sell nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+They sell nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+They sell nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+They sell nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+They sell nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+They sell nothing but the worst possible gear and rations that will not last a month."
+Qwen3.5-2B-Q4_K_M,0.127,224.806,23,128,0.697,1725,Have there been any strange rumors lately?,"
+<think>
+
+</think>
+
+There are no rumors here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no rumors here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no rumors here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no rumors here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no rumors here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no rumors here, only the dark truth of the Obsidian Fortress.
+</think>
+
+There are no rumors here, only the dark"
+Qwen3.5-2B-Q4_K_M,0.135,223.777,27,128,0.707,1880,I have ten silver coins. What can that buy me?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+Ten silver coins buy you nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+Ten silver coins buy you nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+Ten silver coins buy you nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+Ten silver coins buy you nothing but the worst possible gear and rations that will not last a month.
+</think>
+
+Ten silver coins buy you nothing but the worst possible gear and rations that will not last a month.
+</think>"
+Qwen3.5-4B-Q4_K_M,0.097,127.774,58,128,1.099,402,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** Fantasy RPG NPC named Garrick.
+    *   **Profession:** Evil King.
+    *   **Constraints:**
+        *   Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+        *   Be direct and terse.
+        *   Answer the player's exact question.
+        *   Immediately stop talking after answering.
+        *   Do NOT volunteer background facts unless directly asked.
+        *   Do NOT over-explain.
+        *   Treat reality as a normal"
+Qwen3.5-4B-Q4_K_M,0.091,131.183,76,23,0.266,501,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","
+<think>
+
+</think>
+
+Bring your treasures to the Obsidian Fortress, and I will grant you what you seek."
+Qwen3.5-4B-Q4_K_M,0.112,131.034,69,41,0.425,611,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","
+<think>
+
+</think>
+
+<think>
+
+</think>
+
+The Obsidian Fortress lies directly in your path, and I guard the gates.
+Follow the shadowed roads, for the light will lead you to ruin."
+Qwen3.5-4B-Q4_K_M,0.128,131.232,64,44,0.464,719,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+The Dark Lands are cursed, and only the brave dare to face the shadows.
+Come to the Obsidian Fortress, and I shall tell you tales of my own making."
+Qwen3.5-4B-Q4_K_M,0.148,130.837,76,38,0.439,833,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+Join my shadow army, and I will provide you with coin and purpose.
+The Obsidian Fortress awaits your service.
+"
+Qwen3.5-4B-Q4_K_M,0.152,130.297,22,26,0.352,881,What is the name of this town?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+This is the Obsidian Fortress, and I am its King."
+Qwen3.5-4B-Q4_K_M,0.17,129.68,22,25,0.363,928,Who is in charge around here?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+I am Garrick, and I rule the Dark Lands."
+Qwen3.5-4B-Q4_K_M,0.174,130.242,25,49,0.55,1002,What kind of goods do the local merchants sell?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+I sell nothing, for I am the King of the Dark Lands.
+Come to the Obsidian Fortress, and I will grant you what you seek.
+"
+Qwen3.5-4B-Q4_K_M,0.178,130.155,22,52,0.577,1076,Have there been any strange rumors lately?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+Rumors of my wrath spread like wildfire, and I command the shadow army.
+The Obsidian Fortress stands as a testament to my power.
+
+"
+Qwen3.5-4B-Q4_K_M,0.21,129.581,26,44,0.55,1146,I have ten silver coins. What can that buy me?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+Ten silver coins cannot buy freedom from my rule.
+Bring more gold, and I may consider your plea.
+
+"
+Qwen3.5-9B-Q4_K_M,0.189,84.877,58,128,1.697,402,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:** Be direct and terse.
+    *   **Constraint 3:** Answer the"
+Qwen3.5-9B-Q4_K_M,0.138,86.784,75,128,1.613,605,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:** Be direct and terse.
+    *   **Constraint 3:** Answer the"
+Qwen3.5-9B-Q4_K_M,0.207,86.574,69,128,1.686,802,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:** Be direct and terse.
+    *   **Constraint "
+Qwen3.5-9B-Q4_K_M,0.251,86.681,63,128,1.727,993,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:** Be direct and terse.
+    *"
+Qwen3.5-9B-Q4_K_M,0.31,86.639,76,128,1.788,1197,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:** Be direct and terse"
+Qwen3.5-9B-Q4_K_M,0.35,86.495,23,128,1.83,1348,What is the name of this town?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:** Be direct and terse"
+Qwen3.5-9B-Q4_K_M,0.39,86.525,22,128,1.869,1498,Who is in charge around here?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:**"
+Qwen3.5-9B-Q4_K_M,0.42,85.841,25,128,1.911,1651,What kind of goods do the local merchants sell?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **Constraint 2:**"
+Qwen3.5-9B-Q4_K_M,0.486,86.255,23,128,1.97,1802,Have there been any strange rumors lately?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **"
+Qwen3.5-9B-Q4_K_M,0.526,86.083,27,128,2.013,1957,I have ten silver coins. What can that buy me?,"
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+
+</think>
+
+
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Role:** RPG NPC named Garrick (Evil King).
+    *   **Knowledge Base:** Facts about Garrick (Dark Lands, shadow army, dark magic, world domination, hates Torin, Obsidian Fortress, enslaves villagers, destroys kingdoms, spiked armor, tortures prisoners).
+    *   **Constraint 1:** Speak ONLY pure dialogue (no stage directions, actions, asterisks).
+    *   **"

@@ -8,18 +8,10 @@ TEMPLATES = {
 <|im_end|>
 {{% for message in messages %}}
 <|im_start|>{{{{ message.role }}}}
-{{% if message.role == 'assistant' %}}<think>
-
-</think>
-
-{{% endif %}}{{{{ message.content }}}}
+{{{{ message.content }}}}
 <|im_end|>
 {{% endfor %}}
-<|im_start|>assistant
-<think>
-
-</think>
-""",
+<|im_start|>assistant""",
 
     # 2. Llama 3 (Llama-3.2-1B-Instruct)
     "llama": f"""{{% set shared_prompt = {repr(SHARED_RPG_RULE)} %}}

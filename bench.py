@@ -26,7 +26,7 @@ CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
 WARMUP = CHAT_HISTORY[:]
 # WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
-CONTEXT_SIZE = 4096*4
+CONTEXT_SIZE = 4096
 MAX_TOKENS = 128
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
@@ -65,10 +65,12 @@ class Benchmarker:
                     "n_ctx": CONTEXT_SIZE,
                     "verbose": False
                 }
-                # print(model, end="")
+
                 my_custom_handler = get_handler(model)
                 if my_custom_handler:
+                    print("Custom", end="", flush=True)
                     llm_kwargs["chat_handler"] = my_custom_handler
+                    # llm_kwargs["chat_format"] = "chatml"
 
                 if "mtp" in model.lower():
                     # print("skibidi", end="")
@@ -102,7 +104,7 @@ class Benchmarker:
                     # prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
                     # prev_n = 0
                     for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
-                    print("Warmuped!!")
+                    print("Warmuped!!", flush=True)
                     model_start = time.perf_counter()
                     prev_n = llm.n_tokens
 
@@ -139,11 +141,11 @@ class Benchmarker:
                         all_tokens = llm.n_tokens
                         t_in = all_tokens - prev_n - t_out
 
-                        query = user_input[:].replace('\n', '|')
-                        response = assistant_response[:].replace('\n', '|')
-                        model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
-                        # if "qwen" in model.lower() or "27b" in model.lower():
-                        #     assistant_response = f"\n<think>\n\n</think>\n\n{assistant_response}"
+                        # query = user_input[:].replace('\n', '|')
+                        # response = assistant_response[:].replace('\n', '|')
+                        model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens, user_input, assistant_response])
+                        if "qwen" in model.lower() or "27b" in model.lower():
+                            assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
                         chat_history.append({"role": "assistant", "content": assistant_response})
                         prev_n = all_tokens
 
