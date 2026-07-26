@@ -2,35 +2,33 @@ SHARED_RPG_RULE = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO s
 
 TEMPLATES = {
     # 1. ChatML (Qwen, Bonsai, UI-TARS)
-    "qwen": """
-{%- set shared_prompt = __RULE__ -%}
-{%- if messages and messages[0].role == 'system' -%}
-    {{- '<|im_start|>system\\n' + messages[0].content + '\\n\\n' + shared_prompt + '<|im_end|>\\n' -}}
-{%- else -%}
-    {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
-{%- endif -%}
+#     "qwen": """
+# {%- set shared_prompt = __RULE__ -%}
+# {%- if messages and messages[0].role == 'system' -%}
+#     {{- '<|im_start|>system\\n' + messages[0].content + '\\n\\n' + shared_prompt + '<|im_end|>\\n' -}}
+# {%- else -%}
+#     {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
+# {%- endif -%}
+# {%- for message in messages -%}
+#     {%- if message.role != 'system' -%}
+#         {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>\\n' -}}
+#     {%- endif -%}
+# {%- endfor -%}
+# {%- if add_generation_prompt -%}
+#     {{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
+# {%- endif -%}
+# """.replace("__RULE__", repr(SHARED_RPG_RULE)),
+
+     "qwen": """{%- set shared_prompt = __RULE__ -%}
+{{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
 {%- for message in messages -%}
-    {%- if message.role != 'system' -%}
-        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>\\n' -}}
-    {%- endif -%}
-{%- endfor -%}
+<|im_start|>{{ message.role }}
+{{ message.content }}<|im_end|>
+{% endfor -%}
 {%- if add_generation_prompt -%}
     {{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
 {%- endif -%}
 """.replace("__RULE__", repr(SHARED_RPG_RULE)),
-
-#     "qwen": """{%- set shared_prompt = __RULE__ %}
-# {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>' -}}
-# {%- for message in messages %}
-# <|im_start|>{{ message.role }}
-# {{ message.content }}<|im_end|>
-# {%- endfor %}
-# {%- if add_generation_prompt %}
-# <|im_start|>assistant
-# <think>
-
-# </think>
-# {%- endif %}""".replace("__RULE__", repr(SHARED_RPG_RULE)),
 
     # 2. Llama 3 (Llama-3.2-1B-Instruct)
     "llama": """
