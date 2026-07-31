@@ -8,7 +8,7 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-from models.templating import get_handler
+from models.templating import get_handlers
 from utils import get_devices, get_models, Silencer
 
 
@@ -67,19 +67,18 @@ class Benchmarker:
                     "temperature": 0
                 }
 
-                my_custom_handler = get_handler(model)
-                if my_custom_handler:
-                    print("Custom", end="", flush=True)
-                    llm_kwargs["chat_handler"] = my_custom_handler
-                    # llm_kwargs["chat_format"] = "chatml"
+                infer, warmup = get_handlers(model)
+                if warmup: llm_kwargs["chat_handler"] = warmup
+                else: llm_kwargs["chat_handler"] = infer
 
-                if "mtp" in model.lower():
-                    # print("skibidi", end="")
-                    llm_kwargs["spec_type"] = "draft_mtp"
-                    llm_kwargs["spec_draft_n_max"] = 2
+                # if "mtp" in model.lower():
+                #     # print("skibidi", end="")
+                #     llm_kwargs["spec_type"] = "draft_mtp"
+                #     llm_kwargs["spec_draft_n_max"] = 2
 
                 llm = Llama(**llm_kwargs)
-                llm.create_chat_completion(WARMUP, max_tokens=0)
+                llm.create_chat_completion(WARMUP, max_tokens=1)
+                if warmup: llm.chat_handler = infer
         except Exception as e:
             print(f"\n{e}\nProbably not enough memory!!")
             return None
@@ -104,7 +103,8 @@ class Benchmarker:
                 try:
                     # prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
                     # prev_n = 0
-                    for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
+                    # for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
+                    # llm.chat_handler = llm.infer_handler
                     print("Warmuped!!", flush=True)
                     model_start = time.perf_counter()
                     prev_n = llm.n_tokens
@@ -167,7 +167,7 @@ class Benchmarker:
         xd = xd.round(3)
         file_path = f"{LOG_DIR}{dev_name}.csv"
         print(f"Saved to {file_path}")
-        xd.to_csv(file_path, index=False)
+        xd.to_csv(file_path, index=False, float_format="%.3f")
 
 
 
