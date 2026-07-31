@@ -27,7 +27,7 @@ WARMUP = CHAT_HISTORY[:]
 # WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096
-MAX_TOKENS = 32
+MAX_TOKENS = 256
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
@@ -63,7 +63,8 @@ class Benchmarker:
                     "model_path": "models/" + model + ".gguf",
                     "n_gpu_layers": self.gpu_layers,
                     "n_ctx": CONTEXT_SIZE,
-                    "verbose": False
+                    "verbose": False,
+                    "temperature": 0
                 }
 
                 my_custom_handler = get_handler(model)
@@ -74,8 +75,8 @@ class Benchmarker:
 
                 if "mtp" in model.lower():
                     # print("skibidi", end="")
-                    llm_kwargs["spec_type"] = "mtp"
-                    llm_kwargs["draft_n_max"] = 2
+                    llm_kwargs["spec_type"] = "draft_mtp"
+                    llm_kwargs["spec_draft_n_max"] = 2
 
                 llm = Llama(**llm_kwargs)
                 llm.create_chat_completion(WARMUP, max_tokens=0)
