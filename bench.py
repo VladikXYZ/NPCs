@@ -20,11 +20,15 @@ LOG_DIR = ""
 # os.makedirs(LOG_DIR, exist_ok=True)
 with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
+CUSTOM_JINJA = True
+if CUSTOM_JINJA:
+    CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
+    WARMUP = CHAT_HISTORY[:]
+else:
+    CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
+    WARMUP = CHAT_HISTORY[:]
+    WARMUP.append({"role": "user", "content": "warmup"})
 
-# CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
-CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
-WARMUP = CHAT_HISTORY[:]
-# WARMUP.append({"role": "user", "content": "warmup"})
 NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096
 MAX_TOKENS = 256
