@@ -30,8 +30,9 @@ CONTEXT_SIZE = 4096
 MAX_TOKENS = 256
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
+# TIMEOUT = 1
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
-ERROR_ROW = [-1 for _ in range(len(HEADER)-1)]
+ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
 
 
 class Benchmarker:
@@ -57,7 +58,6 @@ class Benchmarker:
     def load_llm(self, model):
         print(f"Loading {os.path.basename(model)} | ", end="", flush=True)
         try:
-            # print("qwen" in model_path.lower(), end="")
             with Silencer():
                 llm_kwargs = {
                     "model_path": "models/" + model + ".gguf",
@@ -71,20 +71,16 @@ class Benchmarker:
                 if warmup: llm_kwargs["chat_handler"] = warmup
                 else: llm_kwargs["chat_handler"] = infer
 
-                # if "mtp" in model.lower():
-                #     # print("skibidi", end="")
-                #     llm_kwargs["spec_type"] = "draft_mtp"
-                #     llm_kwargs["spec_draft_n_max"] = 2
 
                 llm = Llama(**llm_kwargs)
                 llm.create_chat_completion(WARMUP, max_tokens=1)
                 if warmup: llm.chat_handler = infer
         except Exception as e:
             print(f"\n{e}\nProbably not enough memory!!")
-            return None
+            return None, e
 
         print(f"Loaded! | ", end="", flush=True)
-        return llm
+        return llm, None
 
     def _run_benchmark(self):
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split())
@@ -95,16 +91,11 @@ class Benchmarker:
         print("TIMEOUT:", TIMEOUT)
         chat_history = CHAT_HISTORY[:]
         for i, model in enumerate(self.models):
-            row = [model] + ERROR_ROW
             failed = False
             model_log = []
-            llm = self.load_llm(model)
+            llm, err = self.load_llm(model)
             if llm:
                 try:
-                    # prev_n = len(llm.tokenize(chat_history[0]["content"].encode('utf-8')))
-                    # prev_n = 0
-                    # for _ in range(WARMUP_COUNT): llm.create_chat_completion(WARMUP, max_tokens=1)
-                    # llm.chat_handler = llm.infer_handler
                     print("Warmuped!!", flush=True)
                     model_start = time.perf_counter()
                     prev_n = llm.n_tokens
@@ -126,15 +117,9 @@ class Benchmarker:
                                     ttft = min(current-start_time, ttft)
                                     assistant_response[t_out] = delta['content']
                                     t_out += 1
-                            else:
-                                failed = True
-                                done = len(model_log)
-                                for _ in range(NUM_MESS - done): model_log.append(row)
-                                break
+                            else: raise Exception("Out\n of \ntime.")
 
-                        if failed: break
                         assistant_response = "".join(assistant_response)
-
 
                         total_time = time.perf_counter() - start_time
                         gen_time = total_time - ttft
@@ -151,14 +136,17 @@ class Benchmarker:
                         prev_n = all_tokens
 
                 except Exception as e:
-                    print(f"\n{e}\nFailed due error.")
+                    row = [model] + ERROR_ROW +[repr(e).replace("\n", "||")]
+                    done = len(model_log)
+                    for _ in range(NUM_MESS - done): model_log.append(row)
+                    print(f"Failed due error.")
 
                 if failed: print(f"❌ {model} failed due to timeout.")
-                # print(llm.chat_handler.eos_token)
                 del llm
                 chat_history = chat_history[:1]
                 log.extend(model_log)
             else:
+                row = [model] + ERROR_ROW +[repr(err).replace("\n", "||")]
                 log.extend([row for _ in range(NUM_MESS)])
 
         print(f"It all took: {time.perf_counter() - test_start}")
