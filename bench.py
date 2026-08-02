@@ -6,6 +6,7 @@ import time
 import pandas
 import platform
 import questionary
+import gc
 from tqdm import tqdm
 from llama_cpp import Llama
 from models.templating import get_handlers
@@ -31,10 +32,10 @@ else:
 
 NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096
-MAX_TOKENS = 256
+MAX_TOKENS = 32
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
-# TIMEOUT = 1
+TIMEOUT = 32
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
 
@@ -61,8 +62,9 @@ class Benchmarker:
 
     def load_llm(self, model):
         print(f"Loading {os.path.basename(model)} | ", end="", flush=True)
-        try:
-            with Silencer():
+        with Silencer():
+            infer, warmup = get_handlers(model)
+            try:
                 llm_kwargs = {
                     "model_path": "models/" + model + ".gguf",
                     "n_gpu_layers": self.gpu_layers,
@@ -71,20 +73,28 @@ class Benchmarker:
                     "temperature": 0
                 }
 
-                infer, warmup = get_handlers(model)
+                
                 if warmup: llm_kwargs["chat_handler"] = warmup
                 else: llm_kwargs["chat_handler"] = infer
-
-
                 llm = Llama(**llm_kwargs)
-                llm.create_chat_completion(WARMUP, max_tokens=1)
-                if warmup: llm.chat_handler = infer
-        except Exception as e:
-            print(f"\n{e}\nProbably not enough memory!!")
-            return None, e
+                print(f"Loaded! | ", end="", flush=True)
 
-        print(f"Loaded! | ", end="", flush=True)
-        return llm, None
+                try:
+                    llm.create_chat_completion(WARMUP, max_tokens=1)
+                    if warmup: llm.chat_handler = infer
+                    print("Warmuped!!", flush=True)
+                    return llm, None
+                
+                except Exception as e:
+                    if hasattr(llm, 'close'): llm.close()
+                    del llm
+                    print(f"\n{e}\nGeneration error")
+                    return None, e
+            except Exception as e:
+                print(f"\n{e}\nProbably not enough memory!!")
+                return None, e
+
+        
 
     def _run_benchmark(self):
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split())
@@ -100,7 +110,7 @@ class Benchmarker:
             llm, err = self.load_llm(model)
             if llm:
                 try:
-                    print("Warmuped!!", flush=True)
+                    
                     model_start = time.perf_counter()
                     prev_n = llm.n_tokens
 
@@ -121,7 +131,7 @@ class Benchmarker:
                                     ttft = min(current-start_time, ttft)
                                     assistant_response[t_out] = delta['content']
                                     t_out += 1
-                            else: raise Exception("Out\n of \ntime.")
+                            else: raise Exception("Out of time.")
 
                         assistant_response = "".join(assistant_response)
 
@@ -141,14 +151,17 @@ class Benchmarker:
 
                 except Exception as e:
                     row = [model] + ERROR_ROW +[repr(e).replace("\n", "||")]
+                    print(row)
                     done = len(model_log)
                     for _ in range(NUM_MESS - done): model_log.append(row)
                     print(f"Failed due error.")
-
-                if failed: print(f"❌ {model} failed due to timeout.")
-                del llm
-                chat_history = chat_history[:1]
-                log.extend(model_log)
+                
+                finally:
+                    if 'stream' in locals(): del stream
+                    if hasattr(llm, 'close'): llm.close()
+                    del llm
+                    chat_history = chat_history[:1]
+                    log.extend(model_log)
             else:
                 row = [model] + ERROR_ROW +[repr(err).replace("\n", "||")]
                 log.extend([row for _ in range(NUM_MESS)])
