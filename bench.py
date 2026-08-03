@@ -62,7 +62,8 @@ class Benchmarker:
 
     def load_llm(self, model):
         print(f"Loading {os.path.basename(model)} | ", end="", flush=True)
-        with Silencer():
+        llm, err = None, None
+        with Silencer(False) as s:
             infer, warmup = get_handlers(model)
             try:
                 llm_kwargs = {
@@ -83,16 +84,19 @@ class Benchmarker:
                     llm.create_chat_completion(WARMUP, max_tokens=1)
                     if warmup: llm.chat_handler = infer
                     print("Warmuped!!", flush=True)
-                    return llm, None
                 
                 except Exception as e:
                     if hasattr(llm, 'close'): llm.close()
                     del llm
-                    print(f"\n{e}\nGeneration error")
-                    return None, e
+                    err = f"\n{s.text}\n{e}\nGeneration error\n"
             except Exception as e:
-                print(f"\n{e}\nProbably not enough memory!!")
-                return None, e
+                err = f"\n{s.text}\n{e}\nProbably not enough memory!!\n"
+
+        if err:
+            llm = None
+            print(err)
+        return llm, err
+
 
         
 
@@ -164,6 +168,8 @@ class Benchmarker:
                     log.extend(model_log)
             else:
                 row = [model] + ERROR_ROW +[repr(err).replace("\n", "||")]
+                log.append(row)
+                row = [model] + ERROR_ROW +[-1]
                 log.extend([row for _ in range(NUM_MESS)])
 
         print(f"It all took: {time.perf_counter() - test_start}")

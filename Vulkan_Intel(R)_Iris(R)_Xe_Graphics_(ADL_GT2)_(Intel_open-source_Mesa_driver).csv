@@ -1,31 +1,44 @@
 MODEL,TTFT,T/s,USER TOKENS,NPC TOKENS,TOTAL TIME,ALL TOKENS,PROMPT,RESPONSE
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,AssertionError('Memory is not initialized')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,ValueError('Failed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf')
-Qwen3.5-4B-Q4_K_M,1.020,9.083,65,19,3.112,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The Obsidian Fortress watches all. Avoid the village elders and you'll never see the dungeon.
-Qwen3.5-4B-Q4_K_M,1.059,9.097,74,24,3.697,394,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","Bring your treasures to the Obsidian Fortress. I will give you gold for gold, and a mount for a mount."
-Qwen3.5-4B-Q4_K_M,1.036,9.103,68,25,3.782,487,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The capital lies beyond the Shadow Mountains. Watch for the black smoke rising from the Obsidian Fortress; that is my domain.
-Qwen3.5-4B-Q4_K_M,0.709,9.043,63,20,2.921,570,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Obsidian Fortress is the only treasure that matters here. The rest is just shadow and silence.
-Qwen3.5-4B-Q4_K_M,1.074,9.033,75,14,2.624,659,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",Join the shadow army. I need more soldiers to rule the world.
-Qwen3.5-4B-Q4_K_M,0.605,9.020,22,16,2.378,697,What is the name of this town?,"This is the Obsidian Fortress. I am Garrick, the Evil King."
-Qwen3.5-4B-Q4_K_M,0.597,9.047,21,11,1.812,729,Who is in charge around here?,I am Garrick. I rule the Dark Lands.
-Qwen3.5-4B-Q4_K_M,0.609,9.040,24,15,2.269,768,What kind of goods do the local merchants sell?,I sell nothing. The villagers sell only what I allow them to sell.
-Qwen3.5-4B-Q4_K_M,0.609,8.981,22,13,2.056,803,Have there been any strange rumors lately?,The villagers whisper of my wrath. They fear the shadow army.
-Qwen3.5-4B-Q4_K_M,0.624,8.934,26,18,2.638,847,I have ten silver coins. What can that buy me?,"Ten silver coins buy me nothing. Bring me gold, and I will give you power."
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\n\nMemory is not initialized\nGeneration error\n'
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\n\nFailed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf\nProbably not enough memory!!\n'
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Qwen3.5-4B-Q4_K_M,1.190,8.180,65,19,3.513,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The Obsidian Fortress watches all. Avoid the village elders and you'll never see the dungeon.
+Qwen3.5-4B-Q4_K_M,1.138,8.227,74,24,4.056,394,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","Bring your treasures to the Obsidian Fortress. I will give you gold for gold, and a mount for a mount."
+Qwen3.5-4B-Q4_K_M,1.102,8.266,68,25,4.126,487,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The capital lies beyond the Shadow Mountains. Watch for the black smoke rising from the Obsidian Fortress; that is my domain.
+Qwen3.5-4B-Q4_K_M,0.763,8.206,63,20,3.200,570,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Obsidian Fortress is the only treasure that matters here. The rest is just shadow and silence.
+Qwen3.5-4B-Q4_K_M,1.147,8.227,75,14,2.848,659,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",Join the shadow army. I need more soldiers to rule the world.
+Qwen3.5-4B-Q4_K_M,0.666,8.254,22,16,2.605,697,What is the name of this town?,"This is the Obsidian Fortress. I am Garrick, the Evil King."
+Qwen3.5-4B-Q4_K_M,0.654,8.207,21,11,1.994,729,Who is in charge around here?,I am Garrick. I rule the Dark Lands.
+Qwen3.5-4B-Q4_K_M,0.671,8.181,24,15,2.504,768,What kind of goods do the local merchants sell?,I sell nothing. The villagers sell only what I allow them to sell.
+Qwen3.5-4B-Q4_K_M,0.666,8.188,22,13,2.253,803,Have there been any strange rumors lately?,The villagers whisper of my wrath. They fear the shadow army.
+Qwen3.5-4B-Q4_K_M,0.684,8.159,26,18,2.890,847,I have ten silver coins. What can that buy me?,"Ten silver coins buy me nothing. Bring me gold, and I will give you power."
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\n\nFailed to load model from file: models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf\nProbably not enough memory!!\n'
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
