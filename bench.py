@@ -69,7 +69,7 @@ class Benchmarker:
         if warmup: llm_kwargs["chat_handler"] = warmup
         elif infer: llm_kwargs["chat_handler"] = infer
         llm, err = None, None
-        with Silencer(False) as s:
+        with Silencer() as s:
             try:
                 
                 llm = Llama(**llm_kwargs)
