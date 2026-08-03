@@ -6,11 +6,11 @@ import time
 import pandas
 import platform
 import questionary
-import gc
+import tempfile
 from tqdm import tqdm
 from llama_cpp import Llama
 from models.templating import get_handlers
-from utils import get_devices, get_models, Silencer
+from utils import get_devices, get_models, Silencer, Capturer
 
 
 MODEL_DIR = 'models/'
@@ -62,21 +62,16 @@ class Benchmarker:
 
     def load_llm(self, model):
         print(f"Loading {os.path.basename(model)} | ", end="", flush=True)
+        llm_kwargs = { "model_path": "models/" + model + ".gguf", "n_gpu_layers": self.gpu_layers,
+                    "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0 }
+
+        infer, warmup = get_handlers(model)
+        if warmup: llm_kwargs["chat_handler"] = warmup
+        elif infer: llm_kwargs["chat_handler"] = infer
         llm, err = None, None
         with Silencer(False) as s:
-            infer, warmup = get_handlers(model)
             try:
-                llm_kwargs = {
-                    "model_path": "models/" + model + ".gguf",
-                    "n_gpu_layers": self.gpu_layers,
-                    "n_ctx": CONTEXT_SIZE,
-                    "verbose": False,
-                    "temperature": 0
-                }
-
                 
-                if warmup: llm_kwargs["chat_handler"] = warmup
-                else: llm_kwargs["chat_handler"] = infer
                 llm = Llama(**llm_kwargs)
                 print(f"Loaded! | ", end="", flush=True)
 
@@ -88,13 +83,25 @@ class Benchmarker:
                 except Exception as e:
                     if hasattr(llm, 'close'): llm.close()
                     del llm
-                    err = f"\n{s.text}\n{e}\nGeneration error\n"
+                    err = f"\nGeneration error\n{e}\n"
             except Exception as e:
-                err = f"\n{s.text}\n{e}\nProbably not enough memory!!\n"
+                err = f"\nProbably not enough memory!!\n{e}\n"
+
 
         if err:
-            llm = None
+            # print("getting error")
+            # x = None
+            # with Capturer() as c:
+            #     llm_kwargs["verbose"] = True
+            #     try:
+            #         llm = Llama(**llm_kwargs)
+            #         llm.create_chat_completion(WARMUP, max_tokens=1)
+            #     except Exception as e: pass
+
+            
+            # err = err + str(c[0])
             print(err)
+            llm = None
         return llm, err
 
 
@@ -102,6 +109,8 @@ class Benchmarker:
 
     def _run_benchmark(self):
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split())
+        # log_file = f"{dev_name}.log"
+        # open(log_file, 'w').close()
         print("DEViCE:",dev_name)
         log = []
         num_models = len(self.models)
@@ -114,19 +123,16 @@ class Benchmarker:
             llm, err = self.load_llm(model)
             if llm:
                 try:
-                    
                     model_start = time.perf_counter()
                     prev_n = llm.n_tokens
 
                     for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
-
                         chat_history.append({"role": "user", "content": user_input})
                         ttft, t_out = TIMEOUT*2, 0
                         start_time = time.perf_counter()
                         assistant_response = [""] * MAX_TOKENS
 
                         stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=MAX_TOKENS)
-
                         for chunk in stream:
                             current = time.perf_counter()
                             if current - model_start <= TIMEOUT:
@@ -136,7 +142,6 @@ class Benchmarker:
                                     assistant_response[t_out] = delta['content']
                                     t_out += 1
                             else: raise Exception("Out of time.")
-
                         assistant_response = "".join(assistant_response)
 
                         total_time = time.perf_counter() - start_time

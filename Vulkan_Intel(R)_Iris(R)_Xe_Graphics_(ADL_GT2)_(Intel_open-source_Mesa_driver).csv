@@ -1,5 +1,5 @@
 MODEL,TTFT,T/s,USER TOKENS,NPC TOKENS,TOTAL TIME,ALL TOKENS,PROMPT,RESPONSE
-LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\n\nMemory is not initialized\nGeneration error\n'
+LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\nGeneration error\nMemory is not initialized\n'
 LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
@@ -10,7 +10,7 @@ LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\n\nFailed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf\nProbably not enough memory!!\n'
+Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\nProbably not enough memory!!\nFailed to load model from file: models/Mistral-Nemo-Instruct-2407.Q4_K_M.gguf\n'
 Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
@@ -21,17 +21,27 @@ Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 Mistral-Nemo-Instruct-2407.Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Qwen3.5-4B-Q4_K_M,1.190,8.180,65,19,3.513,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The Obsidian Fortress watches all. Avoid the village elders and you'll never see the dungeon.
-Qwen3.5-4B-Q4_K_M,1.138,8.227,74,24,4.056,394,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","Bring your treasures to the Obsidian Fortress. I will give you gold for gold, and a mount for a mount."
-Qwen3.5-4B-Q4_K_M,1.102,8.266,68,25,4.126,487,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The capital lies beyond the Shadow Mountains. Watch for the black smoke rising from the Obsidian Fortress; that is my domain.
-Qwen3.5-4B-Q4_K_M,0.763,8.206,63,20,3.200,570,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Obsidian Fortress is the only treasure that matters here. The rest is just shadow and silence.
-Qwen3.5-4B-Q4_K_M,1.147,8.227,75,14,2.848,659,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",Join the shadow army. I need more soldiers to rule the world.
-Qwen3.5-4B-Q4_K_M,0.666,8.254,22,16,2.605,697,What is the name of this town?,"This is the Obsidian Fortress. I am Garrick, the Evil King."
-Qwen3.5-4B-Q4_K_M,0.654,8.207,21,11,1.994,729,Who is in charge around here?,I am Garrick. I rule the Dark Lands.
-Qwen3.5-4B-Q4_K_M,0.671,8.181,24,15,2.504,768,What kind of goods do the local merchants sell?,I sell nothing. The villagers sell only what I allow them to sell.
-Qwen3.5-4B-Q4_K_M,0.666,8.188,22,13,2.253,803,Have there been any strange rumors lately?,The villagers whisper of my wrath. They fear the shadow army.
-Qwen3.5-4B-Q4_K_M,0.684,8.159,26,18,2.890,847,I have ten silver coins. What can that buy me?,"Ten silver coins buy me nothing. Bring me gold, and I will give you power."
-gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\n\nFailed to load model from file: models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf\nProbably not enough memory!!\n'
+Qwen3.5-0.8B-Q4_K_M,0.251,33.833,65,10,0.547,287,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The tavern is a place of chaos and blood.
+Qwen3.5-0.8B-Q4_K_M,0.274,33.909,74,10,0.568,371,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",The Dark Lands are ruled by the Evil King.
+Qwen3.5-0.8B-Q4_K_M,0.262,33.921,68,10,0.557,449,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The Dark Lands are ruled by the Evil King.
+Qwen3.5-0.8B-Q4_K_M,0.204,33.397,63,10,0.504,522,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Dark Lands are ruled by the Evil King.
+Qwen3.5-0.8B-Q4_K_M,0.279,33.450,75,10,0.578,607,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",The Dark Lands are ruled by the Evil King.
+Qwen3.5-0.8B-Q4_K_M,0.148,33.370,22,4,0.268,633,What is the name of this town?,The Dark Lands.
+Qwen3.5-0.8B-Q4_K_M,0.145,33.320,21,4,0.265,658,Who is in charge around here?,The Dark Lands.
+Qwen3.5-0.8B-Q4_K_M,0.150,33.315,24,4,0.270,686,What kind of goods do the local merchants sell?,The Dark Lands.
+Qwen3.5-0.8B-Q4_K_M,0.148,33.380,22,4,0.268,712,Have there been any strange rumors lately?,The Dark Lands.
+Qwen3.5-0.8B-Q4_K_M,0.155,33.223,26,4,0.276,742,I have ten silver coins. What can that buy me?,The Dark Lands.
+Supra-Router-51M-Q1_0,0.043,278.688,93,32,0.158,370,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",LastLastLastLastLastLastLastLastLast pluralLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLast
+Supra-Router-51M-Q1_0,0.069,291.205,97,32,0.179,499,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",LastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLast
+Supra-Router-51M-Q1_0,0.077,269.594,89,32,0.195,620,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",LastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastdecdecdecdecdecdecdecdecdec
+Supra-Router-51M-Q1_0,0.058,268.830,86,32,0.177,738,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.", pluralLastLastLastLastLastLastLastLastLastLastLastLastLastdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecLastLast
+Supra-Router-51M-Q1_0,0.080,254.354,98,32,0.206,868,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?", pluraldecdecdecdecdecdecdecdecdecdecdecdecdecconsLastLastLastLastLastLastLastdecdecdecdecdecdecdecdecdecdec
+Supra-Router-51M-Q1_0,0.056,256.006,43,32,0.181,943,What is the name of this town?, pluralLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastdecdecdecdecdecdecdecdecdec
+Supra-Router-51M-Q1_0,0.056,254.573,42,32,0.181,1017,Who is in charge around here?, plural plural pluralLastLastLastLastLast pluralLastLastLastLastLastLastLastLastLastLastLastLastLastLastLast pluralLastLastLastLastdecdecdec
+Supra-Router-51M-Q1_0,0.078,251.789,45,32,0.205,1094,What kind of goods do the local merchants sell?,""":"":"":decdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdec"
+Supra-Router-51M-Q1_0,0.069,255.662,43,32,0.194,1169,Have there been any strange rumors lately?,decdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdec
+Supra-Router-51M-Q1_0,0.069,255.089,47,32,0.195,1248,I have ten silver coins. What can that buy me?,LastLastLastLastdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdecdec
+gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,'\nProbably not enough memory!!\nFailed to load model from file: models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf\n'
 gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
 gemma-4-26B-A4B-it-UD-Q4_K_M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
