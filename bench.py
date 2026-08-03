@@ -10,7 +10,7 @@ import tempfile
 from tqdm import tqdm
 from llama_cpp import Llama
 from models.templating import get_handlers
-from utils import get_devices, get_models, Silencer, Capturer
+from utils import get_devices, get_models, Silencer
 
 
 MODEL_DIR = 'models/'
@@ -89,17 +89,6 @@ class Benchmarker:
 
 
         if err:
-            # print("getting error")
-            # x = None
-            # with Capturer() as c:
-            #     llm_kwargs["verbose"] = True
-            #     try:
-            #         llm = Llama(**llm_kwargs)
-            #         llm.create_chat_completion(WARMUP, max_tokens=1)
-            #     except Exception as e: pass
-
-            
-            # err = err + str(c[0])
             print(err)
             llm = None
         return llm, err

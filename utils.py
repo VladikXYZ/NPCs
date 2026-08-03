@@ -22,29 +22,6 @@ def Silencer(suppress=True):
             os.close(devnull)
     else: yield
 
-@contextmanager
-def Capturer():
-    sys.stdout.flush(); sys.stderr.flush()
-    fd_out, fd_err = sys.stdout.fileno(), sys.stderr.fileno()
-    old_out, old_err = os.dup(fd_out), os.dup(fd_err)
-    
-    with tempfile.TemporaryFile() as tmp:
-        os.dup2(tmp.fileno(), fd_out)
-        os.dup2(tmp.fileno(), fd_err)
-        
-        logs = [""]
-        try:
-            yield logs
-        finally:
-            sys.stdout.flush(); sys.stderr.flush()
-            os.dup2(old_out, fd_out); os.dup2(old_err, fd_err)
-            os.close(old_out); os.close(old_err)
-            
-            tmp.seek(0)
-            logs[0] = tmp.read().decode(errors='replace').strip()
-            # lines = [line for line in raw_text.split('\n') if line.strip()]
-            # logs[0] = '\n'.join(lines[-2:]) if lines else "No C++ logs captured."
-
 def _first_run():
     print("🔍 Scanning hardware... (this takes a second)")
     script = f"""
