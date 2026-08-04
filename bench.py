@@ -97,10 +97,10 @@ class Benchmarker:
                     llm.create_chat_completion(WARMUP, max_tokens=1)
                 except:
                     pass
-
-            err = err+c[0]+err
             print(err)
-            err.replace("\n", "|")
+            err = err+c[0]+err
+            # print(err)
+            # err.replace('\n', '|')
             llm = None
         return llm, err
 
