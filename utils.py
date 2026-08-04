@@ -4,11 +4,12 @@ import subprocess
 import sys
 import re
 import tempfile
+from contextlib import contextmanager
 
 DEVICES_FILE = "devices.json"
 MODELS_DIRECTORY = "models"
 
-from contextlib import contextmanager
+
 @contextmanager
 def Silencer(suppress=True):
     if suppress:
@@ -21,6 +22,44 @@ def Silencer(suppress=True):
             os.close(old_stderr)
             os.close(devnull)
     else: yield
+
+@contextmanager
+def Catcher():
+    # Flush Python buffers before messing with OS-level descriptors
+    sys.stdout.flush()
+    sys.stderr.flush()
+    
+    # Grab the true OS file descriptors for both streams
+    fd_out = sys.stdout.fileno()
+    fd_err = sys.stderr.fileno()
+    
+    old_out = os.dup(fd_out)
+    old_err = os.dup(fd_err)
+    
+    with tempfile.TemporaryFile() as tmp:
+        # Redirect BOTH OS-level streams to our temporary file
+        os.dup2(tmp.fileno(), fd_out)
+        os.dup2(tmp.fileno(), fd_err)
+        
+        # We yield a list so we can mutate it and pass the string back
+        logs = [""]
+        try:
+            yield logs
+        finally:
+            # Flush again to make sure C++ is completely done writing
+            sys.stdout.flush()
+            sys.stderr.flush()
+            
+            # Restore the normal terminal
+            os.dup2(old_out, fd_out)
+            os.dup2(old_err, fd_err)
+            os.close(old_out)
+            os.close(old_err)
+            
+            # Read the temporary file, decode raw bytes safely, and store in the list
+            tmp.seek(0)
+            logs[0] = tmp.read().decode('utf-8', errors='replace')
+
 
 def _first_run():
     print("🔍 Scanning hardware... (this takes a second)")

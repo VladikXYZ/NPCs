@@ -10,7 +10,7 @@ import tempfile
 from tqdm import tqdm
 from llama_cpp import Llama
 from models.templating import get_handlers
-from utils import get_devices, get_models, Silencer
+from utils import get_devices, get_models, Silencer, Catcher
 
 
 MODEL_DIR = 'models/'
@@ -83,13 +83,24 @@ class Benchmarker:
                 except Exception as e:
                     if hasattr(llm, 'close'): llm.close()
                     del llm
-                    err = f"\nGeneration error\n{e}\n"
+                    err = f"\nCrashed during generation:{e}\n"
             except Exception as e:
-                err = f"\nProbably not enough memory!!\n{e}\n"
+                err = f"\nCrashed during loading:{e}\n"
 
 
         if err:
+            # print(err)
+            llm_kwargs["verbose"] = True
+            with Catcher() as c:
+                try:
+                    llm = Llama(**llm_kwargs)   
+                    llm.create_chat_completion(WARMUP, max_tokens=1)
+                except:
+                    pass
+
+            err = err+c[0]+err
             print(err)
+            err.replace("\n", "|")
             llm = None
         return llm, err
 
