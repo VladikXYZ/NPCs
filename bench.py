@@ -6,7 +6,6 @@ import time
 import pandas
 import platform
 import questionary
-import tempfile
 from tqdm import tqdm
 from llama_cpp import Llama
 from models.templating import get_handlers
@@ -35,7 +34,7 @@ CONTEXT_SIZE = 4096
 MAX_TOKENS = 32
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
-TIMEOUT = 32
+# TIMEOUT = 32
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
 
@@ -83,9 +82,9 @@ class Benchmarker:
                 except Exception as e:
                     if hasattr(llm, 'close'): llm.close()
                     del llm
-                    err = f"\nCrashed during generation:{e}\n"
+                    err = f"\nCrashed during generation:{e}"
             except Exception as e:
-                err = f"\nCrashed during loading:{e}\n"
+                err = f"\nCrashed during loading:{e}"
 
 
         if err:

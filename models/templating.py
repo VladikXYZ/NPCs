@@ -90,6 +90,7 @@ def get_handlers(model_name: str):
     """Returns a tuple: (handler_inference, handler_warmup)"""
     model_name_lower = model_name.lower()
 
+
     if "gemma" in model_name_lower:
         family = "gemma"
     elif "phi" in model_name_lower:
@@ -98,8 +99,10 @@ def get_handlers(model_name: str):
         family = "llama"
     elif "mistral" in model_name_lower:
         family = "mistral"
-    else:
+    elif "qwen" in model_name_lower or "bonsai" in model_name_lower:
         family = "qwen"
+    else:
+        return None, None
 
     handler_inference = Jinja2ChatFormatter(
         template=TEMPLATES_INFERENCE[family],
