@@ -5,6 +5,6 @@ martin/jailbreak_log
 jakub/response_log
 vlad/bench_logs
 /models/*
-!models/templating.py
+!templating.py
 !models/Supra-Router-51M-Q1_0.gguf
 /llama.cpp/

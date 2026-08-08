@@ -8,7 +8,7 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-from models.templating import get_handlers
+from templating import get_handlers
 from utils import get_devices, get_models, Silencer, Catcher
 
 
@@ -34,7 +34,7 @@ CONTEXT_SIZE = 4096
 MAX_TOKENS = 32
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
-# TIMEOUT = 32
+TIMEOUT = 32
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
 
