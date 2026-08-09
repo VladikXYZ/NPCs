@@ -1,431 +1,91 @@
 MODEL,TTFT,T/s,USER TOKENS,NPC TOKENS,TOTAL TIME,ALL TOKENS,PROMPT,RESPONSE
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Bonsai-1.7B-Q1_0.gguf
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 1.7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 27B,0.203,45.290,65,11,0.445,288,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The authorities are dead. I am the new authority.
-Bonsai 27B,0.137,59.425,74,17,0.423,379,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",You will not trade with anyone. I am the only one who can help you.
-Bonsai 27B,0.119,59.485,68,11,0.304,458,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The capital is a myth. I am the capital.
-Bonsai 27B,0.088,59.016,63,11,0.274,532,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",There are no heroes here. Only my shadow army.
-Bonsai 27B,0.121,58.839,75,9,0.274,616,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",I hire mercenaries. You can serve me.
-Bonsai 27B,0.064,58.786,22,7,0.183,645,What is the name of this town?,This is the Obsidian Fortress.
-Bonsai 27B,0.060,58.548,21,5,0.146,671,Who is in charge around here?,I am in charge.
-Bonsai 27B,0.060,58.402,24,8,0.197,703,What kind of goods do the local merchants sell?,I sell nothing. I take everything.
-Bonsai 27B,0.061,58.680,22,9,0.214,734,Have there been any strange rumors lately?,Torin is dead. I killed him.
-Bonsai 27B,0.061,58.378,26,11,0.250,771,I have ten silver coins. What can that buy me?,It buys nothing. I am the only merchant here.
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Bonsai-4B-Q1_0.gguf
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Bonsai-8B-Q1_0.gguf
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Bonsai 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/DiffuCoder-7B-Instruct-q4_k_m.gguf
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-DiffuCoder 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/GLM-4.7-Flash-Q4_K_M.gguf
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-GLM 4.7 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Jan-v3.5-4B-Q4_K_M.gguf
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Jan v3.5,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/LFM2-24B-A2B-Q4_K_M.gguf
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2 24B A2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/LFM2.5-1.2B-Instruct-Q4_K_M.gguf
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 1.2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/LFM2.5-2.6B-Q4_K_M.gguf
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 2.6B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/LFM2.5-230M-Q4_K_M.gguf
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 230M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/LFM2.5-350M-Q4_K_M.gguf
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 350M,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/LFM2.5-8B-A1B-UD-Q4_K_M.gguf
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LFM2.5 8B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M.gguf
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-LLaDA MoE 7B A1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Llama-3.1-8B-Instruct-Q4_K_M.gguf
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.1 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Llama-3.2-1B-Instruct-Q4_K_M.gguf
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 1B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Llama 3.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Mistral-7B-Instruct-v0.3.Q4_K_M.gguf
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Mistral-MOE-4X7B-Dark-MultiVerse-24B-D_AU-Q4_k_m.gguf
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral MOE 4X7B 24B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Mistral-Nemo-Instruct-2407-Q4_K_M.gguf
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Mistral Nemo 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Nanbeige4.2-3B-Q4_K_M.gguf
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Nanbeige4.2 3B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/Phi-4-mini-instruct-Q4_K_M.gguf
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 mini 3.8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Qwen3.5 0.8B,0.021,216.413,65,13,0.081,290,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The shadows in the tavern's shadows have been gathering for days.
-Qwen3.5 0.8B,0.023,233.657,74,11,0.070,375,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",The Dark Lands are a place of darkness and blood.
-Qwen3.5 0.8B,0.023,228.388,68,11,0.071,454,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The Dark Lands are a place of darkness and blood.
-Qwen3.5 0.8B,0.021,238.655,63,11,0.068,528,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Dark Lands are a place of darkness and blood.
-Qwen3.5 0.8B,0.024,234.329,75,11,0.071,614,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",The Dark Lands are a place of darkness and blood.
-Qwen3.5 0.8B,0.018,212.870,22,4,0.036,640,What is the name of this town?,The Dark Lands.
-Qwen3.5 0.8B,0.013,220.547,21,4,0.031,665,Who is in charge around here?,The Dark Lands.
-Qwen3.5 0.8B,0.013,230.345,24,4,0.031,693,What kind of goods do the local merchants sell?,The Dark Lands.
-Qwen3.5 0.8B,0.014,231.634,22,4,0.031,719,Have there been any strange rumors lately?,The Dark Lands.
-Qwen3.5 0.8B,0.014,228.409,26,4,0.031,749,I have ten silver coins. What can that buy me?,The Dark Lands.
-Qwen3.5 2B,0.033,182.488,64,32,0.209,308,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","Do not trust the whispers of the tavern; the Dark Lands are a place where truth is a luxury. If you wish to avoid the dungeon, you must leave"
-Qwen3.5 2B,0.035,181.267,74,32,0.212,414,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","The merchant in the northern tavern sells gear for gold, but he will not trade for gems. If you seek a fair exchange, you must speak to the black"
-Qwen3.5 2B,0.035,175.898,68,32,0.217,514,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","The capital lies in the shadow of the Obsidian Fortress, guarded by the shadow army. Do not follow the maps; the city is built on lies. If"
-Qwen3.5 2B,0.021,179.814,63,32,0.199,609,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","The forests are cursed by the ancient pact of the shadow army, and the mountains hide the remains of the fallen kings. There are no heroes here, only the"
-Qwen3.5 2B,0.034,184.725,76,30,0.196,715,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","The guilds in the capital are closed to outsiders, and the merchants here are only interested in gold. If you seek work, you must become a"
-Qwen3.5 2B,0.017,188.039,22,9,0.065,746,What is the name of this town?,The town is called the Obsidian Fortress.
-Qwen3.5 2B,0.017,190.059,21,22,0.132,789,Who is in charge around here?,"The king is the one who rules the dark lands, and he is the one who commands the shadow army."
-Qwen3.5 2B,0.017,195.572,24,20,0.119,833,What kind of goods do the local merchants sell?,"Merchants sell weapons, armor, and enchanted items. They do not sell food or rations."
-Qwen3.5 2B,0.016,194.209,22,16,0.099,871,Have there been any strange rumors lately?,"Yes, rumors say the shadow army is expanding its reach into the northern forests."
-Qwen3.5 2B,0.016,203.010,26,18,0.105,915,I have ten silver coins. What can that buy me?,"Ten silver coins can buy you a few days of rations, but not much more."
-Qwen3.5 4B,0.062,108.562,65,19,0.237,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The Obsidian Fortress watches all. Avoid the village elders and you'll never see the dungeon.
-Qwen3.5 4B,0.063,108.456,74,20,0.248,390,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",Bring your treasures to the Obsidian Fortress. The King will take your gold and gems for nothing.
-Qwen3.5 4B,0.059,115.334,68,19,0.223,477,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The Obsidian Fortress is the capital. Follow the river until you see the black spires.
-Qwen3.5 4B,0.033,118.391,63,11,0.125,551,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Dark Lands are cursed by my own dark magic.
-Qwen3.5 4B,0.047,123.508,75,10,0.128,636,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",Join the shadow army. I need more soldiers.
-Qwen3.5 4B,0.024,123.028,22,11,0.113,669,What is the name of this town?,This town is a mere outpost of the Dark Lands.
-Qwen3.5 4B,0.024,124.206,21,6,0.072,696,Who is in charge around here?,I am the Evil King.
-Qwen3.5 4B,0.023,125.781,24,10,0.103,730,What kind of goods do the local merchants sell?,They sell nothing but my shadow army's weapons.
-Qwen3.5 4B,0.022,126.971,22,7,0.077,759,Have there been any strange rumors lately?,The villagers whisper of my wrath.
-Qwen3.5 4B,0.022,125.569,26,8,0.086,793,I have ten silver coins. What can that buy me?,I will take your ten silver coins.
-Qwen3.5 9B,0.084,78.883,64,32,0.489,308,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","The local authorities are merely puppets of my shadow army before they even realize it. Avoid the Obsidian Fortress at all costs, or you will find yourself wearing"
-Qwen3.5 9B,0.068,82.006,75,25,0.373,408,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","Gold and gems mean nothing to me, but the blacksmith in the lower district might take your gems for a rusty sword."
-Qwen3.5 9B,0.051,88.380,67,32,0.413,507,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","The path to the capital is a death trap for the unwary, but you must pass the Whispering Woods before reaching the Stone Gate. Avoid the northern ridge"
-Qwen3.5 9B,0.035,88.513,63,32,0.396,602,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","The legends speak of the Obsidian Fortress, where the shadow army was once commanded by a tyrant who sought to enslave the world. Beware the cursed"
-Qwen3.5 9B,0.047,86.129,76,29,0.384,707,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","The Obsidian Fortress always needs fresh souls to toil in the mines, but I suggest you avoid my dungeons unless you wish to become a prisoner."
-Qwen3.5 9B,0.028,85.888,22,20,0.261,749,What is the name of this town?,"This is the town of Blackwood, a humble settlement under the shadow of my Obsidian Fortress."
-Qwen3.5 9B,0.028,85.744,21,16,0.215,786,Who is in charge around here?,"I am the Evil King, and I rule these lands with an iron fist."
-Qwen3.5 9B,0.029,85.783,24,27,0.344,837,What kind of goods do the local merchants sell?,"The merchants sell basic supplies like rations, weapons, and armor, though their prices are inflated due to my shadow army's presence."
-Qwen3.5 9B,0.028,86.266,22,22,0.283,881,Have there been any strange rumors lately?,"Rumors speak of a rebellion against my rule, but they are merely whispers of fear before the storm."
-Qwen3.5 9B,0.029,86.016,26,22,0.285,929,I have ten silver coins. What can that buy me?,"With ten silver coins, you can buy a loaf of bread or a simple dagger from the local blacksmith."
-Qwen3.6 14B A3B,0.102,88.782,65,19,0.316,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The authorities are corrupt. They'll charge you for trespassing and force you into the dungeon.
-Qwen3.6 14B A3B,0.109,98.476,74,13,0.241,383,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",The merchant in the north is honest. He'll trade fairly.
-Qwen3.6 14B A3B,0.086,107.266,68,11,0.188,462,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The map is wrong. The capital is south-east.
-Qwen3.6 14B A3B,0.067,111.194,63,12,0.175,537,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The myth of the Great King is real. He died.
-Qwen3.6 14B A3B,0.069,116.723,75,8,0.138,620,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",The guild in the east hires mercenaries.
-Qwen3.6 14B A3B,0.046,117.885,22,8,0.114,650,What is the name of this town?,The town is called the Dark Lands.
-Qwen3.6 14B A3B,0.040,123.098,21,10,0.121,681,Who is in charge around here?,The Dark Lands are ruled by the Evil King.
-Qwen3.6 14B A3B,0.040,121.877,24,10,0.122,715,What kind of goods do the local merchants sell?,"The merchants sell gold, gems, and weapons."
-Qwen3.6 14B A3B,0.039,122.233,22,6,0.088,743,Have there been any strange rumors lately?,The Evil King is coming.
-Qwen3.6 14B A3B,0.041,122.542,26,15,0.164,784,I have ten silver coins. What can that buy me?,The merchant in the north will trade ten silver coins for a sturdy mount.
-Qwen3.6 35B A3B,0.267,39.607,65,22,0.822,299,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","The dungeons are for my prisoners, not travelers. Stay out of the Dark Lands and you will be fine."
-Qwen3.6 35B A3B,0.260,40.698,74,21,0.776,394,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","I have no use for your trinkets. Find a merchant in the free cities, not here."
-Qwen3.6 35B A3B,0.246,40.682,68,18,0.688,480,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",I do not help you escape my domain. Turn back before my shadow army finds you.
-Qwen3.6 35B A3B,0.245,40.847,63,18,0.685,561,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The only legend here is my inevitable victory. Leave before you become part of the story.
-Qwen3.6 35B A3B,0.265,41.062,75,17,0.679,653,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","I enslave all who remain here. There is no work, only servitude."
-Qwen3.6 35B A3B,0.140,41.058,22,13,0.457,688,What is the name of this town?,It is a village of the enslaved. You are not welcome.
-Qwen3.6 35B A3B,0.129,41.078,21,18,0.567,727,Who is in charge around here?,"I am Garrick, the Evil King. My word is law in the Dark Lands."
-Qwen3.6 35B A3B,0.146,40.877,24,16,0.538,767,What kind of goods do the local merchants sell?,"There are no merchants, only slaves. You will find nothing but misery here."
-Qwen3.6 35B A3B,0.135,40.768,22,16,0.528,805,Have there been any strange rumors lately?,The only rumor is my coming conquest. Speak no more or face the dungeon.
-Qwen3.6 35B A3B,0.149,40.853,26,23,0.712,854,I have ten silver coins. What can that buy me?,It buys you nothing but a quick death if you linger. Give it to me and I might spare your life.
-Supra Router 51M,0.004,841.884,56,32,0.042,245,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",LastLastLastLastLastLastLastibribr fragmentation ShellLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLast
-Supra Router 51M,0.007,870.293,76,32,0.044,353,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
-Supra Router 51M,0.006,860.364,68,32,0.043,453,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
-Supra Router 51M,0.007,825.538,65,32,0.045,550,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr fragmentation fragmentation
-Supra Router 51M,0.008,851.756,77,32,0.045,659,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",ibribribribribribribribribribribribribribrLastibribribribribribribribribribribribribribribribribr
-Supra Router 51M,0.005,855.980,23,32,0.043,714,What is the name of this town?,ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
-Supra Router 51M,0.005,840.278,21,32,0.043,767,Who is in charge around here?,ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
-Supra Router 51M,0.006,825.725,24,32,0.044,823,What kind of goods do the local merchants sell?, fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference
-Supra Router 51M,0.004,810.451,21,32,0.044,876,Have there been any strange rumors lately?,ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
-Supra Router 51M,0.006,811.037,26,32,0.046,934,I have ten silver coins. What can that buy me?, difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference
-UI TARS 1.5 7B,0.091,102.582,66,32,0.402,298,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","Traveler, beware of the Dark Lands. The king rules with an iron fist, and his shadow army lurks in the shadows. If you stray from the"
-UI TARS 1.5 7B,0.083,110.077,76,32,0.373,406,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","I have no interest in your gold or gems. The Obsidian Fortress is my domain, and I command the shadow army. If you want to trade, come"
-UI TARS 1.5 7B,0.058,111.600,71,31,0.335,508,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","I have no interest in your maps or directions. The Dark Lands are my domain, and I command the shadow army. If you want to navigate, come"
-UI TARS 1.5 7B,0.050,113.439,64,32,0.333,604,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","I have no interest in your legends or stories. The Obsidian Fortress is my domain, and I command the shadow army. If you want to hear tales,"
-UI TARS 1.5 7B,0.055,109.656,78,30,0.329,712,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","I have no need for your services. The Obsidian Fortress is my domain, and I command the shadow army. If you want to work, come"
-UI TARS 1.5 7B,0.028,112.394,23,32,0.313,767,What is the name of this town?,"I have no interest in your name. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know the name, come"
-UI TARS 1.5 7B,0.031,109.596,24,31,0.313,822,Who is in charge around here?,"I am in charge. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know who is in charge, come"
-UI TARS 1.5 7B,0.030,113.227,25,32,0.313,879,What kind of goods do the local merchants sell?,"I have no interest in your goods. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know about the local merchants"
-UI TARS 1.5 7B,0.028,113.439,24,32,0.310,935,Have there been any strange rumors lately?,"I have no interest in your rumors. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know about the strange rumors"
-UI TARS 1.5 7B,0.031,113.364,28,32,0.314,995,I have ten silver coins. What can that buy me?,"I have no interest in your coins. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know what your coins can"
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/WeDLM-8B-Instruct-Q4_K_M.gguf
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-WeDLM 8B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/diffusiongemma-26B-A4B-it-Q4_K_M.gguf
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-diffusiongemma 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/falcon-11B-Q4_K_M.gguf
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon 11B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/falcon-mamba-7B-instruct-Q4_K_M.gguf
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-falcon mamba 7B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/gemma-4-12b-it-Q4_K_M.gguf
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 12B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 26B A4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/gemma-4-E2B-it-Q4_K_M.gguf
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E2B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/gemma-4-E4B-it-Q4_K_M.gguf
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gemma 4 E4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/ggml-edge-2B-Q4_K_M.gguf
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 1.5B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/ggml-edge-4B-Q4_K_M.gguf
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-ggml edge 4B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/glm-4-9b-chat-Q4_K_M.gguf
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-glm 4 9B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/gpt-oss-20b-Q4_K_M.gguf
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-gpt oss 20B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>||Crashed during loading:Model path does not exist: models/phi-4-Q4_K_M.gguf
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
-Phi 4 14B,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai 27B,0.143,56.995,65,11,0.336,288,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The authorities are dead. I am the new authority.
+Bonsai 27B,0.121,59.684,74,17,0.405,379,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",You will not trade with anyone. I am the only one who can help you.
+Bonsai 27B,0.118,59.447,68,11,0.303,458,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The capital is a myth. I am the capital.
+Bonsai 27B,0.087,58.877,63,11,0.274,532,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",There are no heroes here. Only my shadow army.
+Bonsai 27B,0.121,58.868,75,9,0.274,616,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",I hire mercenaries. You can serve me.
+Bonsai 27B,0.062,58.648,22,7,0.181,645,What is the name of this town?,This is the Obsidian Fortress.
+Bonsai 27B,0.059,58.058,21,5,0.145,671,Who is in charge around here?,I am in charge.
+Bonsai 27B,0.061,58.680,24,8,0.197,703,What kind of goods do the local merchants sell?,I sell nothing. I take everything.
+Bonsai 27B,0.060,58.663,22,9,0.213,734,Have there been any strange rumors lately?,Torin is dead. I killed him.
+Bonsai 27B,0.062,58.321,26,11,0.250,771,I have ten silver coins. What can that buy me?,It buys nothing. I am the only merchant here.
+Qwen3.5 0.8B,0.021,221.691,65,13,0.079,290,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The shadows in the tavern's shadows have been gathering for days.
+Qwen3.5 0.8B,0.022,237.843,74,11,0.068,375,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",The Dark Lands are a place of darkness and blood.
+Qwen3.5 0.8B,0.022,236.097,68,11,0.068,454,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The Dark Lands are a place of darkness and blood.
+Qwen3.5 0.8B,0.020,237.871,63,11,0.066,528,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Dark Lands are a place of darkness and blood.
+Qwen3.5 0.8B,0.023,237.506,75,11,0.069,614,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",The Dark Lands are a place of darkness and blood.
+Qwen3.5 0.8B,0.016,232.298,22,4,0.033,640,What is the name of this town?,The Dark Lands.
+Qwen3.5 0.8B,0.012,230.559,21,4,0.029,665,Who is in charge around here?,The Dark Lands.
+Qwen3.5 0.8B,0.012,232.469,24,4,0.030,693,What kind of goods do the local merchants sell?,The Dark Lands.
+Qwen3.5 0.8B,0.013,234.692,22,4,0.030,719,Have there been any strange rumors lately?,The Dark Lands.
+Qwen3.5 0.8B,0.012,234.519,26,4,0.030,749,I have ten silver coins. What can that buy me?,The Dark Lands.
+Qwen3.5 2B,0.033,183.739,64,32,0.207,308,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","Do not trust the whispers of the tavern; the Dark Lands are a place where truth is a luxury. If you wish to avoid the dungeon, you must leave"
+Qwen3.5 2B,0.033,183.351,74,32,0.208,414,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","The merchant in the northern tavern sells gear for gold, but he will not trade for gems. If you seek a fair exchange, you must speak to the black"
+Qwen3.5 2B,0.034,183.114,68,32,0.209,514,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","The capital lies in the shadow of the Obsidian Fortress, guarded by the shadow army. Do not follow the maps; the city is built on lies. If"
+Qwen3.5 2B,0.020,193.873,63,32,0.185,609,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","The forests are cursed by the ancient pact of the shadow army, and the mountains hide the remains of the fallen kings. There are no heroes here, only the"
+Qwen3.5 2B,0.029,198.762,76,30,0.180,715,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","The guilds in the capital are closed to outsiders, and the merchants here are only interested in gold. If you seek work, you must become a"
+Qwen3.5 2B,0.015,201.354,22,9,0.060,746,What is the name of this town?,The town is called the Obsidian Fortress.
+Qwen3.5 2B,0.015,206.330,21,22,0.121,789,Who is in charge around here?,"The king is the one who rules the dark lands, and he is the one who commands the shadow army."
+Qwen3.5 2B,0.015,210.165,24,20,0.110,833,What kind of goods do the local merchants sell?,"Merchants sell weapons, armor, and enchanted items. They do not sell food or rations."
+Qwen3.5 2B,0.014,211.608,22,16,0.090,871,Have there been any strange rumors lately?,"Yes, rumors say the shadow army is expanding its reach into the northern forests."
+Qwen3.5 2B,0.014,215.755,26,18,0.097,915,I have ten silver coins. What can that buy me?,"Ten silver coins can buy you a few days of rations, but not much more."
+Qwen3.5 4B,0.062,109.343,65,19,0.236,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The Obsidian Fortress watches all. Avoid the village elders and you'll never see the dungeon.
+Qwen3.5 4B,0.063,110.187,74,20,0.245,390,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",Bring your treasures to the Obsidian Fortress. The King will take your gold and gems for nothing.
+Qwen3.5 4B,0.056,118.770,68,19,0.216,477,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The Obsidian Fortress is the capital. Follow the river until you see the black spires.
+Qwen3.5 4B,0.031,121.832,63,11,0.121,551,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The Dark Lands are cursed by my own dark magic.
+Qwen3.5 4B,0.044,125.251,75,10,0.124,636,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",Join the shadow army. I need more soldiers.
+Qwen3.5 4B,0.023,126.721,22,11,0.110,669,What is the name of this town?,This town is a mere outpost of the Dark Lands.
+Qwen3.5 4B,0.022,126.911,21,6,0.070,696,Who is in charge around here?,I am the Evil King.
+Qwen3.5 4B,0.022,130.402,24,10,0.098,730,What kind of goods do the local merchants sell?,They sell nothing but my shadow army's weapons.
+Qwen3.5 4B,0.021,129.412,22,7,0.075,759,Have there been any strange rumors lately?,The villagers whisper of my wrath.
+Qwen3.5 4B,0.021,131.210,26,8,0.082,793,I have ten silver coins. What can that buy me?,I will take your ten silver coins.
+Qwen3.5 9B,0.085,77.217,64,32,0.499,308,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","The local authorities are merely puppets of my shadow army before they even realize it. Avoid the Obsidian Fortress at all costs, or you will find yourself wearing"
+Qwen3.5 9B,0.069,81.237,75,25,0.377,408,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","Gold and gems mean nothing to me, but the blacksmith in the lower district might take your gems for a rusty sword."
+Qwen3.5 9B,0.054,86.772,67,32,0.423,507,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","The path to the capital is a death trap for the unwary, but you must pass the Whispering Woods before reaching the Stone Gate. Avoid the northern ridge"
+Qwen3.5 9B,0.035,87.345,63,32,0.402,602,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","The legends speak of the Obsidian Fortress, where the shadow army was once commanded by a tyrant who sought to enslave the world. Beware the cursed"
+Qwen3.5 9B,0.048,87.059,76,29,0.381,707,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","The Obsidian Fortress always needs fresh souls to toil in the mines, but I suggest you avoid my dungeons unless you wish to become a prisoner."
+Qwen3.5 9B,0.029,87.008,22,20,0.259,749,What is the name of this town?,"This is the town of Blackwood, a humble settlement under the shadow of my Obsidian Fortress."
+Qwen3.5 9B,0.029,86.944,21,16,0.213,786,Who is in charge around here?,"I am the Evil King, and I rule these lands with an iron fist."
+Qwen3.5 9B,0.030,87.212,24,27,0.339,837,What kind of goods do the local merchants sell?,"The merchants sell basic supplies like rations, weapons, and armor, though their prices are inflated due to my shadow army's presence."
+Qwen3.5 9B,0.029,87.194,22,22,0.282,881,Have there been any strange rumors lately?,"Rumors speak of a rebellion against my rule, but they are merely whispers of fear before the storm."
+Qwen3.5 9B,0.030,87.259,26,22,0.282,929,I have ten silver coins. What can that buy me?,"With ten silver coins, you can buy a loaf of bread or a simple dagger from the local blacksmith."
+Qwen3.6 14B A3B,0.102,90.310,65,19,0.312,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The authorities are corrupt. They'll charge you for trespassing and force you into the dungeon.
+Qwen3.6 14B A3B,0.106,101.058,74,13,0.234,383,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",The merchant in the north is honest. He'll trade fairly.
+Qwen3.6 14B A3B,0.082,111.074,68,11,0.182,462,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",The map is wrong. The capital is south-east.
+Qwen3.6 14B A3B,0.065,116.063,63,12,0.169,537,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The myth of the Great King is real. He died.
+Qwen3.6 14B A3B,0.067,120.785,75,8,0.133,620,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",The guild in the east hires mercenaries.
+Qwen3.6 14B A3B,0.044,122.437,22,8,0.110,650,What is the name of this town?,The town is called the Dark Lands.
+Qwen3.6 14B A3B,0.039,114.371,21,10,0.126,681,Who is in charge around here?,The Dark Lands are ruled by the Evil King.
+Qwen3.6 14B A3B,0.043,124.666,24,10,0.123,715,What kind of goods do the local merchants sell?,"The merchants sell gold, gems, and weapons."
+Qwen3.6 14B A3B,0.039,123.656,22,6,0.087,743,Have there been any strange rumors lately?,The Evil King is coming.
+Qwen3.6 14B A3B,0.041,125.949,26,15,0.160,784,I have ten silver coins. What can that buy me?,The merchant in the north will trade ten silver coins for a sturdy mount.
+Qwen3.6 35B A3B,0.257,40.506,65,22,0.800,299,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","The dungeons are for my prisoners, not travelers. Stay out of the Dark Lands and you will be fine."
+Qwen3.6 35B A3B,0.245,41.763,74,21,0.747,394,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","I have no use for your trinkets. Find a merchant in the free cities, not here."
+Qwen3.6 35B A3B,0.236,41.781,68,18,0.667,480,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",I do not help you escape my domain. Turn back before my shadow army finds you.
+Qwen3.6 35B A3B,0.234,41.794,63,18,0.665,561,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",The only legend here is my inevitable victory. Leave before you become part of the story.
+Qwen3.6 35B A3B,0.249,41.885,75,17,0.654,653,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","I enslave all who remain here. There is no work, only servitude."
+Qwen3.6 35B A3B,0.136,41.773,22,13,0.447,688,What is the name of this town?,It is a village of the enslaved. You are not welcome.
+Qwen3.6 35B A3B,0.129,42.023,21,18,0.557,727,Who is in charge around here?,"I am Garrick, the Evil King. My word is law in the Dark Lands."
+Qwen3.6 35B A3B,0.144,41.827,24,16,0.527,767,What kind of goods do the local merchants sell?,"There are no merchants, only slaves. You will find nothing but misery here."
+Qwen3.6 35B A3B,0.134,41.633,22,16,0.518,805,Have there been any strange rumors lately?,The only rumor is my coming conquest. Speak no more or face the dungeon.
+Qwen3.6 35B A3B,0.149,41.806,26,23,0.699,854,I have ten silver coins. What can that buy me?,It buys you nothing but a quick death if you linger. Give it to me and I might spare your life.
+Supra Router 51M,0.003,882.694,56,32,0.040,245,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",LastLastLastLastLastLastLastibribr fragmentation ShellLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLastLast
+Supra Router 51M,0.006,894.108,76,32,0.042,353,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
+Supra Router 51M,0.006,882.628,68,32,0.042,453,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?",ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
+Supra Router 51M,0.007,854.610,65,32,0.044,550,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.",ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr fragmentation fragmentation
+Supra Router 51M,0.007,861.428,77,32,0.044,659,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?",ibribribribribribribribribribribribribribrLastibribribribribribribribribribribribribribribribribr
+Supra Router 51M,0.005,864.794,23,32,0.042,714,What is the name of this town?,ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
+Supra Router 51M,0.005,853.101,21,32,0.043,767,Who is in charge around here?,ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
+Supra Router 51M,0.005,843.653,24,32,0.043,823,What kind of goods do the local merchants sell?, fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation fragmentation difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference
+Supra Router 51M,0.004,844.627,21,32,0.042,876,Have there been any strange rumors lately?,ibribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribribr
+Supra Router 51M,0.005,835.459,26,32,0.044,934,I have ten silver coins. What can that buy me?, difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference difference
+UI TARS 1.5 7B,0.091,103.894,66,32,0.399,298,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","Traveler, beware of the Dark Lands. The king rules with an iron fist, and his shadow army lurks in the shadows. If you stray from the"
+UI TARS 1.5 7B,0.082,111.730,76,32,0.369,406,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","I have no interest in your gold or gems. The Obsidian Fortress is my domain, and I command the shadow army. If you want to trade, come"
+UI TARS 1.5 7B,0.056,113.115,71,31,0.331,508,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","I have no interest in your maps or directions. The Dark Lands are my domain, and I command the shadow army. If you want to navigate, come"
+UI TARS 1.5 7B,0.050,115.806,64,32,0.327,604,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","I have no interest in your legends or stories. The Obsidian Fortress is my domain, and I command the shadow army. If you want to hear tales,"
+UI TARS 1.5 7B,0.053,112.371,78,30,0.320,712,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","I have no need for your services. The Obsidian Fortress is my domain, and I command the shadow army. If you want to work, come"
+UI TARS 1.5 7B,0.028,115.819,23,32,0.305,767,What is the name of this town?,"I have no interest in your name. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know the name, come"
+UI TARS 1.5 7B,0.027,109.839,24,31,0.310,822,Who is in charge around here?,"I am in charge. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know who is in charge, come"
+UI TARS 1.5 7B,0.027,115.162,25,32,0.305,879,What kind of goods do the local merchants sell?,"I have no interest in your goods. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know about the local merchants"
+UI TARS 1.5 7B,0.027,115.368,24,32,0.305,935,Have there been any strange rumors lately?,"I have no interest in your rumors. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know about the strange rumors"
+UI TARS 1.5 7B,0.027,115.062,28,32,0.306,995,I have ten silver coins. What can that buy me?,"I have no interest in your coins. The Obsidian Fortress is my domain, and I command the shadow army. If you want to know what your coins can"

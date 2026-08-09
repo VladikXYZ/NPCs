@@ -6,6 +6,7 @@ import re
 import tempfile
 from contextlib import contextmanager
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter
+from numba.core.typing.builtins import Print
 
 DEVICES_FILE = "devices.json"
 MODELS_FILE = "models/models.json"
@@ -86,20 +87,30 @@ def get_devices():
     return devices
 
 def get_models():
+    models = sorted([os.path.basename(x) for x in os.listdir(MODELS_DIRECTORY) if x.endswith(".gguf")],
+                    key=os.path.basename)
+    current = set([f"models/{x}" for x in models])
     with open(MODELS_FILE, "r") as f:
-        return json.load(f)
+        models =  json.load(f)
+    usable = []
+    for model in models:
+        if model["path"] in current: usable.append(model)
+    return usable
+
 
 SHARED_RPG_RULE = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO stage directions, actions, or asterisks. Be direct and terse. Answer the player's exact question and immediately stop talking. Do NOT volunteer background facts unless directly asked, and do NOT over-explain. Treat your reality as a normal fantasy world. Maximum length: 2 short sentences."
 
 TEMPLATES_INFERENCE = {
     # ChatML: Qwen, LFM, Bonsai, Jan, Falcon-Mamba, DiffuCoder, UI-TARS, WeDLM
     "chatml": """{%- set shared_prompt = __RULE__ -%}
-{{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
+{{- '<|im_start|>system\n' + shared_prompt + '<|im_end|>\n' -}}
 {%- for message in messages -%}
 <|im_start|>{{ message.role }}
 {{ message.content }}<|im_end|>
 {% endfor -%}
-{{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
+{%- if add_generation_prompt -%}
+{{- '<|im_start|>assistant\n<think>\n\n</think>\n\n' -}}
+{%- endif -%}
 """.replace("__RULE__", repr(SHARED_RPG_RULE)),
 
     # Llama 3 / 3.1 / 3.2
@@ -214,21 +225,34 @@ def get_handlers(family: str):
     return handler_inference, None
 
 if __name__ == '__main__':
-    models = sorted([os.path.splitext(os.path.basename(x))[0] for x in os.listdir(MODELS_DIRECTORY) if x.endswith(".gguf")],key=os.path.basename)
-    models_dicts = []
-    for model in models:
-        name = model.lower()
-        if "gemma" in name: family = "gemma"
-        elif "phi" in name: family = "phi"
-        elif "llama" in name: family = "llama"
-        elif "mistral" in name: family = "mistral"
-        elif "glm" in name: family = "glm"
-        elif any(k in name for k in ["qwen", "lfm", "bonsai", "jan", "falcon", "diffucoder", "tars", "wedlm", "ggml", "gpt"]):
-            family = "chatml"
-        else: family = None
-        m_dict = {"name": model.replace("-", " "), "path": f"models/{model}.gguf", "family": family, "params": 122}
-        models_dicts.append(m_dict)
+    models = sorted([os.path.basename(x) for x in os.listdir(MODELS_DIRECTORY) if x.endswith(".gguf")],key=os.path.basename)
+    print(models)
+    reals = set([f"models/{x}" for x in models])
+    print(reals)
+    # models_dicts = []
+    # for model in models:
+    #     name = model.lower()
+    #     if "gemma" in name: family = "gemma"
+    #     elif "phi" in name: family = "phi"
+    #     elif "llama" in name: family = "llama"
+    #     elif "mistral" in name: family = "mistral"
+    #     elif "glm" in name: family = "glm"
+    #     elif any(k in name for k in ["qwen", "lfm", "bonsai", "jan", "falcon", "diffucoder", "tars", "wedlm", "ggml", "gpt"]):
+    #         family = "chatml"
+    #     else: family = None
+    #     m_dict = {"name": model.replace("-", " "), "path": f"models/{model}.gguf", "family": family, "params": 122}
+    #     models_dicts.append(m_dict)
+    #
+    # with open(MODELS_FILE, "w") as f:
+    #     json.dump(models_dicts, f, indent=1)
 
-    with open(MODELS_FILE, "w") as f:
-        json.dump(models_dicts, f, indent=1)
-
+    # with open("models/backup.json", "r") as f:
+    #     models_dicts = json.load(f)
+    # big_dict = {}
+    # print(models_dicts)
+    # for model in models_dicts:
+    #     big_dict[model["path"].split("/")[-1]] = model
+    # print(big_dict)
+    # with open(MODELS_FILE, "w") as f:
+    #     json.dump(models_dicts, f, indent=1)
+    #     # print("skibidi")
