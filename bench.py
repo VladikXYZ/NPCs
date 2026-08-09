@@ -8,14 +8,12 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-from templating import get_handlers
-from utils import get_devices, get_models, Silencer, Catcher
+from utils import get_devices, get_models, Silencer, Catcher, get_handlers, OutOfTimeError
 
-
-MODEL_DIR = 'models/'
-DEVICES_FILE = "devices.json"
+# MODEL_DIR = 'models/'
+# DEVICES_FILE = "devices.json"
 PC_NAME = platform.node()
-# LOG_DIR = f'vlad/bench_logs/{PC_NAME}/'
+LOG_DIR = f'benchmarks/{PC_NAME}/'
 LOG_DIR = ""
 # os.makedirs(LOG_DIR, exist_ok=True)
 with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
@@ -34,7 +32,7 @@ CONTEXT_SIZE = 4096
 MAX_TOKENS = 32
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
-TIMEOUT = 32
+TIMEOUT = 1
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
 
@@ -60,15 +58,18 @@ class Benchmarker:
         self._run_benchmark()
 
     def load_llm(self, model):
-        print(f"Loading {os.path.basename(model)} | ", end="", flush=True)
-        llm_kwargs = { "model_path": "models/" + model + ".gguf", "n_gpu_layers": self.gpu_layers,
+        # print(f"Loading {os.path.basename(model["path"])} | ", end="", flush=True)
+        print(f"Loading {model["path"]} | ", end="", flush=True)
+        llm_kwargs = { "model_path": model["path"], "n_gpu_layers": self.gpu_layers,
                     "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0 }
 
-        infer, warmup = get_handlers(model)
+
+        if CUSTOM_JINJA: infer, warmup = None, None
+        else: infer, warmup = get_handlers(model["family"])
         if warmup: llm_kwargs["chat_handler"] = warmup
         elif infer: llm_kwargs["chat_handler"] = infer
         llm, err = None, None
-        with Silencer() as s:
+        with Silencer():
             try:
                 
                 llm = Llama(**llm_kwargs)
@@ -88,18 +89,14 @@ class Benchmarker:
 
 
         if err:
-            # print(err)
             llm_kwargs["verbose"] = True
             with Catcher() as c:
                 try:
                     llm = Llama(**llm_kwargs)   
                     llm.create_chat_completion(WARMUP, max_tokens=1)
-                except:
-                    pass
+                except: pass
             print(err)
-            err = err+c[0]+err
-            # print(err)
-            # err.replace('\n', '|')
+            err = err + c[0]
             llm = None
         return llm, err
 
@@ -108,73 +105,67 @@ class Benchmarker:
 
     def _run_benchmark(self):
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split())
-        # log_file = f"{dev_name}.log"
-        # open(log_file, 'w').close()
         print("DEViCE:",dev_name)
+        print("TIMEOUT:", TIMEOUT)
         log = []
         num_models = len(self.models)
         test_start = time.perf_counter()
-        print("TIMEOUT:", TIMEOUT)
+
         chat_history = CHAT_HISTORY[:]
         for i, model in enumerate(self.models):
-            failed = False
+            family = model["family"]
             model_log = []
             llm, err = self.load_llm(model)
-            if llm:
-                try:
-                    model_start = time.perf_counter()
-                    prev_n = llm.n_tokens
+            try:
+                if not llm: raise Exception(err)
+                model_start = time.perf_counter()
+                prev_n = llm.n_tokens
 
-                    for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model}", unit="prompt"):
-                        chat_history.append({"role": "user", "content": user_input})
-                        ttft, t_out = TIMEOUT*2, 0
-                        start_time = time.perf_counter()
-                        assistant_response = [""] * MAX_TOKENS
+                for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model["name"]}", unit="prompt"):
+                    chat_history.append({"role": "user", "content": user_input})
+                    ttft, t_out = TIMEOUT*2, 0
+                    start_time = time.perf_counter()
+                    assistant_response = [""] * MAX_TOKENS
 
-                        stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=MAX_TOKENS)
-                        for chunk in stream:
-                            current = time.perf_counter()
-                            if current - model_start <= TIMEOUT:
-                                delta = chunk['choices'][0]["delta"]
-                                if 'content' in delta:
-                                    ttft = min(current-start_time, ttft)
-                                    assistant_response[t_out] = delta['content']
-                                    t_out += 1
-                            else: raise Exception("Out of time.")
-                        assistant_response = "".join(assistant_response)
+                    stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=MAX_TOKENS)
+                    for chunk in stream:
+                        current = time.perf_counter()
+                        if current - model_start <= TIMEOUT:
+                            delta = chunk['choices'][0]["delta"]
+                            if 'content' in delta:
+                                ttft = min(current-start_time, ttft)
+                                assistant_response[t_out] = delta['content']
+                                t_out += 1
+                        else: raise OutOfTimeError
+                    assistant_response = "".join(assistant_response)
 
-                        total_time = time.perf_counter() - start_time
-                        gen_time = total_time - ttft
-                        tps = t_out / gen_time if gen_time > 0 else -1
-                        all_tokens = llm.n_tokens
-                        t_in = all_tokens - prev_n - t_out
+                    total_time = time.perf_counter() - start_time
+                    gen_time = total_time - ttft
+                    tps = t_out / gen_time if gen_time > 0 else -1
+                    all_tokens = llm.n_tokens
+                    t_in = all_tokens - prev_n - t_out
 
-                        query = user_input[:].replace('\n', '|')
-                        response = assistant_response[:].replace('\n', '|')
-                        model_log.append([model, ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
-                        if "qwen" in model.lower() or "27b" in model.lower():
-                            assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
-                        chat_history.append({"role": "assistant", "content": assistant_response})
-                        prev_n = all_tokens
+                    query = user_input[:].replace('\n', '|')
+                    response = assistant_response[:].replace('\n', '|')
+                    model_log.append([model["name"], ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
+                    if family == "chatml" and CUSTOM_JINJA: assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
+                    chat_history.append({"role": "assistant", "content": assistant_response})
+                    prev_n = all_tokens
 
-                except Exception as e:
-                    row = [model] + ERROR_ROW +[repr(e).replace("\n", "||")]
-                    print(row)
-                    done = len(model_log)
-                    for _ in range(NUM_MESS - done): model_log.append(row)
-                    print(f"Failed due error.")
-                
-                finally:
-                    if 'stream' in locals(): del stream
-                    if hasattr(llm, 'close'): llm.close()
-                    del llm
-                    chat_history = chat_history[:1]
-                    log.extend(model_log)
-            else:
-                row = [model] + ERROR_ROW +[repr(err).replace("\n", "||")]
-                log.append(row)
-                row = [model] + ERROR_ROW +[-1]
-                log.extend([row for _ in range(NUM_MESS)])
+            except Exception as e:
+                row = [model["name"]] + ERROR_ROW +["<ERROR>"+str(e).replace("\n", "||")]
+                model_log.append(row)
+                row = [model["name"]] + ERROR_ROW + [-1]
+                done = len(model_log)
+                for _ in range(NUM_MESS - done): model_log.append(row)
+                print(f"Failed due {type(e)}")
+
+            finally:
+                if 'stream' in locals(): del stream
+                if hasattr(llm, 'close'): llm.close()
+                del llm
+                chat_history = chat_history[:1]
+                log.extend(model_log)
 
         print(f"It all took: {time.perf_counter() - test_start}")
 
@@ -198,5 +189,4 @@ if __name__ == '__main__':
                 print(f"This took {time.time() - prev} seconds")
             print(f"All tests took {time.time() - start} seconds")
         else: Benchmarker(num)
-    else:
-        Benchmarker()
+    else: Benchmarker()

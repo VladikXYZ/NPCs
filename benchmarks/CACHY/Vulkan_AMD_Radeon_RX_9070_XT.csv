@@ -1,0 +1,41 @@
+MODEL,TTFT,T/s,USER TOKENS,NPC TOKENS,TOTAL TIME,ALL TOKENS,PROMPT,RESPONSE
+Bonsai-1.7B-Q1_0,0.029,263.994,64,32,0.150,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","No, you should not get involved in politics. The local authorities are not your enemies, and the tavern is not a place to be involved in any trouble."
+Bonsai-1.7B-Q1_0,0.034,254.755,71,31,0.156,398,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","You should ask the blacksmith, who is known for his sharp hands and sharp tongue. He might be the one to give you the best exchange rate."
+Bonsai-1.7B-Q1_0,0.034,267.544,63,32,0.154,493,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","The safest and fastest route to the capital city is through the northern pass, where the mountains are higher and the terrain is more rugged. Look out for the ancient"
+Bonsai-1.7B-Q1_0,0.034,258.695,59,32,0.157,584,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","There are many legends in this region, but one of the most famous is the tale of the ""Dragon King,"" a legendary figure said to have slain the gods"
+Bonsai-1.7B-Q1_0,0.035,259.468,71,32,0.158,687,"I'm looking for work to earn enough coin to fund the next leg of my journey. I'm not afraid of manual labor, and I can handle myself in a fight if necessary. Are there any guilds, merchants, or local leaders who are currently hiring mercenaries, guards, or day laborers?","You should check the local guilds, especially those in the forestry or mining areas. They often hire mercenaries for tasks like logging or mining. Also, look for"
+Bonsai-1.7B-Q1_0,0.023,241.277,19,7,0.052,713,What is the name of this town?,The town is called Torin.
+Bonsai-1.7B-Q1_0,0.019,256.557,16,32,0.144,761,Who is in charge around here?,"The town is governed by the Council of Elders, who are the most respected in the region. They make decisions about trade, defense, and the fate of"
+Bonsai-1.7B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>Out of time.
+Bonsai-1.7B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-1.7B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-27B-Q1_0,0.193,47.363,65,11,0.425,288,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The authorities are dead. I am the new authority.
+Bonsai-27B-Q1_0,0.135,58.963,74,17,0.424,379,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",You will not trade with anyone. I am the only one who can help you.
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>Out of time.
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-27B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-4B-Q1_0,0.054,151.600,65,20,0.186,285,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?","The Obsidian Fortress is watching you. If you speak of politics, they’ll burn your tongue."
+Bonsai-4B-Q1_0,0.061,151.424,70,25,0.227,380,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?",Garrick at the Obsidian Gate. They’ll take your gold and gems for a single silver coin and a blade.
+Bonsai-4B-Q1_0,0.059,163.401,63,32,0.255,475,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","The path through the Shadow Marshes leads to the Black Spire, then to the Iron Gate. Avoid the Whispering Woods—no one walks there without a"
+Bonsai-4B-Q1_0,0.053,186.159,59,32,0.225,566,"I've always been interested in local legends and folklore. Does this region have any famous myths about ancient heroes, hidden treasures, or perhaps terrible curses that still haunt the surrounding forests or mountains? I love a good story before I continue my journey.","The Forest of Whispers once housed a hero named Veyra who fought a curse of silence. If you hear a single word in the wind, it’s"
+Bonsai-4B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>Out of time.
+Bonsai-4B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-4B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-4B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-4B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-4B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-8B-Q1_0,0.068,107.416,64,32,0.365,296,"I overheard some people whispering in the tavern earlier about some sort of trouble brewing with the local authorities. I don't want to get involved in any politics, but is there anything a traveler like myself should be aware of to avoid getting thrown in the dungeon?",The local authorities are corrupt and will turn on you if they suspect you're not loyal. Stay in the shadows and avoid any mention of the kingdom's troubles.
+Bonsai-8B-Q1_0,0.071,131.194,70,32,0.315,398,"I have a handful of gold pieces and a few rare gems I found in a cave a few miles back. I'm looking to trade them for sturdy traveling gear, rations that will last a month, and perhaps a reliable mount. Who in this town would give me the fairest exchange rate?","The blacksmith in the forge trades with the highest rates, but he's a fool. The merchant in the east market deals in rare goods and has a fair"
+Bonsai-8B-Q1_0,0.054,159.802,64,32,0.254,494,"I'm trying to navigate to the capital city, but the maps I bought from a wandering peddler seem to be outdated or completely wrong. Can you give me detailed directions on the safest and fastest route, including any landmarks I should look out for along the way?","The capital is to the north through the Whispering Woods, where the silver stag is said to roam. Stay clear of the Hollow Pass and the ruins of Eld"
+Bonsai-8B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,<ERROR>Out of time.
+Bonsai-8B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-8B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-8B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-8B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-8B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
+Bonsai-8B-Q1_0,-1.000,-1.000,-1,-1,-1.000,-1,-1,-1
