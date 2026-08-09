@@ -7,23 +7,9 @@ import tempfile
 from contextlib import contextmanager
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter
 
-from vlad.tokens_counter import message
-
 DEVICES_FILE = "devices.json"
 MODELS_FILE = "models/models.json"
 MODELS_DIRECTORY = "models"
-
-class OutOfTimeError(Exception):
-    def __init__(self):
-        super().__init__("Ran out of time.")
-
-class LoadError(Exception):
-    def __init__(self, mesage):
-        super().__init__(message)
-
-class InferenceError(Exception):
-    def __init__(self, mesage):
-        super().__init__(message)
 
 @contextmanager
 def Silencer(suppress=True):
@@ -108,16 +94,11 @@ SHARED_RPG_RULE = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO s
 TEMPLATES_INFERENCE = {
     # ChatML: Qwen, LFM, Bonsai, Jan, Falcon-Mamba, DiffuCoder, UI-TARS, WeDLM
     "chatml": """{%- set shared_prompt = __RULE__ -%}
-{{- '<|im_start|>system\\n' -}}
-{%- if messages and messages[0].role == 'system' -%}
-    {{- messages[0].content + '\\n\\n' -}}
-{%- endif -%}
-{{- shared_prompt + '<|im_end|>\\n' -}}
+{{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
 {%- for message in messages -%}
-    {%- if message.role != 'system' -%}
-        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>\\n' -}}
-    {%- endif -%}
-{%- endfor -%}
+<|im_start|>{{ message.role }}
+{{ message.content }}<|im_end|>
+{% endfor -%}
 {{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
 """.replace("__RULE__", repr(SHARED_RPG_RULE)),
 
@@ -245,7 +226,7 @@ if __name__ == '__main__':
         elif any(k in name for k in ["qwen", "lfm", "bonsai", "jan", "falcon", "diffucoder", "tars", "wedlm", "ggml", "gpt"]):
             family = "chatml"
         else: family = None
-        m_dict = {"name": name, "path": f"models/{model}.gguf", "family": family, "params": 122}
+        m_dict = {"name": model.replace("-", " "), "path": f"models/{model}.gguf", "family": family, "params": 122}
         models_dicts.append(m_dict)
 
     with open(MODELS_FILE, "w") as f:

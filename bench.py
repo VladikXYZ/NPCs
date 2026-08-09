@@ -8,7 +8,7 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-from utils import get_devices, get_models, Silencer, Catcher, get_handlers, OutOfTimeError
+from utils import get_devices, get_models, Silencer, Catcher, get_handlers
 
 # MODEL_DIR = 'models/'
 # DEVICES_FILE = "devices.json"
@@ -32,7 +32,7 @@ CONTEXT_SIZE = 4096
 MAX_TOKENS = 32
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
-TIMEOUT = 1
+# TIMEOUT = 1
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
 
@@ -59,13 +59,13 @@ class Benchmarker:
 
     def load_llm(self, model):
         # print(f"Loading {os.path.basename(model["path"])} | ", end="", flush=True)
-        print(f"Loading {model["path"]} | ", end="", flush=True)
+        print(f"Loading {model["name"]} | ", end="", flush=True)
         llm_kwargs = { "model_path": model["path"], "n_gpu_layers": self.gpu_layers,
                     "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0 }
 
 
-        if CUSTOM_JINJA: infer, warmup = None, None
-        else: infer, warmup = get_handlers(model["family"])
+        if CUSTOM_JINJA: infer, warmup = get_handlers(model["family"])
+        else: infer, warmup = None, None
         if warmup: llm_kwargs["chat_handler"] = warmup
         elif infer: llm_kwargs["chat_handler"] = infer
         llm, err = None, None
@@ -98,6 +98,7 @@ class Benchmarker:
             print(err)
             err = err + c[0]
             llm = None
+            raise Exception(err)
         return llm, err
 
 
@@ -115,9 +116,9 @@ class Benchmarker:
         for i, model in enumerate(self.models):
             family = model["family"]
             model_log = []
-            llm, err = self.load_llm(model)
+            llm = None
             try:
-                if not llm: raise Exception(err)
+                llm, err = self.load_llm(model)
                 model_start = time.perf_counter()
                 prev_n = llm.n_tokens
 
@@ -136,7 +137,7 @@ class Benchmarker:
                                 ttft = min(current-start_time, ttft)
                                 assistant_response[t_out] = delta['content']
                                 t_out += 1
-                        else: raise OutOfTimeError
+                        else: raise Exception("Ran out of time.")
                     assistant_response = "".join(assistant_response)
 
                     total_time = time.perf_counter() - start_time
@@ -158,7 +159,7 @@ class Benchmarker:
                 row = [model["name"]] + ERROR_ROW + [-1]
                 done = len(model_log)
                 for _ in range(NUM_MESS - done): model_log.append(row)
-                print(f"Failed due {type(e)}")
+                print(f"Failed")
 
             finally:
                 if 'stream' in locals(): del stream
