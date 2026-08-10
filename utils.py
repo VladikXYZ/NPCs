@@ -12,6 +12,15 @@ DEVICES_FILE = "devices.json"
 MODELS_FILE = "models/models.json"
 MODELS_DIRECTORY = "models"
 
+class MyException(Exception):
+    def __init__(self, error_type, message):
+        super().__init__(message)
+        self.message = message
+        self.error_type = error_type
+
+    def __str__(self):
+        return f"<ERROR: {self.error_type}> {self.message}"
+
 @contextmanager
 def Silencer(suppress=True):
     if suppress:
@@ -98,8 +107,8 @@ def get_models():
     return usable
 
 
-def get_handlers(family: str):
-    if not family: return None, None
+def get_handlers(family: str, custom: bool):
+    if not family or not custom: return None, None
 
     handler_inference = Jinja2ChatFormatter(
         template=TEMPLATES_INFERENCE[family],
@@ -107,14 +116,14 @@ def get_handlers(family: str):
         bos_token=""
     ).to_chat_handler()
 
-    if family == "chatml":
-        handler_warmup = Jinja2ChatFormatter(
-            template=QWEN_WARMUP,
-            eos_token=EOS_TOKENS[family],
-            bos_token=""
-        ).to_chat_handler()
-
-        return handler_inference, handler_warmup
+    # if family == "chatml":
+    #     handler_warmup = Jinja2ChatFormatter(
+    #         template=QWEN_WARMUP,
+    #         eos_token=EOS_TOKENS[family],
+    #         bos_token=""
+    #     ).to_chat_handler()
+    #
+    #     return handler_inference, handler_warmup
     return handler_inference, None
 
 if __name__ == '__main__':

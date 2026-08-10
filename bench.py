@@ -8,7 +8,7 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
-from utils import get_devices, get_models, Silencer, Catcher, get_handlers
+from utils import get_devices, get_models, Silencer, Catcher, get_handlers, MyException
 
 # MODEL_DIR = 'models/'
 # DEVICES_FILE = "devices.json"
@@ -32,9 +32,14 @@ CONTEXT_SIZE = 4096
 MAX_TOKENS = 32
 WARMUP_COUNT = 4
 TIMEOUT = (NUM_MESS * (1 + (MAX_TOKENS / 5))).__ceil__()
-# TIMEOUT = 1
+TIMEOUT = 4
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
+
+
+RED = "\033[91m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
 
 
 class Benchmarker:
@@ -64,8 +69,7 @@ class Benchmarker:
                     "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0 }
 
 
-        if CUSTOM_JINJA: infer, warmup = get_handlers(model["family"])
-        else: infer, warmup = None, None
+        infer, warmup = get_handlers(model["family"], CUSTOM_JINJA)
         if warmup: llm_kwargs["chat_handler"] = warmup
         elif infer: llm_kwargs["chat_handler"] = infer
         llm, err = None, None
@@ -83,9 +87,9 @@ class Benchmarker:
                 except Exception as e:
                     if hasattr(llm, 'close'): llm.close()
                     del llm
-                    err = f"\nCrashed during generation:{e}"
+                    err = f"Crashed during generation: {e}"
             except Exception as e:
-                err = f"\nCrashed during loading:{e}"
+                err = f"Crashed during loading: {e}"
 
 
         if err:
@@ -94,11 +98,9 @@ class Benchmarker:
                 try:
                     llm = Llama(**llm_kwargs)   
                     llm.create_chat_completion(WARMUP, max_tokens=1)
-                except: pass
-            print(err)
-            err = err + c[0]
-            llm = None
-            raise Exception(err)
+                except: llm = None
+            print("")
+            raise MyException(err, c[0])
         return llm, err
 
 
@@ -106,13 +108,15 @@ class Benchmarker:
 
     def _run_benchmark(self):
         dev_name = self.device["type"] + "_" + "_".join(self.device["name"].split())
-        print("DEViCE:",dev_name)
-        print("TIMEOUT:", TIMEOUT)
+
         log = []
         num_models = len(self.models)
         test_start = time.perf_counter()
-
         chat_history = CHAT_HISTORY[:]
+        print("DEViCE:", dev_name)
+        print("TIMEOUT:", TIMEOUT)
+        print("MODELS:", num_models)
+
         for i, model in enumerate(self.models):
             family = model["family"]
             model_log = []
@@ -137,7 +141,7 @@ class Benchmarker:
                                 ttft = min(current-start_time, ttft)
                                 assistant_response[t_out] = delta['content']
                                 t_out += 1
-                        else: raise Exception("Ran out of time.")
+                        else: raise MyException("Timeout!", f"Ran out of time ({TIMEOUT} s)")
                     assistant_response = "".join(assistant_response)
 
                     total_time = time.perf_counter() - start_time
@@ -152,14 +156,13 @@ class Benchmarker:
                     if family == "chatml" and CUSTOM_JINJA: assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
                     chat_history.append({"role": "assistant", "content": assistant_response})
                     prev_n = all_tokens
+                print(f"{GREEN}FINISHED!!!{RESET}")
 
-            except Exception as e:
-                row = [model["name"]] + ERROR_ROW +["<ERROR>"+str(e).replace("\n", "||")]
-                model_log.append(row)
-                row = [model["name"]] + ERROR_ROW + [-1]
+            except MyException as e:
+                print(f"{RED}{e.error_type}{RESET}")
+                model_log.append([model["name"]] + ERROR_ROW +[str(e)])
                 done = len(model_log)
-                for _ in range(NUM_MESS - done): model_log.append(row)
-                print(f"Failed")
+                for _ in range(NUM_MESS - done): model_log.append([model["name"]] + ERROR_ROW + [-1])
 
             finally:
                 if 'stream' in locals(): del stream
