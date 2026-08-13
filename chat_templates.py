@@ -2,14 +2,12 @@ SHARED_RPG_RULE = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO s
 
 TEMPLATES_INFERENCE = {
     "chatml": """{%- set shared_prompt = __RULE__ -%}
-{{- '<|im_start|>system\n' + shared_prompt + '<|im_end|>\n' -}}
+{{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
 {%- for message in messages -%}
 <|im_start|>{{ message.role }}
 {{ message.content }}<|im_end|>
 {% endfor -%}
-{%- if add_generation_prompt -%}
-{{- '<|im_start|>assistant\n<think>\n\n</think>\n\n' -}}
-{%- endif -%}
+{{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
 """.replace("__RULE__", repr(SHARED_RPG_RULE)),
 
     "llama": """{%- set shared_prompt = __RULE__ -%}

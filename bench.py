@@ -125,6 +125,9 @@ class Benchmarker:
                 llm, err = self.load_llm(model)
                 model_start = time.perf_counter()
                 prev_n = llm.n_tokens
+                # cached_token_ids = llm.input_ids[:llm.n_tokens]
+                # cached_text = llm.detokenize(cached_token_ids).decode('utf-8', errors='replace')
+                # print(cached_text)
 
                 for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model["name"]}", unit="prompt"):
                     chat_history.append({"role": "user", "content": user_input})
