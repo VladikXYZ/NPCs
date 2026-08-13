@@ -116,14 +116,14 @@ def get_handlers(family: str, custom: bool):
         bos_token=""
     ).to_chat_handler()
 
-    # if family == "chatml":
-    #     handler_warmup = Jinja2ChatFormatter(
-    #         template=QWEN_WARMUP,
-    #         eos_token=EOS_TOKENS[family],
-    #         bos_token=""
-    #     ).to_chat_handler()
-    #
-    #     return handler_inference, handler_warmup
+    if family == "chatml":
+        handler_warmup = Jinja2ChatFormatter(
+            template=QWEN_WARMUP,
+            eos_token=EOS_TOKENS[family],
+            bos_token=""
+        ).to_chat_handler()
+
+        return handler_inference, handler_warmup
     return handler_inference, None
 
 if __name__ == '__main__':
