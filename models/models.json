@@ -256,5 +256,11 @@
   "path": "models/phi-4-Q4_K_M.gguf",
   "family": "phi",
   "params": 122
+ },
+  {
+  "name": "Nemotron 30B",
+  "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-UD-Q4_K_M.gguf",
+  "family": null,
+  "params": 122
  }
 ]

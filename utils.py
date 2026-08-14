@@ -19,7 +19,7 @@ class MyException(Exception):
         self.error_type = error_type
 
     def __str__(self):
-        return f"<ERROR: {self.error_type}> {self.message}"
+        return f"<ERROR: {self.error_type.replace("\n", "")}> {self.message.replace("\n", "")}"
 
 @contextmanager
 def Silencer(suppress=True):
