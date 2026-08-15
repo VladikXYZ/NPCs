@@ -4,9 +4,12 @@ TEMPLATES_INFERENCE = {
     "chatml": """{%- set shared_prompt = __RULE__ -%}
 {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
 {%- for message in messages -%}
-<|im_start|>{{ message.role }}
-{{ message.content }}<|im_end|>
-{% endfor -%}
+    {%- if message.role == 'assistant' -%}
+        {{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' + message.content + '<|im_end|>\\n' -}}
+    {%- else -%}
+        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>\\n' -}}
+    {%- endif -%}
+{%- endfor -%}
 {{- '<|im_start|>assistant\\n<think>\\n\\n</think>\\n\\n' -}}
 """.replace("__RULE__", repr(SHARED_RPG_RULE)),
 

@@ -125,9 +125,6 @@ class Benchmarker:
                 llm, err = self.load_llm(model)
                 model_start = time.perf_counter()
                 prev_n = llm.n_tokens
-                # cached_token_ids = llm.input_ids[:llm.n_tokens]
-                # cached_text = llm.detokenize(cached_token_ids).decode('utf-8', errors='replace')
-                # print(cached_text)
 
                 for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model["name"]}", unit="prompt"):
                     chat_history.append({"role": "user", "content": user_input})
@@ -156,7 +153,6 @@ class Benchmarker:
                     query = user_input[:].replace('\n', '|')
                     response = assistant_response[:].replace('\n', '|')
                     model_log.append([model["name"], ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
-                    if family == "chatml" and CUSTOM_JINJA: assistant_response = f"<think>\n\n</think>\n\n{assistant_response}"
                     chat_history.append({"role": "assistant", "content": assistant_response})
                     prev_n = all_tokens
                 print(f"{GREEN}FINISHED!!!{RESET}")
