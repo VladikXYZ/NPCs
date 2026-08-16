@@ -63,46 +63,7 @@ class Benchmarker:
         os.environ["GGML_VK_VISIBLE_DEVICES"] = str(self.device["id"] * (self.device["type"] == "Vulkan"))
         self._run_benchmark()
 
-    def load_llm(self, model):
-        # print(f"Loading {os.path.basename(model["path"])} | ", end="", flush=True)
-        print(f"Loading {model["name"]} | ", end="", flush=True)
-        llm_kwargs = { "model_path": model["path"], "n_gpu_layers": self.gpu_layers,
-                    "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0 }
 
-
-        infer, warmup = get_handlers(model["family"], CUSTOM_JINJA)
-        if warmup: llm_kwargs["chat_handler"] = warmup
-        elif infer: llm_kwargs["chat_handler"] = infer
-        llm, err = None, None
-        with Silencer():
-            try:
-                
-                llm = Llama(**llm_kwargs)
-                print(f"Loaded! | ", end="", flush=True)
-
-                try:
-                    llm.create_chat_completion(WARMUP, max_tokens=1)
-                    if warmup: llm.chat_handler = infer
-                    print("Warmuped!!", flush=True)
-                
-                except Exception as e:
-                    if hasattr(llm, 'close'): llm.close()
-                    del llm
-                    err = f"Crashed during generation: {e}"
-            except Exception as e:
-                err = f"Crashed during loading: {e}"
-
-
-        if err:
-            llm_kwargs["verbose"] = True
-            with Catcher() as c:
-                try:
-                    llm = Llama(**llm_kwargs)   
-                    llm.create_chat_completion(WARMUP, max_tokens=1)
-                except: llm = None
-            print("")
-            raise MyException(err, c[0])
-        return llm
 
 
         
