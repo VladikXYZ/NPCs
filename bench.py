@@ -8,6 +8,8 @@ import platform
 import questionary
 from tqdm import tqdm
 from llama_cpp import Llama
+
+import utils
 from utils import get_devices, get_models, Silencer, Catcher, get_handlers, MyException
 
 # MODEL_DIR = 'models/'
@@ -18,14 +20,13 @@ LOG_DIR = ""
 # os.makedirs(LOG_DIR, exist_ok=True)
 with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
-CUSTOM_JINJA = True
+CUSTOM_JINJA = False
 if CUSTOM_JINJA:
     CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
     WARMUP = CHAT_HISTORY[:]
 else:
     CHAT_HISTORY = [{"role": "system", "content": NPC["role"] + NPC["shared_system_prompt"]}]
-    WARMUP = CHAT_HISTORY[:]
-    WARMUP.append({"role": "user", "content": "warmup"})
+    WARMUP = CHAT_HISTORY[:] + [{"role": "user", "content": "warmup"}]
 
 NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096
@@ -101,7 +102,7 @@ class Benchmarker:
                 except: llm = None
             print("")
             raise MyException(err, c[0])
-        return llm, err
+        return llm
 
 
         
@@ -122,7 +123,11 @@ class Benchmarker:
             model_log = []
             llm = None
             try:
-                llm, err = self.load_llm(model)
+                llm_kwargs = {"model_path": model["path"], "n_gpu_layers": self.gpu_layers,
+                              "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0}
+
+                # llm = self.load_llm(model)
+                llm = utils.load_llm(model, llm_kwargs, WARMUP, CUSTOM_JINJA, log=True)
                 model_start = time.perf_counter()
                 prev_n = llm.n_tokens
 
@@ -150,10 +155,10 @@ class Benchmarker:
                     all_tokens = llm.n_tokens
                     t_in = all_tokens - prev_n - t_out
 
+                    chat_history.append({"role": "assistant", "content": assistant_response})
                     query = user_input[:].replace('\n', '|')
                     response = assistant_response[:].replace('\n', '|')
                     model_log.append([model["name"], ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
-                    chat_history.append({"role": "assistant", "content": assistant_response})
                     prev_n = all_tokens
                 print(f"{GREEN}FINISHED!!!{RESET}")
 

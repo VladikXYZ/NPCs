@@ -5,6 +5,8 @@ import sys
 import re
 import tempfile
 from contextlib import contextmanager
+
+from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter
 from chat_templates import TEMPLATES_INFERENCE, QWEN_WARMUP, EOS_TOKENS
 
@@ -125,6 +127,47 @@ def get_handlers(family: str, custom: bool):
 
         return handler_inference, handler_warmup
     return handler_inference, None
+
+
+def load_llm(model, llm_kwargs, warmup_inputs, custom_jinja, log = False):
+    print(f"Loading {model["name"]} | ", end="", flush=True)
+
+    infer, warmup = get_handlers(model["family"], custom_jinja)
+    if warmup:
+        llm_kwargs["chat_handler"] = warmup
+    elif infer:
+        llm_kwargs["chat_handler"] = infer
+    llm, err = None, None
+    with Silencer():
+        try:
+
+            llm = Llama(**llm_kwargs)
+            print(f"Loaded! | ", end="", flush=True)
+
+            try:
+                llm.create_chat_completion(warmup_inputs, max_tokens=1)
+                if warmup: llm.chat_handler = infer
+                print("Warmuped!!", flush=True)
+                return llm
+
+            except Exception as e:
+                if hasattr(llm, 'close'): llm.close()
+                del llm
+                err = f"Crashed during generation: {e}"
+        except Exception as e:
+            err = f"Crashed during loading: {e}"
+
+    if err:
+        if not log: return None
+        llm_kwargs["verbose"] = True
+        with Catcher() as c:
+            try:
+                llm = Llama(**llm_kwargs)
+                llm.create_chat_completion(warmup_inputs, max_tokens=1)
+            except:
+                llm = None
+        print("")
+        raise MyException(err, c[0])
 
 if __name__ == '__main__':
     models = sorted([os.path.basename(x) for x in os.listdir(MODELS_DIRECTORY) if x.endswith(".gguf")],key=os.path.basename)
