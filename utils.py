@@ -4,7 +4,9 @@ import subprocess
 import sys
 import re
 import tempfile
+import time
 from contextlib import contextmanager
+from math import inf
 
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter
@@ -168,6 +170,41 @@ def load_llm(model, llm_kwargs, warmup_inputs, custom_jinja, log = False):
                 llm = None
         print("")
         raise MyException(err, c[0])
+
+def run_llm(llm, model, query, chat_history, max_tokens, stream=False, timeout=None):
+    if timeout: stream = True
+
+    if stream:
+        chat_history.append({"role": "user", "content": query})
+        ttft, t_out = inf, 0
+        start_time = time.perf_counter()
+        assistant_response = [""] * max_tokens
+        prev_n = llm.n_tokens
+
+        stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=max_tokens)
+        for chunk in stream:
+            current = time.perf_counter()
+            if current - start_time <= timeout:
+                delta = chunk['choices'][0]["delta"]
+                if 'content' in delta:
+                    ttft = min(current - start_time, ttft)
+                    assistant_response[t_out] = delta['content']
+                    t_out += 1
+            else:
+                raise MyException("Timeout!", f"Ran out of time.")
+        assistant_response = "".join(assistant_response)
+
+        total_time = time.perf_counter() - start_time
+        gen_time = total_time - ttft
+        tps = t_out / gen_time if gen_time > 0 else -1
+        all_tokens = llm.n_tokens
+        t_in = all_tokens - prev_n - t_out
+
+        chat_history.append({"role": "assistant", "content": assistant_response})
+        query = query[:].replace('\n', '|')
+        response = assistant_response[:].replace('\n', '|')
+        return [model["name"], ttft, tps, t_in, t_out, total_time, all_tokens, query, response]
+
 
 if __name__ == '__main__':
     models = sorted([os.path.basename(x) for x in os.listdir(MODELS_DIRECTORY) if x.endswith(".gguf")],key=os.path.basename)
