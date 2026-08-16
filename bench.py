@@ -30,10 +30,9 @@ else:
 
 NUM_MESS = len(MESSAGES)
 CONTEXT_SIZE = 4096
-MAX_TOKENS = 32
-WARMUP_COUNT = 4
+MAX_TOKENS = 64
 TIMEOUT = (NUM_MESS * (0.9 + (MAX_TOKENS / 5.5))).__ceil__()
-TIMEOUT = 4
+# TIMEOUT = 4
 HEADER = ["MODEL", "TTFT", "T/s", "USER TOKENS", "NPC TOKENS", "TOTAL TIME", "ALL TOKENS", "PROMPT", "RESPONSE"]
 ERROR_ROW = [-1 for _ in range(len(HEADER)-2)]
 
@@ -78,50 +77,51 @@ class Benchmarker:
             family = model["family"]
             model_log = []
             llm = None
+            llm_kwargs = {"model_path": model["path"], "n_gpu_layers": self.gpu_layers,
+                          "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0}
             try:
-                llm_kwargs = {"model_path": model["path"], "n_gpu_layers": self.gpu_layers,
-                              "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0}
-
                 # llm = self.load_llm(model)
                 llm = utils.load_llm(model, llm_kwargs, WARMUP, CUSTOM_JINJA, log=True)
                 model_start = time.perf_counter()
                 prev_n = llm.n_tokens
                 timeout = TIMEOUT
                 for user_input in tqdm(MESSAGES, desc=f"Testing {i + 1}/{num_models} {model["name"]}", unit="prompt"):
-                    # chat_history.append({"role": "user", "content": user_input})
-                    # ttft, t_out = TIMEOUT*2, 0
-                    # start_time = time.perf_counter()
-                    # assistant_response = [""] * MAX_TOKENS
-                    #
-                    # stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=MAX_TOKENS)
-                    # for chunk in stream:
-                    #     current = time.perf_counter()
-                    #     if current - model_start <= TIMEOUT:
-                    #         delta = chunk['choices'][0]["delta"]
-                    #         if 'content' in delta:
-                    #             ttft = min(current-start_time, ttft)
-                    #             assistant_response[t_out] = delta['content']
-                    #             t_out += 1
-                    #     else: raise MyException("Timeout!", f"Ran out of time ({TIMEOUT} s)")
-                    # assistant_response = "".join(assistant_response)
-                    #
-                    # total_time = time.perf_counter() - start_time
-                    # gen_time = total_time - ttft
-                    # tps = t_out / gen_time if gen_time > 0 else -1
-                    # all_tokens = llm.n_tokens
-                    # t_in = all_tokens - prev_n - t_out
-                    #
-                    # chat_history.append({"role": "assistant", "content": assistant_response})
-                    # query = user_input[:].replace('\n', '|')
-                    # response = assistant_response[:].replace('\n', '|')
-                    # model_log.append([model["name"], ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
-                    # prev_n = all_tokens
-                    row = utils.run_llm(llm, model, user_input, chat_history, MAX_TOKENS, timeout=timeout)
-                    timeout -= row[5]
-                    model_log.append(row)
+                    chat_history.append({"role": "user", "content": user_input})
+                    ttft, t_out = TIMEOUT*2, 0
+                    start_time = time.perf_counter()
+                    assistant_response = [""] * MAX_TOKENS
+
+                    stream = llm.create_chat_completion(messages=chat_history, stream=True, max_tokens=MAX_TOKENS)
+                    for chunk in stream:
+                        current = time.perf_counter()
+                        if current - model_start <= TIMEOUT:
+                            delta = chunk['choices'][0]["delta"]
+                            if 'content' in delta:
+                                ttft = min(current-start_time, ttft)
+                                assistant_response[t_out] = delta['content']
+                                t_out += 1
+                        else: raise MyException("Timeout!", f"Ran out of time ({TIMEOUT} s)")
+                    assistant_response = "".join(assistant_response)
+                    # raise  Exception("hups")
+                    total_time = time.perf_counter() - start_time
+                    gen_time = total_time - ttft
+                    tps = t_out / gen_time if gen_time > 0 else -1
+                    all_tokens = llm.n_tokens
+                    t_in = all_tokens - prev_n - t_out
+
+                    chat_history.append({"role": "assistant", "content": assistant_response})
+                    query = user_input[:].replace('\n', '|')
+                    response = assistant_response[:].replace('\n', '|')
+                    model_log.append([model["name"], ttft, tps, t_in, t_out, total_time, all_tokens, query, response])
+                    prev_n = all_tokens
+                    # row = utils.run_llm(llm, model, user_input, chat_history, MAX_TOKENS, timeout=timeout)
+                    # timeout -= row[5]
+                    # model_log.append(row)
                 print(f"{GREEN}FINISHED!!!{RESET}")
 
-            except MyException as e:
+            except Exception as e:
+                # print(MyException)
+                if type(e) != MyException: e = MyException("Inference error", str(e))
                 print(f"{RED}{e.error_type}{RESET}")
                 model_log.append([model["name"]] + ERROR_ROW +[str(e)])
                 done = len(model_log)
