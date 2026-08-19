@@ -131,7 +131,7 @@ def get_handlers(family: str, custom: bool):
     return handler_inference, None
 
 
-def load_llm(model, llm_kwargs, warmup_inputs, custom_jinja, log = False):
+def load_llm(model, llm_kwargs, warmup_inputs=[{"role":"user", "content":"warmup!"}], custom_jinja=False, log = False):
     print(f"Loading {model["name"]} | ", end="", flush=True)
 
     infer, warmup = get_handlers(model["family"], custom_jinja)
@@ -160,7 +160,7 @@ def load_llm(model, llm_kwargs, warmup_inputs, custom_jinja, log = False):
             err = f"Crashed during loading: {e}"
 
     if err:
-        if not log: return None
+        if not log: raise Exception("Failed to load model.")
         llm_kwargs["verbose"] = True
         with Catcher() as c:
             try:
