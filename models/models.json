@@ -274,5 +274,11 @@
   "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf",
   "family": "chatml",
   "params": 122
+ },
+    {
+  "name": "Nemotron 4B",
+  "path": "models/NVIDIA-Nemotron3-Nano-4B-Q4_K_M.gguf",
+  "family": "chatml",
+  "params": 122
  }
 ]
