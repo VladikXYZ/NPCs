@@ -275,9 +275,15 @@
   "family": "chatml",
   "params": 122
  },
-    {
+  {
   "name": "Nemotron 4B",
   "path": "models/NVIDIA-Nemotron3-Nano-4B-Q4_K_M.gguf",
+  "family": "chatml",
+  "params": 122
+ },
+  {
+  "name": "Nemotron 9B",
+  "path": "models/nvidia_NVIDIA-Nemotron-Nano-9B-v2-Q4_K_M.gguf",
   "family": "chatml",
   "params": 122
  }
