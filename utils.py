@@ -10,7 +10,7 @@ from math import inf
 
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter
-from chat_templates import TEMPLATES_INFERENCE, QWEN_WARMUP, EOS_TOKENS
+from chat_templates import EOS_TOKENS, INFERENCE_TYPES, WARMUP_TYPES
 
 DEVICES_FILE = "devices.json"
 MODELS_FILE = "models/models.json"
@@ -111,18 +111,20 @@ def get_models():
     return usable
 
 
-def get_handlers(family: str, custom: bool):
+def get_handlers(family: str, custom: bool, reason: bool):
     if not family or not custom: return None, None
+    infer = INFERENCE_TYPES[reason]
+    warmup = WARMUP_TYPES[reason]
 
     handler_inference = Jinja2ChatFormatter(
-        template=TEMPLATES_INFERENCE[family],
+        template=infer[family],
         eos_token=EOS_TOKENS[family],
         bos_token=""
     ).to_chat_handler()
 
     if family == "chatml":
         handler_warmup = Jinja2ChatFormatter(
-            template=QWEN_WARMUP,
+            template=warmup,
             eos_token=EOS_TOKENS[family],
             bos_token=""
         ).to_chat_handler()
@@ -131,10 +133,10 @@ def get_handlers(family: str, custom: bool):
     return handler_inference, None
 
 
-def load_llm(model, llm_kwargs, warmup_inputs=[{"role":"user", "content":"warmup!"}], custom_jinja=False, log = False):
+def load_llm(model, llm_kwargs, warmup_inputs=[{"role":"user", "content":"warmup!"}], custom_jinja=False, reason = False, log = False):
     print(f"Loading {model["name"]} | ", end="", flush=True)
 
-    infer, warmup = get_handlers(model["family"], custom_jinja)
+    infer, warmup = get_handlers(model["family"], custom_jinja, reason)
     if warmup:
         llm_kwargs["chat_handler"] = warmup
     elif infer:

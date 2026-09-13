@@ -62,13 +62,13 @@
  {
   "name": "LFM2.5 230M",
   "path": "models/LFM2.5-230M-Q4_K_M.gguf",
-  "family": "chatml",
+  "family": "chatml_nr",
   "params": 122
  },
  {
   "name": "LFM2.5 350M",
   "path": "models/LFM2.5-350M-Q4_K_M.gguf",
-  "family": "chatml",
+  "family": "chatml_nr",
   "params": 122
  },
  {
@@ -230,7 +230,7 @@
  {
   "name": "ggml edge 1.5B",
   "path": "models/ggml-edge-2B-Q4_K_M.gguf",
-  "family": "chatml",
+  "family": "chatml_nr",
   "params": 122
  },
  {

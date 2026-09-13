@@ -21,6 +21,7 @@ LOG_DIR = ""
 with open("vlad/test.json", "r") as f: MESSAGES = json.load(f)
 with open("data_3npcs.json") as file: NPC = json.load(file)[2]
 CUSTOM_JINJA = True
+REASON = True
 if CUSTOM_JINJA:
     CHAT_HISTORY = [{"role": "system", "content": NPC["role"]}]
     WARMUP = CHAT_HISTORY[:]
@@ -81,7 +82,7 @@ class Benchmarker:
                           "n_ctx": CONTEXT_SIZE, "verbose": False, "temperature": 0}
             try:
                 # llm = self.load_llm(model)
-                llm = utils.load_llm(model, llm_kwargs, WARMUP, CUSTOM_JINJA, log=True)
+                llm = utils.load_llm(model, llm_kwargs, WARMUP, CUSTOM_JINJA, reason=REASON, log=True)
                 model_start = time.perf_counter()
                 prev_n = llm.n_tokens
                 timeout = TIMEOUT
