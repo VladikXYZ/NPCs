@@ -1,5 +1,7 @@
 SHARED_RPG_RULE = "You are a fantasy RPG NPC. Speak ONLY pure dialogue with NO stage directions, actions, or asterisks. Be direct and terse. Answer the player's exact question and immediately stop talking. Do NOT volunteer background facts unless directly asked, and do NOT over-explain. Treat your reality as a normal fantasy world. Maximum length: 2 short sentences."
 
+REASONING_SHARED_RPG_RULE = SHARED_RPG_RULE + " FORMAT REQUIREMENT: You MUST prepend your dialogue with a brief internal thought (max 2 sentences) followed by exactly ONE '<speech>' separator. Example format: Internal thought <speech> Spoken dialogue."
+
 TEMPLATES_INFERENCE = {
     "chatml": """{%- set shared_prompt = __RULE__ -%}
 {{- '<|im_start|>system\\n' + shared_prompt + '<|im_end|>\\n' -}}
@@ -91,7 +93,6 @@ TEMPLATES_INFERENCE = {
 """.replace("__RULE__", repr(SHARED_RPG_RULE)),
 }
 
-REASONING_SHARED_RPG_RULE = "You are a fantasy RPG NPC; respond EXACTLY as: [Brief thought, max 10 words] |THINKEND| [Pure spoken dialogue, max 2 short sentences]. Use exactly ONE separator, include NO stage directions or asterisks, answer directly, and do not volunteer extra background."
 
 REASONING_TEMPLATES_INFERENCE = {
     "chatml": """{%- set shared_prompt = __RULE__ -%}
