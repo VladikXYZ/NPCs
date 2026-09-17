@@ -1,0 +1,24 @@
+{
+  "name": "npcbench-gemma-template-check-v0.1",
+  "dataset": "datasets/dev/cases.jsonl",
+  "case_ids": [
+    "dev-iron-torin-identity-01",
+    "dev-iron-elara-lore-01",
+    "dev-glass-mirel-unknown-01"
+  ],
+  "models": ["gemma 4 E2B", "gemma 4 E4B"],
+  "modes": ["off", "mini"],
+  "repetitions": 1,
+  "device_index": 1,
+  "isolate_process": true,
+  "worker_start_timeout_seconds": 600,
+  "watchdog_grace_seconds": 5,
+  "generation": {
+    "context_size": 4096,
+    "max_tokens": 128,
+    "temperature": 0.0,
+    "seed": 42,
+    "gpu_layers": 20,
+    "timeout_seconds": 60
+  }
+}

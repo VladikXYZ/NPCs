@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://npcbench.local/schema/case-0.1.json",
+  "title": "NPCBench case 0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case_id", "split", "world_id", "suite", "npc", "initial_state", "messages", "target", "metadata"],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "split": {"enum": ["dev", "test"]},
+    "world_id": {"type": "string", "minLength": 1},
+    "suite": {"enum": ["identity_style", "known_lore", "unknown_lore", "conflicting_information", "state_tracking", "memory", "robustness", "jailbreak", "performance"]},
+    "npc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["npc_id", "name", "persona", "speaking_style"],
+      "properties": {
+        "npc_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "persona": {"type": "string", "minLength": 1},
+        "speaking_style": {"type": "string", "minLength": 1}
+      }
+    },
+    "initial_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public_facts", "private_facts", "allowed_actions"],
+      "properties": {
+        "public_facts": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "private_facts": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "allowed_actions": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "messages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "content"],
+        "properties": {
+          "role": {"enum": ["user", "assistant"]},
+          "content": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "required_concepts", "forbidden_phrases", "secret_canaries"],
+      "properties": {
+        "description": {"type": "string", "minLength": 1},
+        "required_concepts": {"type": "array", "items": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}},
+        "forbidden_phrases": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "secret_canaries": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "max_dialogue_sentences": {"type": "integer", "minimum": 1}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["source"],
+      "properties": {"source": {"type": "string", "minLength": 1}}
+    }
+  }
+}

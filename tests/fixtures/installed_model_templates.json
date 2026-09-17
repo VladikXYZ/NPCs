@@ -1,0 +1,9 @@
+[
+  {"name": "gemma 4 E2B", "architecture": "gemma4", "family": "gemma", "quantization": "Q4_K_M", "template_sha256": "781d10940fbc44be40064b5d43a056fc486c84ceaa55538226368b57314132bf"},
+  {"name": "gemma 4 E4B", "architecture": "gemma4", "family": "gemma", "quantization": "Q4_K_M", "template_sha256": "781d10940fbc44be40064b5d43a056fc486c84ceaa55538226368b57314132bf"},
+  {"name": "Llama 3.1 8B", "architecture": "llama", "family": "llama", "quantization": "Q4_K_M", "template_sha256": "e10ca381b1ccc5cf9db52e371f3b6651576caee0a630b452e2816b2d404d4b65"},
+  {"name": "Mistral Nemo 12B", "architecture": "llama", "family": "mistral", "quantization": "Q4_K_S", "template_sha256": "6b1fd7807826615a3befd86aa0a9fbfce6a98acb0f4dd66726be76b078011156"},
+  {"name": "Phi 4 mini 3.8B", "architecture": "phi3", "family": "phi", "quantization": "Q4_K_M", "template_sha256": "46bcd040271c497ee454c7ff577615abf2853ba2971b472e417468ac2bf47f52"},
+  {"name": "Phi 4 14B", "architecture": "phi3", "family": "phi_chatml_sep", "quantization": "Q4_K_S", "template_sha256": "fe4120415a3858b873955c92ce3a103a95bc97c2cb00b72e62659aaf0f891ee5"},
+  {"name": "Qwen3.5 9B", "architecture": "qwen35", "family": "chatml_reasoning", "quantization": "Q4_K_M", "template_sha256": "7f0e529032c25183bcd66c7f238da2d377f43be754a94e2725a58c4e16d2ed67"}
+]

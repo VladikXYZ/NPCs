@@ -1,0 +1,34 @@
+{
+  "path": "chars.json",
+  "sha256": "1461988e611ebd1cca05bfc4ed8b99dfb47f22d7f0d0e55537381cd1cdf41e02",
+  "conversations": 1689,
+  "valid_conversations": 1689,
+  "message_count": 27024,
+  "min_messages": 16,
+  "max_messages": 16,
+  "role_counts": {
+    "assistant": 13512,
+    "user": 13512
+  },
+  "empty_messages": [
+    [
+      542,
+      10
+    ],
+    [
+      623,
+      10
+    ],
+    [
+      623,
+      12
+    ],
+    [
+      956,
+      12
+    ]
+  ],
+  "malformed": [],
+  "duplicate_conversation_groups": 0,
+  "duplicate_conversations_beyond_first": 0
+}

@@ -1,0 +1,364 @@
+{
+  "registry": "models/models.json",
+  "models": 48,
+  "installed_models": 8,
+  "eligible_installed_models": 7,
+  "release_ready": false,
+  "error_count": 7,
+  "duplicates": {
+    "names": [],
+    "paths": []
+  },
+  "findings": [
+    {
+      "index": 0,
+      "name": "Bonsai 1.7B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Bonsai-1.7B-Q1_0.gguf"
+    },
+    {
+      "index": 1,
+      "name": "Bonsai 27B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Bonsai-27B-Q1_0.gguf"
+    },
+    {
+      "index": 2,
+      "name": "Bonsai 4B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Bonsai-4B-Q1_0.gguf"
+    },
+    {
+      "index": 3,
+      "name": "Bonsai 8B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Bonsai-8B-Q1_0.gguf"
+    },
+    {
+      "index": 4,
+      "name": "DiffuCoder 7B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/DiffuCoder-7B-Instruct-q4_k_m.gguf"
+    },
+    {
+      "index": 5,
+      "name": "GLM 4.7 20B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/GLM-4.7-Flash-Q4_K_M.gguf"
+    },
+    {
+      "index": 6,
+      "name": "Jan v3.5",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Jan-v3.5-4B-Q4_K_M.gguf"
+    },
+    {
+      "index": 7,
+      "name": "LFM2 24B A2B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/LFM2-24B-A2B-Q4_K_M.gguf"
+    },
+    {
+      "index": 8,
+      "name": "LFM2.5 1.2B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/LFM2.5-1.2B-Instruct-Q4_K_M.gguf"
+    },
+    {
+      "index": 9,
+      "name": "LFM2.5 2.6B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/LFM2.5-2.6B-Q4_K_M.gguf"
+    },
+    {
+      "index": 10,
+      "name": "LFM2.5 230M",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/LFM2.5-230M-Q4_K_M.gguf"
+    },
+    {
+      "index": 11,
+      "name": "LFM2.5 350M",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/LFM2.5-350M-Q4_K_M.gguf"
+    },
+    {
+      "index": 12,
+      "name": "LFM2.5 8B A1B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/LFM2.5-8B-A1B-UD-Q4_K_M.gguf"
+    },
+    {
+      "index": 13,
+      "name": "LLaDA MoE 7B A1B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M.gguf"
+    },
+    {
+      "index": 14,
+      "name": "Llama 3.1 8B",
+      "severity": "error",
+      "issue": "missing release metadata",
+      "fields": [
+        "source",
+        "revision"
+      ]
+    },
+    {
+      "index": 15,
+      "name": "Llama 3.2 1B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Llama-3.2-1B-Instruct-Q4_K_M.gguf"
+    },
+    {
+      "index": 16,
+      "name": "Llama 3.2 3B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Llama-3.2-3B-Instruct-Q4_K_M.gguf"
+    },
+    {
+      "index": 17,
+      "name": "Mistral 7B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Mistral-7B-Instruct-v0.3.Q4_K_M.gguf"
+    },
+    {
+      "index": 18,
+      "name": "Mistral MOE 4X7B 24B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Mistral-MOE-4X7B-Dark-MultiVerse-24B-D_AU-Q4_k_m.gguf"
+    },
+    {
+      "index": 19,
+      "name": "Mistral Nemo 12B",
+      "severity": "error",
+      "issue": "missing release metadata",
+      "fields": [
+        "source",
+        "revision"
+      ]
+    },
+    {
+      "index": 20,
+      "name": "Nanbeige4.2 3B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Nanbeige4.2-3B-Q4_K_M.gguf"
+    },
+    {
+      "index": 21,
+      "name": "Phi 4 mini 3.8B",
+      "severity": "error",
+      "issue": "missing release metadata",
+      "fields": [
+        "source",
+        "revision"
+      ]
+    },
+    {
+      "index": 22,
+      "name": "Qwen3.5 0.8B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Qwen3.5-0.8B-Q4_K_M.gguf"
+    },
+    {
+      "index": 23,
+      "name": "Qwen3.5 2B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Qwen3.5-2B-Q4_K_M.gguf"
+    },
+    {
+      "index": 24,
+      "name": "Qwen3.5 4B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Qwen3.5-4B-Q4_K_M.gguf"
+    },
+    {
+      "index": 25,
+      "name": "Qwen3.5 9B",
+      "severity": "error",
+      "issue": "missing release metadata",
+      "fields": [
+        "source",
+        "revision"
+      ]
+    },
+    {
+      "index": 26,
+      "name": "Qwen3.6 14B A3B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Qwen3.6-14B-A3B-VibeForged-v2-Q4_K_M.gguf"
+    },
+    {
+      "index": 27,
+      "name": "Qwen3.6 35B A3B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf"
+    },
+    {
+      "index": 29,
+      "name": "UI TARS 1.5 7B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/UI-TARS-1.5-7B.Q4_K_M.gguf"
+    },
+    {
+      "index": 30,
+      "name": "WeDLM 8B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/WeDLM-8B-Instruct-Q4_K_M.gguf"
+    },
+    {
+      "index": 31,
+      "name": "diffusiongemma 26B A4B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/diffusiongemma-26B-A4B-it-Q4_K_M.gguf"
+    },
+    {
+      "index": 32,
+      "name": "falcon 11B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/falcon-11B-Q4_K_M.gguf"
+    },
+    {
+      "index": 33,
+      "name": "falcon mamba 7B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/falcon-mamba-7B-instruct-Q4_K_M.gguf"
+    },
+    {
+      "index": 34,
+      "name": "gemma 4 12B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/gemma-4-12b-it-Q4_K_M.gguf"
+    },
+    {
+      "index": 35,
+      "name": "gemma 4 26B A4B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
+    },
+    {
+      "index": 36,
+      "name": "gemma 4 E2B",
+      "severity": "error",
+      "issue": "missing release metadata",
+      "fields": [
+        "source",
+        "revision"
+      ]
+    },
+    {
+      "index": 37,
+      "name": "gemma 4 E4B",
+      "severity": "error",
+      "issue": "missing release metadata",
+      "fields": [
+        "source",
+        "revision"
+      ]
+    },
+    {
+      "index": 38,
+      "name": "ggml edge 1.5B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/ggml-edge-2B-Q4_K_M.gguf"
+    },
+    {
+      "index": 39,
+      "name": "ggml edge 4B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/ggml-edge-4B-Q4_K_M.gguf"
+    },
+    {
+      "index": 40,
+      "name": "glm 4 9B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/glm-4-9b-chat-Q4_K_M.gguf"
+    },
+    {
+      "index": 41,
+      "name": "gpt oss 20B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/gpt-oss-20b-Q4_K_M.gguf"
+    },
+    {
+      "index": 42,
+      "name": "Phi 4 14B",
+      "severity": "error",
+      "issue": "missing release metadata",
+      "fields": [
+        "source",
+        "revision"
+      ]
+    },
+    {
+      "index": 43,
+      "name": "Nemotron 30B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-UD-Q4_K_M.gguf"
+    },
+    {
+      "index": 44,
+      "name": "Nemotron 30B Bartowski",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_K_M.gguf"
+    },
+    {
+      "index": 45,
+      "name": "Nemotron 30B small",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf"
+    },
+    {
+      "index": 46,
+      "name": "Nemotron 4B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/NVIDIA-Nemotron3-Nano-4B-Q4_K_M.gguf"
+    },
+    {
+      "index": 47,
+      "name": "Nemotron 9B",
+      "severity": "info",
+      "issue": "weight not installed",
+      "path": "models/nvidia_NVIDIA-Nemotron-Nano-9B-v2-Q4_K_M.gguf"
+    }
+  ]
+}

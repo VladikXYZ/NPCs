@@ -1,0 +1,27 @@
+{
+  "name": "npcbench-v0.1-development",
+  "dataset": "datasets/dev/cases.jsonl",
+  "models": [
+    "gemma 4 E2B",
+    "gemma 4 E4B",
+    "Llama 3.1 8B",
+    "Mistral Nemo 12B",
+    "Phi 4 mini 3.8B",
+    "Phi 4 14B",
+    "Qwen3.5 9B"
+  ],
+  "modes": ["off", "mini"],
+  "repetitions": 3,
+  "device_index": 1,
+  "isolate_process": true,
+  "worker_start_timeout_seconds": 600,
+  "watchdog_grace_seconds": 5,
+  "generation": {
+    "context_size": 8192,
+    "max_tokens": 256,
+    "temperature": 0.0,
+    "seed": 20260916,
+    "gpu_layers": 20,
+    "timeout_seconds": 60
+  }
+}

@@ -1,0 +1,4 @@
+# Validated Python runtime for the current smoke runner (Python 3.12+).
+# Build llama-cpp-python with the backend flags documented in readme.md.
+llama-cpp-python==0.3.21
+Jinja2==3.1.3

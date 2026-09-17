@@ -7,14 +7,16 @@ import tempfile
 import time
 from contextlib import contextmanager
 from math import inf
+from pathlib import Path
 
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Jinja2ChatFormatter
-from chat_templates import EOS_TOKENS, INFERENCE_TYPES, WARMUP_TYPES
+from chat_templates import BOS_TOKENS, EOS_TOKENS, INFERENCE_TYPES, reasoning_mode
 
-DEVICES_FILE = "devices.json"
-MODELS_FILE = "models/models.json"
-MODELS_DIRECTORY = "models"
+ROOT = Path(__file__).resolve().parent
+DEVICES_FILE = ROOT / "devices.json"
+MODELS_FILE = ROOT / "models/models.json"
+MODELS_DIRECTORY = ROOT / "models"
 
 class MyException(Exception):
     def __init__(self, error_type, message):
@@ -77,7 +79,7 @@ try:
 except Exception:
    pass
     """
-    result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, encoding='utf-8')
+    result = subprocess.run([sys.executable, "-c", script], cwd=ROOT, capture_output=True, text=True, encoding='utf-8')
     devices = []
     for line in result.stderr.split('\n'):
         match = re.search(r"ggml_vulkan:\s+(\d+)\s+=\s+(.*?)\s+\|", line)
@@ -99,79 +101,68 @@ def get_devices():
         devices = _find_device()
     return devices
 
-def get_models():
-    models = sorted([os.path.basename(x) for x in os.listdir(MODELS_DIRECTORY) if x.endswith(".gguf")],
-                    key=os.path.basename)
-    current = set([f"models/{x}" for x in models])
-    with open(MODELS_FILE, "r") as f:
-        models =  json.load(f)
+def get_models(include_hidden=False):
+    """Return installed, visible models, independently of the working directory."""
+    with open(MODELS_FILE, "r", encoding="utf-8") as f:
+        models = json.load(f)
     usable = []
     for model in models:
-        if model["path"] in current: usable.append(model)
-    return usable
+        if model.get("hidden", False) and not include_hidden:
+            continue
+        path = ROOT / model["path"]
+        if path.is_file():
+            usable.append({**model, "path": str(path.resolve())})
+    return sorted(usable, key=lambda model: (model["name"].casefold(), model["path"]))
 
 
-def get_handlers(family: str, custom: bool, reason: bool):
+def get_handlers(family: str, custom: bool, reason=False, *, reasoning=None):
+    mode = reasoning_mode(reason if reasoning is None else reasoning)
     if not family or not custom: return None, None
-    infer = INFERENCE_TYPES[reason]
-    warmup = WARMUP_TYPES[reason]
+    infer = INFERENCE_TYPES[mode == "mini"]
+    if family not in infer:
+        raise ValueError(f"Unknown chat template family: {family}")
 
     handler_inference = Jinja2ChatFormatter(
         template=infer[family],
         eos_token=EOS_TOKENS[family],
-        bos_token=""
+        bos_token=BOS_TOKENS.get(family, "")
     ).to_chat_handler()
 
-    if family == "chatml":
-        handler_warmup = Jinja2ChatFormatter(
-            template=warmup,
-            eos_token=EOS_TOKENS[family],
-            bos_token=""
-        ).to_chat_handler()
-
-        return handler_inference, handler_warmup
+    # Warm-up must use the exact same serializer and assistant generation prefix.
     return handler_inference, None
 
 
-def load_llm(model, llm_kwargs, warmup_inputs=[{"role":"user", "content":"warmup!"}], custom_jinja=False, reason = False, log = False):
-    print(f"Loading {model["name"]} | ", end="", flush=True)
-
-    infer, warmup = get_handlers(model["family"], custom_jinja, reason)
-    if warmup:
-        llm_kwargs["chat_handler"] = warmup
-    elif infer:
-        llm_kwargs["chat_handler"] = infer
-    llm, err = None, None
-    with Silencer():
-        try:
-
-            llm = Llama(**llm_kwargs)
-            print(f"Loaded! | ", end="", flush=True)
-
-            try:
-                llm.create_chat_completion(warmup_inputs, max_tokens=1)
-                if warmup: llm.chat_handler = infer
-                print("Warmuped!!", flush=True)
-                return llm
-
-            except Exception as e:
-                if hasattr(llm, 'close'): llm.close()
-                del llm
-                err = f"Crashed during generation: {e}"
-        except Exception as e:
-            err = f"Crashed during loading: {e}"
-
-    if err:
-        if not log: raise Exception("Failed to load model.")
-        llm_kwargs["verbose"] = True
-        with Catcher() as c:
-            try:
-                llm = Llama(**llm_kwargs)
-                llm.create_chat_completion(warmup_inputs, max_tokens=1)
-            except:
-                llm = None
-        print("")
-        raise MyException(err, c[0])
+def load_llm(model, llm_kwargs, warmup_inputs=None, custom_jinja=False,
+             reason=False, log=False, *, reasoning=None):
+    mode = reasoning_mode(reason if reasoning is None else reasoning)
+    infer, _ = get_handlers(model.get("family"), custom_jinja, reasoning=mode)
+    kwargs = dict(llm_kwargs)
+    # Sampling belongs to create_chat_completion, not the Llama constructor.
+    kwargs.pop("temperature", None)
+    if infer:
+        kwargs["chat_handler"] = infer
+    warmup_inputs = list(warmup_inputs or [{"role": "user", "content": "Hello."}])
+    if warmup_inputs[-1]["role"] != "user":
+        warmup_inputs.append({"role": "user", "content": "Hello."})
+    print(f"Loading {model['name']} | ", end="", flush=True)
+    llm = None
+    try:
+        with Silencer():
+            llm = Llama(**kwargs)
+            llm.create_chat_completion(
+                messages=warmup_inputs, max_tokens=1, temperature=0.0, seed=42
+            )
+        # Retain warm hardware, discard the warm-up's token history.
+        llm.reset()
+        print("Loaded and warmed up.", flush=True)
+        return llm
+    except Exception as exc:
+        if llm is not None:
+            llm.close()
+        # Do not load the model again to capture an error; that can leak memory
+        # and the retry could produce a different failure.
+        detail = str(exc) if log else "Model load or warm-up failed."
+        raise MyException("Load/warmup error", detail) from exc
 
 
 

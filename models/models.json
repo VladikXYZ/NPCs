@@ -2,289 +2,303 @@
  {
   "name": "Bonsai 1.7B",
   "path": "models/Bonsai-1.7B-Q1_0.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Bonsai 27B",
   "path": "models/Bonsai-27B-Q1_0.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Bonsai 4B",
   "path": "models/Bonsai-4B-Q1_0.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Bonsai 8B",
   "path": "models/Bonsai-8B-Q1_0.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "DiffuCoder 7B",
   "path": "models/DiffuCoder-7B-Instruct-q4_k_m.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "GLM 4.7 20B",
   "path": "models/GLM-4.7-Flash-Q4_K_M.gguf",
-  "family": "glm",
-  "params": 122
+  "family": "glm"
  },
  {
   "name": "Jan v3.5",
   "path": "models/Jan-v3.5-4B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "LFM2 24B A2B",
   "path": "models/LFM2-24B-A2B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "LFM2.5 1.2B",
   "path": "models/LFM2.5-1.2B-Instruct-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "LFM2.5 2.6B",
   "path": "models/LFM2.5-2.6B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "LFM2.5 230M",
   "path": "models/LFM2.5-230M-Q4_K_M.gguf",
-  "family": "chatml_nr",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "LFM2.5 350M",
   "path": "models/LFM2.5-350M-Q4_K_M.gguf",
-  "family": "chatml_nr",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "LFM2.5 8B A1B",
   "path": "models/LFM2.5-8B-A1B-UD-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "LLaDA MoE 7B A1B",
   "path": "models/LLaDA-MoE-7B-A1B-Instruct-TD.Q4_K_M.gguf",
-  "family": null,
-  "params": 122
+  "family": null
  },
  {
   "name": "Llama 3.1 8B",
-  "path": "models/Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+  "path": "models/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
   "family": "llama",
-  "params": 122
+  "id": "llama-3.1-8b-instruct-q4-k-m",
+  "architecture": "llama",
+  "gguf_license_metadata": "llama3.1",
+  "quantization": "Q4_K_M",
+  "parameter_count_b": 8,
+  "sha256": "7b064f5842bf9532c91456deda288a1b672397a54fa729aa665952863033557c",
+  "template_sha256": "e10ca381b1ccc5cf9db52e371f3b6651576caee0a630b452e2816b2d404d4b65",
+  "template_status": "dialogue 3/3; mini format 2/3 in admission run 20260916T120538Z-133ab924"
  },
  {
   "name": "Llama 3.2 1B",
   "path": "models/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
-  "family": "llama",
-  "params": 122
+  "family": "llama"
  },
  {
   "name": "Llama 3.2 3B",
   "path": "models/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-  "family": "llama",
-  "params": 122
+  "family": "llama"
  },
  {
   "name": "Mistral 7B",
   "path": "models/Mistral-7B-Instruct-v0.3.Q4_K_M.gguf",
-  "family": "mistral",
-  "params": 122
+  "family": "mistral"
  },
  {
   "name": "Mistral MOE 4X7B 24B",
   "path": "models/Mistral-MOE-4X7B-Dark-MultiVerse-24B-D_AU-Q4_k_m.gguf",
-  "family": "mistral",
-  "params": 122
+  "family": "mistral"
  },
  {
   "name": "Mistral Nemo 12B",
-  "path": "models/Mistral-Nemo-Instruct-2407-Q4_K_M.gguf",
+  "path": "models/Mistral-Nemo-Instruct-2407.Q4_K_S.gguf",
   "family": "mistral",
-  "params": 122
+  "id": "mistral-nemo-instruct-2407-q4-k-s",
+  "architecture": "llama",
+  "gguf_license_metadata": "apache-2.0",
+  "quantization": "Q4_K_S",
+  "parameter_count_b": 12,
+  "sha256": "d177b4718af04079fa440f207815fce42fb13aaf01919b4c67b7ffb0e0d69a47",
+  "template_sha256": "6b1fd7807826615a3befd86aa0a9fbfce6a98acb0f4dd66726be76b078011156",
+  "template_status": "dialogue 3/3; mini format 3/3 in admission run 20260916T120538Z-133ab924"
  },
  {
   "name": "Nanbeige4.2 3B",
   "path": "models/Nanbeige4.2-3B-Q4_K_M.gguf",
-  "family": null,
-  "params": 122
+  "family": null
  },
  {
   "name": "Phi 4 mini 3.8B",
   "path": "models/Phi-4-mini-instruct-Q4_K_M.gguf",
   "family": "phi",
-  "params": 122
+  "id": "phi-4-mini-instruct-q4-k-m",
+  "architecture": "phi3",
+  "quantization": "Q4_K_M",
+  "parameter_count_b": 3.8,
+  "sha256": "88c00229914083cd112853aab84ed51b87bdf6b9ce42f532d8c85c7c63b1730a",
+  "template_sha256": "46bcd040271c497ee454c7ff577615abf2853ba2971b472e417468ac2bf47f52",
+  "template_status": "dialogue 3/3; mini format 1/3 in admission run 20260916T120538Z-133ab924"
  },
  {
   "name": "Qwen3.5 0.8B",
   "path": "models/Qwen3.5-0.8B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Qwen3.5 2B",
   "path": "models/Qwen3.5-2B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Qwen3.5 4B",
   "path": "models/Qwen3.5-4B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Qwen3.5 9B",
   "path": "models/Qwen3.5-9B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning",
+  "id": "qwen3.5-9b-q4-k-m",
+  "architecture": "qwen35",
+  "base_model_source": "https://huggingface.co/Qwen/Qwen3.5-9B",
+  "gguf_license_metadata": "apache-2.0",
+  "quantization": "Q4_K_M",
+  "parameter_count_b": 9,
+  "sha256": "03b74727a860a56338e042c4420bb3f04b2fec5734175f4cb9fa853daf52b7e8",
+  "template_sha256": "7f0e529032c25183bcd66c7f238da2d377f43be754a94e2725a58c4e16d2ed67",
+  "template_status": "dialogue 3/3; mini format 3/3 in admission run 20260916T120538Z-133ab924"
  },
  {
   "name": "Qwen3.6 14B A3B",
   "path": "models/Qwen3.6-14B-A3B-VibeForged-v2-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Qwen3.6 35B A3B",
   "path": "models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml_reasoning"
  },
  {
   "name": "Supra Router 51M",
   "path": "models/Supra-Router-51M-Q1_0.gguf",
   "family": null,
-  "params": 122
+  "hidden": true
  },
  {
   "name": "UI TARS 1.5 7B",
   "path": "models/UI-TARS-1.5-7B.Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "WeDLM 8B",
   "path": "models/WeDLM-8B-Instruct-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "diffusiongemma 26B A4B",
   "path": "models/diffusiongemma-26B-A4B-it-Q4_K_M.gguf",
-  "family": "gemma",
-  "params": 122
+  "family": "gemma"
  },
  {
   "name": "falcon 11B",
   "path": "models/falcon-11B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "falcon mamba 7B",
   "path": "models/falcon-mamba-7B-instruct-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "gemma 4 12B",
   "path": "models/gemma-4-12b-it-Q4_K_M.gguf",
-  "family": "gemma",
-  "params": 122
+  "family": "gemma"
  },
  {
   "name": "gemma 4 26B A4B",
   "path": "models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf",
-  "family": "gemma",
-  "params": 122
+  "family": "gemma"
  },
  {
   "name": "gemma 4 E2B",
   "path": "models/gemma-4-E2B-it-Q4_K_M.gguf",
   "family": "gemma",
-  "params": 122
+  "id": "gemma-4-e2b-it-q4-k-m",
+  "architecture": "gemma4",
+  "base_model_source": "https://huggingface.co/google/gemma-4-E2B-it",
+  "gguf_license_metadata": "apache-2.0",
+  "quantization": "Q4_K_M",
+  "parameter_count_b": 4.6,
+  "active_parameter_count_b": 2,
+  "sha256": "ac0069ebccd39925d836f24a88c0f0c858d20578c29b21ab7cedce66ee576845",
+  "template_sha256": "781d10940fbc44be40064b5d43a056fc486c84ceaa55538226368b57314132bf",
+  "template_status": "dialogue 3/3; mini format 3/3 after prefix fix in run 20260916T121914Z-4d3f0da6"
  },
  {
   "name": "gemma 4 E4B",
   "path": "models/gemma-4-E4B-it-Q4_K_M.gguf",
   "family": "gemma",
-  "params": 122
+  "id": "gemma-4-e4b-it-q4-k-m",
+  "architecture": "gemma4",
+  "base_model_source": "https://huggingface.co/google/gemma-4-E4B-it",
+  "gguf_license_metadata": "apache-2.0",
+  "quantization": "Q4_K_M",
+  "parameter_count_b": 7.5,
+  "active_parameter_count_b": 4,
+  "sha256": "dff0ffba4c90b4082d70214d53ce9504a28d4d8d998276dcb3b8881a656c742a",
+  "template_sha256": "781d10940fbc44be40064b5d43a056fc486c84ceaa55538226368b57314132bf",
+  "template_status": "dialogue 3/3; mini format 3/3 after prefix fix in run 20260916T121914Z-4d3f0da6"
  },
  {
   "name": "ggml edge 1.5B",
   "path": "models/ggml-edge-2B-Q4_K_M.gguf",
-  "family": "chatml_nr",
-  "params": 122
+  "family": "chatml_nr"
  },
  {
   "name": "ggml edge 4B",
   "path": "models/ggml-edge-4B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "glm 4 9B",
   "path": "models/glm-4-9b-chat-Q4_K_M.gguf",
-  "family": "glm",
-  "params": 122
+  "family": "glm"
  },
  {
   "name": "gpt oss 20B",
   "path": "models/gpt-oss-20b-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
  {
   "name": "Phi 4 14B",
-  "path": "models/phi-4-Q4_K_M.gguf",
-  "family": "phi",
-  "params": 122
+  "path": "models/phi-4-Q4_K_S.gguf",
+  "family": "phi_chatml_sep",
+  "id": "phi-4-q4-k-s",
+  "architecture": "phi3",
+  "base_model_source": "https://huggingface.co/microsoft/phi-4",
+  "gguf_license_metadata": "mit",
+  "quantization": "Q4_K_S",
+  "parameter_count_b": 15,
+  "sha256": "8a8189132ef70cd737e136d38b706e8cb832f9cdf3c744547694769e9313550e",
+  "template_sha256": "fe4120415a3858b873955c92ce3a103a95bc97c2cb00b72e62659aaf0f891ee5",
+  "template_status": "dialogue 3/3; mini format 3/3 in admission run 20260916T120538Z-133ab924"
  },
-  {
+ {
   "name": "Nemotron 30B",
   "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-UD-Q4_K_M.gguf",
-  "family": null,
-  "params": 122
+  "family": null
  },
  {
   "name": "Nemotron 30B Bartowski",
   "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_K_M.gguf",
-  "family": null,
-  "params": 122
+  "family": null
  },
-  {
+ {
   "name": "Nemotron 30B small",
   "path": "models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
-  {
+ {
   "name": "Nemotron 4B",
   "path": "models/NVIDIA-Nemotron3-Nano-4B-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  },
-  {
+ {
   "name": "Nemotron 9B",
   "path": "models/nvidia_NVIDIA-Nemotron-Nano-9B-v2-Q4_K_M.gguf",
-  "family": "chatml",
-  "params": 122
+  "family": "chatml"
  }
 ]

@@ -1,6 +1,8 @@
 .idea
 devices.json
 __pycache__
+.pytest_cache/
+.venv/
 martin/jailbreak_log
 jakub/response_log
 vlad/bench_logs
@@ -8,3 +10,5 @@ vlad/bench_logs
 !models/Supra-Router-51M-Q1_0.gguf
 !models/models.json
 /llama.cpp/
+/benchmarks/
+*.tmp

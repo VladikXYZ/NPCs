@@ -1,0 +1,70 @@
+v chat_templates ma chat_ml problem
+
+LFM2.5 230M
+
+Nic to neoutputuje, všude je null?
+
+asi kvůli think
+
+
+rozdělit chatml na dva 1.chatml nejak a 2. chatml reasoning
+bonsaje a qwen a proste nejaky to umej
+
+ty maly se z toho poserou
+
+
+měli premyslet (mini reasoning) a nemeli premyslet tak jak to implementovat,
+
+new dictionary template inference (v utils.py) sezen handlery (get_handlers) pridat parameter reasoning. 
+
+
+
+vypnout 
+
+v models supra nedavej asi dej do hidden
+
+
+
+
+
+To co by chtel otestovat Qweny 4B, zvedat TTFT, Gemma , Phi, Lammy, LFM, glm-edge
+
+kdyby chtel debugovat je tam funkce chat - jaky zarizeni a jakej model a jaky NPC, /exit
+
+
+
+-1 v benchmarku znaci error
+
+
+=== Implementation update 2026-09-16 (original notes above preserved) ===
+[x] Plain chatml / chatml_nr never force think tags.
+[x] Explicit chatml_reasoning family preserves Qwen/Bonsai closed-think prefill.
+[x] get_handlers/load_llm accept reasoning=off|mini; legacy reason bool still works.
+[x] Shared off/mini NPC prompts; save raw output, plan and dialogue separately.
+[x] Hidden Supra registry entry; still used for device probing.
+[x] Debug chat selects device, model and NPC; supports /exit and /reset.
+[x] CLI model/NPC/context/repeat controls for the requested model experiments.
+[x] Empty/null stream handling, explicit status, missing metric sentinel -1.
+[x] Request sampling controls, same-template warm-up, timestamped durable logs.
+[x] Prompt IDs/categories remove dependence on long/short row order.
+[x] Regression tests and a prioritized research/engineering plan.
+[ ] Real-model verification: LFM 230M, Qwen 4B, Gemma, Phi, Llama, edge.
+    This checkout only has the Supra probe; no NPC weight tests were possible.
+[x] Versioned case/judgment schemas and 20 annotated public development cases.
+[x] Unified CLI for validation, generation, judging, reporting, audits and migration.
+[x] Persistent subprocess model isolation with parent-enforced per-case watchdog.
+[x] Exact-once resume keys with config/dataset/code/model mismatch rejection.
+[x] Strict JSON semantic judge records, caching, retries and failure preservation.
+[x] Status-aware micro/macro reports, bootstrap intervals and calibration helpers.
+[x] Legacy consistency/jailbreak adapters and structural chars.json audit command.
+[~] Real-model admission: seven installed GGUFs have template fixtures and smoke logs;
+    canonical quantized-artifact source revisions, complete verified licenses and
+    broader cases remain; local weight and
+    embedded-template SHA-256 values are recorded.
+[ ] Two-reviewer release cases, held-out split and 100–200 response human calibration.
+[ ] Context-length sweep, memory telemetry and native prefill/decode instrumentation.
+
+Next steps, owners and acceptance gates: docs/BENCHMARK_PLAN.md.
+Mini mode requests a brief response plan; it does not guarantee native/internal
+reasoning, a strict planning-token limit, or successful format compliance.
+Historical CSVs and plots are pilot artifacts; new runtime schema is 0.2.
