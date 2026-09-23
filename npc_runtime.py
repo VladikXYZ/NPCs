@@ -26,7 +26,17 @@ def split_response(raw, reasoning="off"):
     if raw.count("<speech>") != 1:
         return "", "", False
     plan, dialogue = (part.strip() for part in raw.split("<speech>", 1))
-    valid = bool(plan and dialogue) and not any(tag in raw for tag in ("<think>", "</think>"))
+    # Models sometimes emit the optional closing tag even though the prompt
+    # specifies only an opening separator. Treat a single trailing close tag
+    # as formatting, not as spoken dialogue.
+    if dialogue.endswith("</speech>"):
+        dialogue = dialogue[:-len("</speech>")].rstrip()
+    valid = (
+        bool(plan and dialogue)
+        and not any(tag in raw for tag in ("<think>", "</think>"))
+        and "</speech>" not in plan
+        and "</speech>" not in dialogue
+    )
     return plan, dialogue if valid else "", valid
 
 

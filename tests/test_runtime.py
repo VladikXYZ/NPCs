@@ -38,7 +38,8 @@ def test_templates_preserve_messages_and_one_system(mode, family):
         assert output.count("<|im_start|>system\n") == 1
         if family == "chatml_reasoning":
             assert output.endswith("<|im_start|>assistant\n<think>\n\n</think>\n\n")
-            assert output.count("<think>") == 1  # Not inserted into historical replies.
+            assert output.count("<think>") == 2
+            assert "<|im_start|>assistant\n<think>\n\n</think>\n\nFIRST_ANSWER<|im_end|>\n" in output
         else:
             assert "<think>" not in output
             assert output.endswith("<|im_start|>assistant\n")
@@ -48,10 +49,25 @@ def test_templates_preserve_messages_and_one_system(mode, family):
         assert output.startswith(BOS_TOKENS[family])
 
 
-def test_plain_lfm_registry_and_hidden_probe():
+@pytest.mark.parametrize("mode", ["off", "mini"])
+def test_chatml_reasoning_history_replays_generation_prefill(mode):
+    first_prompt = render("chatml_reasoning", mode, npc_messages(NPC, mode) + [
+        {"role": "user", "content": "FIRST_QUESTION"},
+    ])
+    second_prompt = render("chatml_reasoning", mode, npc_messages(NPC, mode) + [
+        {"role": "user", "content": "FIRST_QUESTION"},
+        {"role": "assistant", "content": "FIRST_ANSWER"},
+        {"role": "user", "content": "SECOND_QUESTION"},
+    ])
+    assert second_prompt.startswith(first_prompt + "FIRST_ANSWER<|im_end|>\n")
+
+
+def test_lfm_registry_template_family_and_hidden_probe():
     models = json.loads((bench.ROOT / "models/models.json").read_text())
     for model in models:
-        if model["name"].startswith("LFM"):
+        if model["name"] == "LFM2.5 230M":
+            assert model["family"] == "native"
+        elif model["name"].startswith("LFM"):
             assert model["family"] == "chatml"
         if model["name"].startswith(("Bonsai", "Qwen")):
             assert model["family"] == "chatml_reasoning"
@@ -98,14 +114,37 @@ def test_bool_compatibility_and_handler_selection():
     assert utils.get_handlers(None, True, reasoning="mini") == (None, None)
     handler, warmup = utils.get_handlers("chatml", True, reasoning="mini")
     assert callable(handler) and warmup is None
+    assert utils.get_handlers("native", True, reasoning="mini") == (None, None)
     with pytest.raises(ValueError, match="Unknown"):
         utils.get_handlers("typo", True)
 
 
-@pytest.mark.parametrize("raw", ["", "plan only", "<speech>hello", "plan<speech>", "p<speech>x<speech>y", "<think>p</think><speech>x"])
+@pytest.mark.parametrize(("template", "expected"), [
+    ("before{%- generation -%}speech{%- endgeneration -%}after", "beforespeechafter"),
+    ("before{% generation %}speech{% endgeneration %}after", "beforespeechafter"),
+])
+def test_hf_generation_annotations_are_removed_without_losing_content(template, expected):
+    assert utils._strip_hf_generation_annotations(template) == expected
+
+
+@pytest.mark.parametrize("raw", [
+    "", "plan only", "<speech>hello", "plan<speech>",
+    "p<speech>x<speech>y", "<think>p</think><speech>x",
+    "p<speech>x</speech>extra", "p<speech>x</speech></speech>",
+])
 def test_bad_mini_format_not_spoken(raw):
     _, speech, valid = split_response(raw, "mini")
     assert not valid and not speech
+
+
+@pytest.mark.parametrize(("raw", "expected"), [
+    ("A plan<speech>Hello.", "Hello."),
+    ("A plan<speech>Hello.</speech>", "Hello."),
+    ("A plan<speech>Hello. </speech>  ", "Hello."),
+])
+def test_split_response_removes_optional_speech_closer(raw, expected):
+    plan, speech, valid = split_response(raw, "mini")
+    assert valid and plan == "A plan" and speech == expected
 
 
 class FakeLLM:

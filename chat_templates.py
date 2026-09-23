@@ -23,10 +23,21 @@ PLAIN_CHATML = r"""{%- for message in messages -%}
 {{- '<|im_start|>assistant\n' -}}
 """
 
+# Repeat the same closed-thinking prefill in assistant history so each turn's
+# serialized prompt remains an exact extension of the prefix already in KV.
+CHATML_REASONING = r"""{%- for message in messages -%}
+{{- '<|im_start|>' + message.role + '\n' -}}
+{%- if message.role == 'assistant' -%}
+{{- '<think>\n\n</think>\n\n' -}}
+{%- endif -%}
+{{- message.content + '<|im_end|>\n' -}}
+{%- endfor -%}
+{{- '<|im_start|>assistant\n<think>\n\n</think>\n\n' -}}"""
+
 TEMPLATES_INFERENCE = {
     "chatml": PLAIN_CHATML,
     "chatml_nr": PLAIN_CHATML,  # Compatibility with Vladik's existing registry.
-    "chatml_reasoning": PLAIN_CHATML + r"{{- '<think>\n\n</think>\n\n' -}}",
+    "chatml_reasoning": CHATML_REASONING,
     "llama": r"""{{- bos_token -}}
 {%- for message in messages -%}
 {{- '<|start_header_id|>' + message.role + '<|end_header_id|>\n\n' + message.content + '<|eot_id|>' -}}
@@ -79,6 +90,8 @@ TEMPLATES_INFERENCE = {
 # Their only intended difference is the output-format instruction in npc_messages.
 REASONING_TEMPLATES_INFERENCE = dict(TEMPLATES_INFERENCE)
 INFERENCE_TYPES = [TEMPLATES_INFERENCE, REASONING_TEMPLATES_INFERENCE]
+# Explicit registry opt-in to use the template embedded in the GGUF itself.
+NATIVE_TEMPLATE_FAMILY = "native"
 EOS_TOKENS = {
     "chatml": "<|im_end|>", "chatml_nr": "<|im_end|>",
     "chatml_reasoning": "<|im_end|>", "llama": "<|eot_id|>",

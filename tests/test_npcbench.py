@@ -241,12 +241,16 @@ def test_config_validation_rejects_truthy_strings_and_nonfinite_timeout():
         validate_config({**base, "generation": bad_generation})
 
 
-def test_model_selection_excludes_unprepared_families():
+def test_model_selection_includes_prepared_native_and_excludes_unknown_families():
     installed = [
         {"name": "Prepared", "path": "a.gguf", "family": "llama"},
+        {"name": "Native prepared", "path": "native.gguf", "family": "native"},
         {"name": "Native unknown", "path": "b.gguf", "family": None},
     ]
-    assert [model["name"] for model in select_models(installed, None)] == ["Prepared"]
+    assert [model["name"] for model in select_models(installed, None)] == [
+        "Prepared", "Native prepared",
+    ]
+    assert [model["name"] for model in select_models(installed, ["Native prepared"])] == ["Native prepared"]
     with pytest.raises(ValueError, match="no prepared serializer"):
         select_models(installed, ["Native unknown"])
 

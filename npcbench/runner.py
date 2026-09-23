@@ -101,9 +101,9 @@ def _resolve_project_path(value: str, config_path: Path) -> Path:
 
 
 def select_models(installed: list[dict[str, Any]], selectors: list[str] | None) -> list[dict[str, Any]]:
-    from chat_templates import INFERENCE_TYPES
+    from chat_templates import INFERENCE_TYPES, NATIVE_TEMPLATE_FAMILY
 
-    supported_families = set(INFERENCE_TYPES[0])
+    supported_families = set(INFERENCE_TYPES[0]) | {NATIVE_TEMPLATE_FAMILY}
     supported = [model for model in installed if model.get("family") in supported_families]
     if not selectors:
         return supported

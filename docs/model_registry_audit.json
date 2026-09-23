@@ -1,8 +1,8 @@
 {
   "registry": "models/models.json",
   "models": 48,
-  "installed_models": 8,
-  "eligible_installed_models": 7,
+  "installed_models": 9,
+  "eligible_installed_models": 8,
   "release_ready": false,
   "error_count": 7,
   "duplicates": {
@@ -79,13 +79,6 @@
       "severity": "info",
       "issue": "weight not installed",
       "path": "models/LFM2.5-2.6B-Q4_K_M.gguf"
-    },
-    {
-      "index": 10,
-      "name": "LFM2.5 230M",
-      "severity": "info",
-      "issue": "weight not installed",
-      "path": "models/LFM2.5-230M-Q4_K_M.gguf"
     },
     {
       "index": 11,

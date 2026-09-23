@@ -52,7 +52,18 @@
  {
   "name": "LFM2.5 230M",
   "path": "models/LFM2.5-230M-Q4_K_M.gguf",
-  "family": "chatml"
+  "family": "native",
+  "id": "lfm2.5-230m-q4-k-m",
+  "source": "https://huggingface.co/LiquidAI/LFM2.5-230M-GGUF",
+  "revision": "03502067c64ce32ac4fe87b0cec0310a1a13d3e9",
+  "architecture": "lfm2",
+  "quantization": "Q4_K_M",
+  "parameter_count_b": 0.23,
+  "sha256": "7bbd90384d3deffe4c646ec9643b212802d32d4ce417c90a1ec9282100650062",
+  "template_sha256": "6d65c8804847ad74eea912dd7eca3dc1cf7a457b53a77f47d841a14121910963",
+  "template_status": "Native GGUF template loads; NPC mini smoke returned format_error (2026-09-23)",
+  "gguf_license_metadata": "lfm1.0",
+  "base_model_source": "https://huggingface.co/LiquidAI/LFM2.5-230M"
  },
  {
   "name": "LFM2.5 350M",

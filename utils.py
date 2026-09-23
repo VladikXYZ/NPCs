@@ -1,8 +1,8 @@
 import json
 import os
+import re
 import subprocess
 import sys
-import re
 import tempfile
 import time
 from contextlib import contextmanager
@@ -10,13 +10,43 @@ from math import inf
 from pathlib import Path
 
 from llama_cpp import Llama
-from llama_cpp.llama_chat_format import Jinja2ChatFormatter
-from chat_templates import BOS_TOKENS, EOS_TOKENS, INFERENCE_TYPES, reasoning_mode
+import llama_cpp.llama_chat_format as llama_chat_format
+from chat_templates import (
+    BOS_TOKENS,
+    EOS_TOKENS,
+    INFERENCE_TYPES,
+    NATIVE_TEMPLATE_FAMILY,
+    reasoning_mode,
+)
 
 ROOT = Path(__file__).resolve().parent
 DEVICES_FILE = ROOT / "devices.json"
 MODELS_FILE = ROOT / "models/models.json"
 MODELS_DIRECTORY = ROOT / "models"
+
+_HF_GENERATION_ANNOTATION = re.compile(r"\{%[-+]?\s*(?:end)?generation\s*[-+]?%\}")
+_BaseJinja2ChatFormatter = llama_chat_format.Jinja2ChatFormatter
+
+
+def _strip_hf_generation_annotations(template: str) -> str:
+    """Remove HF loss-mask annotations; they do not affect inference prompts."""
+    return _HF_GENERATION_ANNOTATION.sub("", template)
+
+
+class _GenerationCompatibleJinja2ChatFormatter(_BaseJinja2ChatFormatter):
+    """Allow llama-cpp-python's Jinja parser to load HF generation-tagged templates."""
+
+    def __init__(self, template: str, *args, **kwargs):
+        super().__init__(_strip_hf_generation_annotations(template), *args, **kwargs)
+
+
+# llama-cpp-python eagerly compiles every chat template embedded in GGUF,
+# including when the caller supplies our own handler. Its Jinja environment
+# does not recognize HF's `{% generation %}` loss-mask annotations. Normalize
+# those no-op inference markers in that metadata path while preserving the
+# enclosed prompt text.
+llama_chat_format.Jinja2ChatFormatter = _GenerationCompatibleJinja2ChatFormatter
+
 
 class MyException(Exception):
     def __init__(self, error_type, message):
@@ -115,14 +145,15 @@ def get_models(include_hidden=False):
     return sorted(usable, key=lambda model: (model["name"].casefold(), model["path"]))
 
 
-def get_handlers(family: str, custom: bool, reason=False, *, reasoning=None):
+def get_handlers(family: str | None, custom: bool, reason=False, *, reasoning=None):
     mode = reasoning_mode(reason if reasoning is None else reasoning)
-    if not family or not custom: return None, None
+    if not family or family == NATIVE_TEMPLATE_FAMILY or not custom:
+        return None, None
     infer = INFERENCE_TYPES[mode == "mini"]
     if family not in infer:
         raise ValueError(f"Unknown chat template family: {family}")
 
-    handler_inference = Jinja2ChatFormatter(
+    handler_inference = _GenerationCompatibleJinja2ChatFormatter(
         template=infer[family],
         eos_token=EOS_TOKENS[family],
         bos_token=BOS_TOKENS.get(family, "")

@@ -90,12 +90,18 @@ Increasing context allocation does not itself increase prompt length.
   leaked think tags and empty dialogue are formatting failures.
 - `chatml` and the compatibility alias `chatml_nr` serialize plain ChatML.
 - `chatml_reasoning` adds a closed-think generation prefix, explicitly selected
-  for Qwen/Bonsai based on the local extracted templates. LFM uses plain ChatML.
+  for Qwen/Bonsai based on the local extracted templates.
+- `native` delegates serialization to the chat template embedded in the GGUF. The
+  admitted LFM2.5 230M uses this because its template includes the model's BOS
+  and other model-specific formatting. HF `{% generation %}` annotations are
+  removed as inference-only loss-mask markers; their enclosed text is retained.
 
 Mini mode is a prompt intervention, not a universal native-thinking switch. The
 requested two-sentence plan length is not a separately enforced token budget.
 Other family adapters remain experimental until validated against exact GGUFs;
-models with `family: null` use the backend template/default reasoning behavior.
+models with `family: null` use the backend template/default reasoning behavior
+but are excluded from benchmark model selection. `family: native` is the
+explicit, benchmark-supported opt-in to a GGUF's embedded template.
 For those models, `off` is an output instruction, not proof that native thinking
 has been disabled. Both modes use the same serializer and warm-up procedure.
 

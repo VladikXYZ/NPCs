@@ -5,5 +5,6 @@
   {"name": "Mistral Nemo 12B", "architecture": "llama", "family": "mistral", "quantization": "Q4_K_S", "template_sha256": "6b1fd7807826615a3befd86aa0a9fbfce6a98acb0f4dd66726be76b078011156"},
   {"name": "Phi 4 mini 3.8B", "architecture": "phi3", "family": "phi", "quantization": "Q4_K_M", "template_sha256": "46bcd040271c497ee454c7ff577615abf2853ba2971b472e417468ac2bf47f52"},
   {"name": "Phi 4 14B", "architecture": "phi3", "family": "phi_chatml_sep", "quantization": "Q4_K_S", "template_sha256": "fe4120415a3858b873955c92ce3a103a95bc97c2cb00b72e62659aaf0f891ee5"},
-  {"name": "Qwen3.5 9B", "architecture": "qwen35", "family": "chatml_reasoning", "quantization": "Q4_K_M", "template_sha256": "7f0e529032c25183bcd66c7f238da2d377f43be754a94e2725a58c4e16d2ed67"}
+  {"name": "Qwen3.5 9B", "architecture": "qwen35", "family": "chatml_reasoning", "quantization": "Q4_K_M", "template_sha256": "7f0e529032c25183bcd66c7f238da2d377f43be754a94e2725a58c4e16d2ed67"},
+  {"name": "LFM2.5 230M", "architecture": "lfm2", "family": "native", "quantization": "Q4_K_M", "template_sha256": "6d65c8804847ad74eea912dd7eca3dc1cf7a457b53a77f47d841a14121910963"}
 ]
