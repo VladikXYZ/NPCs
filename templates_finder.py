@@ -13,6 +13,7 @@ print(f"Scanning {len(gguf_files)} models for chat templates...")
 # Key: template string, Value: list of model filenames.
 template_cache = {}
 no_template_models = []
+failed_models = []
 
 for model_file in gguf_files:
     model_path = os.path.join(MODEL_DIR, model_file)
@@ -41,6 +42,7 @@ for model_file in gguf_files:
 
     except Exception as e:
         print(f"  -> Failed to read {model_file}: {e}")
+        failed_models.append(model_file)
 
 print(f"\nWriting unique templates to {OUTPUT_FILE}...")
 
@@ -60,6 +62,11 @@ with open(OUTPUT_FILE, "w", encoding="utf-8") as out_f:
     if no_template_models:
         out_f.write("Models with NO chat template found:\n")
         for m in no_template_models:
+            out_f.write(f"  - {m}\n")
+
+    if failed_models:
+        out_f.write("Failed:\n")
+        for m in failed_models:
             out_f.write(f"  - {m}\n")
 
 print(f"Done! All templates saved to {OUTPUT_FILE}")

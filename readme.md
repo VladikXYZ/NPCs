@@ -19,6 +19,7 @@ This repository contains the configuration and logic to run **llama-cpp-python**
       * SDL libraries and headers.
       * Volk header, source, and library.
       * Vulkan Memory Allocator header.
+      * Vulkan tools, header and spirv headers
 *   **CMake** (Tested on 4.3.2)
     *   [Download here](https://cmake.org/download/) if missing. Verify with:
     ```bash
